@@ -1,7 +1,9 @@
-
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
 <script>
     'use strict';
-    function loadLorySliders() {
+    function loadLorySliders(dispatch) {
         if (lory) {
             Array.prototype.slice.call(document.querySelectorAll('.js_slider')).forEach(function (element, index) {
                 function handleSlide(e) {
@@ -11,10 +13,13 @@
                 lory(element, {
                     rewind: true
                 });
+                if(dispatch) {
+                    dispatch('slider-loaded', 'true' );
+                }
             });
         }
     }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lory.js/2.5.3/lory.min.js" defer="defer"
-    onload="loadLorySliders()"
+<script src="<?= $block->escapeUrl($block->getViewFileUrl('js/lory-2.5.3.min.js')) ?>" defer="defer"
+        @load="loadLorySliders($dispatch)"
 ></script>

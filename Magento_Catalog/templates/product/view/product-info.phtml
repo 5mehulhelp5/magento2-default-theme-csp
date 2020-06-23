@@ -1,0 +1,68 @@
+<?php
+declare(strict_types=1);
+
+use Magento\Catalog\Model\Product;
+use Magento\Framework\View\Element\Template;
+use Wigman\Tailwind\ViewModel\ProductAttributes;
+use Wigman\Tailwind\ViewModel\ProductPage;
+
+/** @var Template $block */
+/** @var ProductPage $productViewModel */
+$productViewModel = $block->getProductViewModel();
+/** @var ProductAttributes $attributesViewModel */
+$attributesViewModel = $block->getAttributesViewModel();
+/** @var Product $product */
+$product = $productViewModel->getProduct();
+
+?>
+<div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0 order-2">
+    <?php if ($productBrand = $product->getBrand()) { ?>
+    <h2 class="text-sm title-font text-gray-500 tracking-widest">
+        <?= $productBrand ?></h2>
+    <?php } ?>
+    <h1 class="text-gray-900 text-3xl title-font font-medium mb-4"><?= $product->getName() ?></h1>
+    <div class="flex mb-4">
+        <a class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Description</a>
+        <a
+            class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Reviews</a>
+        <a
+            class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Details</a>
+    </div>
+    <?php if ($shortDescription = $productViewModel->getShortDescription()) { ?>
+    <div class="product-description leading-relaxed mb-4"><?= /* @noEscape */ $shortDescription ?></div>
+    <? } ?>
+    <div>
+    <?php foreach ($block->getAttributes() as $attributeConfig ) {
+        $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig);
+    ?>
+        <?php if ($value = $attribute['value']) { ?>
+    <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?= $attribute['value'] ?: "" ?>">
+        <span class="text-gray-500"><?= $attribute['label'] ?></span>
+        <span class="ml-auto text-gray-900"><?= $value ?></span>
+    </div>
+        <?php
+            $firstAttribute = false;
+        } ?>
+    <?php } ?>
+    </div>
+    <div class="flex sticky" style="top:6em;">
+        <span class="title-font font-medium text-2xl text-gray-900">
+            <?= $block->getChildHtml("product.price.final") ?>
+        </span>
+        <button
+            class="flex ml-auto btn btn-primary">
+            <svg class="h-6 w-6 border-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <?= /* @noEscape */ __('Add to cart') ?>
+        </button>
+        <button
+            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                 viewBox="0 0 24 24">
+                <path
+                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+            </svg>
+        </button>
+    </div>
+</div>

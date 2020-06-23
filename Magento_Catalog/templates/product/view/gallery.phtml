@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Product media data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ */
+?>
+
+<?php
+$images = $block->getGalleryImages()->getItems();
+$mainImage = current(array_filter($images, function ($img) use ($block) {
+    return $block->isMainImage($img);
+}));
+
+if (!empty($images) && empty($mainImage)) {
+    $mainImage = $block->getGalleryImages()->getFirstItem();
+}
+
+$helper = $block->getData('imageHelper');
+$mainImageData = $mainImage ?
+    $mainImage->getData('medium_image_url') :
+    $helper->getDefaultPlaceholderUrl('image');
+
+?>
+
+<div id="gallery" class="lg:w-1/2 w-full lg:h-auto order-1">
+    <img
+        alt="main product photo"
+        class="w-full h-auto object-cover object-center rounded"
+        loading="lazy"
+        src="<?= /* @noEscape */ $mainImageData ?>"
+    />
+</div>
+
+<script>
+    var galleryComponent = {
+        "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+     }
+</script>

@@ -48,7 +48,10 @@ module.exports = {
             'full': '100%',
         }
     },
-    variants: {},
+    variants: {
+        borderWidth: ['responsive', 'last', 'hover', 'focus'],
+        margin: ['responsive', 'last', 'hover', 'focus'],
+    },
     plugins: [],
     purge: {
         // enabled: false,
