@@ -28,17 +28,49 @@ $mainImageData = $mainImage ?
 
 ?>
 
-<div id="gallery" class="lg:w-1/2 w-full lg:h-auto order-1">
-    <img
-        alt="main product photo"
-        class="w-full h-auto object-cover object-center rounded"
-        loading="lazy"
-        src="<?= /* @noEscape */ $mainImageData ?>"
-    />
+<div id="gallery"
+     x-data="initGallery()"
+     class="lg:w-1/2 w-full lg:h-auto order-1"
+    >
+    <div class="relative">
+        <img
+            alt="main product photo"
+            class="w-full h-auto object-cover object-center rounded"
+            loading="lazy"
+            src="<?= /* @noEscape */ $mainImageData ?>"
+        />
+        <template x-for="(image, index) in images" :key="index">
+            <img
+                alt="main product photo"
+                class="absolute top-0 left-0 w-full h-auto object-fit object-center rounded"
+                loading="lazy"
+                :src="image.img"
+                x-show="active===index+1"
+                x-transition:enter="ease-out duration-500"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-500"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+            />
+            </div>
+        </template>
+    </div>
+    <div id="thumbs" class="flex flex-wrap">
+        <template x-for="(image, index) in images" :key="index">
+            <div>
+                <a href="#" @click.prevent="active = index+1;" :class="{ 'border' : active === index+1}">
+                    <img :src="image.thumb" />
+                </a>
+            </div>
+        </template>
+    </div>
 </div>
-
 <script>
-    var galleryComponent = {
-        "data": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+    function initGallery () {
+        return {
+            "active": 0,
+            "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+        }
      }
 </script>
