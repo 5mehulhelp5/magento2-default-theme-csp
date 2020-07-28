@@ -46,7 +46,7 @@
 -->
             <block name="script-cookies" template="Magento_Theme::html/footer/script-cookies.phtml"/>
             <block name="script-private-content" template="Magento_Theme::html/footer/script-private-content.phtml"/>
-            <block name="script-lory-slider" template="Magento_Theme::html/footer/script-lory-slider.phtml"/>
+<!--            <block name="script-lory-slider" template="Magento_Theme::html/footer/script-lory-slider.phtml"/>-->
         </referenceContainer>
     </body>
 </page>
