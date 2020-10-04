@@ -63,7 +63,9 @@ use Magento\LayeredNavigation\Block\Navigation;
                                 </svg>
                             </span>
                         </div>
-                        <div class="filter-options-content pt-3" x-show="open">
+                        <div class="filter-options-content pt-3 hidden"
+                             :class="{ 'hidden': !open , 'block': 'open' }"
+                        >
                             <?= /* @noEscape */
                             $block->getChildBlock('renderer')->render($filter) ?>
                         </div>
