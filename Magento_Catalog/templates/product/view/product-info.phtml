@@ -82,8 +82,61 @@ $product = $productViewModel->getProduct();
             </button>
         </form>
         <?php endif; ?>
-        <button
-            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+        <script>
+            function initWishlist() {
+                return {
+                    addToWishlist: function addToWishlist(productId){
+                        var formKey = document.querySelector('input[name=form_key]').value;
+                        var postUrl = BASE_URL+"wishlist/index/add/";
+                        fetch(postUrl, {
+                            "headers": {
+                                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                            },
+                            "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                            "method": "POST",
+                            "mode": "cors",
+                            "credentials": "include"
+                        }).then(function (response) {
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                                return;
+                            } else if (response.ok) {
+                                return response.json();
+                            } else {
+                                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                    [{
+                                        type: "warning",
+                                        text: "<?= $block->escapeHtml(__('Could not add item to wishlist.')) ?>"
+                                    }], 5000
+                                );
+                            }
+                        }).then(function (response) {
+                            if(!response) { return }
+                            typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                [{
+                                    type: (response.success) ? "success" : "error",
+                                    text: (response.success)
+                                        ? "<?= $block->escapeHtml(__("%1 has been added to your Wish List.", __("Product"))) ?>"
+                                        : response.error_message
+                                }], 5000
+                            );
+                            var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                            window.dispatchEvent(reloadCustomerDataEvent);
+                        }).catch(function (error) {
+                            typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                [{
+                                    type: "error",
+                                    text: error
+                                }], 5000
+                            );
+                        });
+                    }
+                }
+            }
+        </script>
+        <button x-data="initWishlist()"
+                @click.prevent="addToWishlist(<?= $product->getId() ?>)"
+            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 hover:text-red-600 ml-4">
             <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
                  viewBox="0 0 24 24">
                 <path

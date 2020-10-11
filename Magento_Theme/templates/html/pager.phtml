@@ -9,23 +9,27 @@
  * Pager template
  *
  * @see \Magento\Theme\Block\Html\Pager
+ * @var $block \Magento\Theme\Block\Html\Pager
+ * @var $escaper \Magento\Framework\Escaper
  */
 ?>
 <?php if ($block->getCollection()->getSize()) : ?>
 
     <?php if ($block->getUseContainer()) : ?>
-    <div class="pager">
+    <div class="pager h-28 grid grid-cols-4 sm:grid-cols-8 md:grid-cols-4 lg:grid-cols-8  grid-flow-row gap-2 items-center">
     <?php endif ?>
 
         <?php if ($block->getShowAmounts()) : ?>
-        <p class="toolbar-amount text-sm leading-5 text-gray-700">
+        <p class="toolbar-amount text-sm leading-5 text-gray-700 order-3 sm:order-2 md:order-3 lg:order-2 col-span-2 flex gap-x-1">
             <span class="toolbar-number">
             <?php if ($block->getLastPageNum()>1) : ?>
-                <?= $block->escapeHtml(__('Items %1 to %2 of %3 total', $block->getFirstNum(), $block->getLastNum(), $block->getTotalNum())) ?>
+                <?= $escaper->escapeHtml(
+                    __('Items %1 to %2 of %3 total', $block->getFirstNum(), $block->getLastNum(), $block->getTotalNum())
+                ) ?>
             <?php elseif ($block->getTotalNum() == 1) : ?>
-                <?= $block->escapeHtml(__('%1 Item', $block->getTotalNum())) ?>
+                <?= $escaper->escapeHtml(__('%1 Item', $block->getTotalNum())) ?>
             <?php else : ?>
-                <?= $block->escapeHtml(__('%1 Item(s)', $block->getTotalNum())) ?>
+                <?= $escaper->escapeHtml(__('%1 Item(s)', $block->getTotalNum())) ?>
             <?php endif; ?>
             </span>
         </p>
@@ -33,18 +37,18 @@
 
     <div class="pages order-2 col-span-4 justify-center flex">
         <?php if ($block->getLastPageNum()>1) : ?>
-            <strong class="sr-only label pages-label" id="paging-label"><?= $block->escapeHtml(__('Page')) ?></strong>
+            <strong class="sr-only label pages-label" id="paging-label"><?= $escaper->escapeHtml(__('Page')) ?></strong>
             <ul class="items pages-items relative z-0 inline-flex shadow-sm" aria-labelledby="paging-label">
             <?php if (!$block->isFirstPage()) : ?>
                 <li class="item pages-item-previous relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                     <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>
-                    <a class="<?= $block->escapeHtmlAttr($text ? 'link ' : 'action ') ?> previous"
-                       href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"
-                       title="<?= $block->escapeHtmlAttr($text ? $text : __('Previous')) ?>">
-                        <span class="sr-only label"><?= $block->escapeHtml(__('Page')) ?></span>
+                        <a class="<?= $escaper->escapeHtmlAttr($text ? 'link ' : 'action ') ?> previous"
+                           href="<?= $escaper->escapeUrl($block->getPreviousPageUrl()) ?>"
+                           title="<?= $escaper->escapeHtmlAttr($text ? $text : __('Previous')) ?>">
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
                         <span>
                             <?php if ($text) : ?>
-                            <?= $block->escapeHtml($text) ?>
+                                <?= $escaper->escapeHtml($text) ?>
                             <?php else: ?>
                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -57,8 +61,8 @@
 
             <?php if ($block->canShowFirst()) : ?>
                 <li class="item -ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-                    <a class="page first" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>">
-                        <span class="sr-only label"><?= $block->escapeHtml(__('Page')) ?></span>
+                        <a class="page first" href="<?= $escaper->escapeUrl($block->getFirstPageUrl()) ?>">
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
                         <span>1</span>
                     </a>
                 </li>
@@ -68,7 +72,7 @@
                 <li class="item -ml-px relative inline-flex items-center border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
                     <a class="page previous jump px-4 py-2"
                        title=""
-                       href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>">
+                           href="<?= $escaper->escapeUrl($block->getPreviousJumpUrl()) ?>">
                         <span>...</span>
                     </a>
                 </li>
@@ -78,15 +82,17 @@
                 <?php if ($block->isPageCurrent($_page)) : ?>
                     <li class="item current inline-flex items-center -ml-px relative  border border-primary bg-white text-sm leading-5 font-medium text-gray-700 z-10 focus:outline-none bg-gray-100 text-gray-700 transition ease-in-out duration-150">
                         <strong class="page px-4 py-2 cursor-default">
-                            <span class="sr-only label"><?= $block->escapeHtml(__('You\'re currently reading page')) ?></span>
-                            <span><?= $block->escapeHtml($_page) ?></span>
+                                <span class="sr-only label"><?= $escaper->escapeHtml(
+                                        __('You\'re currently reading page')
+                                    ) ?></span>
+                                <span><?= $escaper->escapeHtml($_page) ?></span>
                         </strong>
                     </li>
                 <?php else : ?>
                     <li class="item -ml-px relative inline-flex items-center border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-                        <a href="<?= $block->escapeUrl($block->getPageUrl($_page)) ?>" class="page px-4 py-2">
-                            <span class="sr-only label"><?= $block->escapeHtml(__('Page')) ?></span>
-                            <span><?= $block->escapeHtml($_page) ?></span>
+                            <a href="<?= $escaper->escapeUrl($block->getPageUrl($_page)) ?>" class="page px-4 py-2">
+                                <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
+                                <span><?= $escaper->escapeHtml($_page) ?></span>
                         </a>
                     </li>
                 <?php endif;?>
@@ -94,7 +100,7 @@
 
             <?php if ($block->canShowNextJump()) : ?>
                 <li class="item">
-                    <a class="page next jump" title="" href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>">
+                        <a class="page next jump" title="" href="<?= $escaper->escapeUrl($block->getNextJumpUrl()) ?>">
                         <span>...</span>
                     </a>
                 </li>
@@ -102,9 +108,9 @@
 
             <?php if ($block->canShowLast()) : ?>
               <li class="item -ml-px relative inline-flex items-center border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
-                  <a class="page last px-4 py-2" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>">
-                      <span class="sr-only label"><?= $block->escapeHtml(__('Page')) ?></span>
-                      <span><?= $block->escapeHtml($block->getLastPageNum()) ?></span>
+                        <a class="page last px-4 py-2" href="<?= $escaper->escapeUrl($block->getLastPageUrl()) ?>">
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
+                            <span><?= $escaper->escapeHtml($block->getLastPageNum()) ?></span>
                   </a>
               </li>
             <?php endif;?>
@@ -113,12 +119,12 @@
                 <li class="item pages-item-next -ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                     <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
                     <a class="<?= /* @noEscape */ $text ? 'link ' : 'action ' ?> next"
-                       href="<?= $block->escapeUrl($block->getNextPageUrl()) ?>"
-                       title="<?= $block->escapeHtmlAttr($text ? $text : __('Next')) ?>">
-                        <span class="sr-only label"><?= $block->escapeHtml(__('Page')) ?></span>
+                           href="<?= $escaper->escapeUrl($block->getNextPageUrl()) ?>"
+                           title="<?= $escaper->escapeHtmlAttr($text ? $text : __('Next')) ?>">
+                            <span class="sr-only label"><?= $escaper->escapeHtml(__('Page')) ?></span>
                         <span>
                             <?php if ($text): ?>
-                            <?= $block->escapeHtml($text) ?>
+                                <?= $escaper->escapeHtml($text) ?>
                             <?php else: ?>
                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
@@ -134,18 +140,20 @@
     </div>
 
     <?php if ($block->isShowPerPage()) : ?>
-        <div class="limiter">
-            <strong class="limiter-label"><?= $block->escapeHtml(__('Show')) ?></strong>
-            <select id="limiter" data-mage-init='{"redirectUrl": {"event":"change"}}' class="limiter-options">
+        <div class="limiter flex items-center order-3 sm:order-2 md:order-3 lg:order-2 col-span-2 justify-end">
+            <label class="text-sm mr-2 label" for="limiter">
+                <span><?= $block->escapeHtml(__('Show')) ?></span>
+            </label>
+            <select id="limiter" class="form-select mr-2" onchange="location.href = this.value">
                 <?php foreach ($block->getAvailableLimit() as $_key => $_limit) : ?>
-                    <option value="<?= $block->escapeHtmlAttr($block->getLimitUrl($_key)) ?>"
+                    <option value="<?= $escaper->escapeHtmlAttr($block->getLimitUrl($_key)) ?>"
                         <?php if ($block->isLimitCurrent($_key)) : ?>
-                        selected="selected"<?php endif ?>>
-                        <?= $block->escapeHtml($_limit) ?>
+                            selected="selected"<?php endif ?>>
+                        <?= $escaper->escapeHtml($_limit) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-            <span class="limiter-text"><?= $block->escapeHtml(__('per page')) ?></span>
+            <span class="limiter-text sr-only"><?= $escaper->escapeHtml(__('per page')) ?></span>
         </div>
     <?php endif ?>
 

@@ -1,6 +1,6 @@
 .page.messages {
     @apply sticky z-10;
-    top: 80px;
+    top: 0px;
 }
 section#messages {
     .message {

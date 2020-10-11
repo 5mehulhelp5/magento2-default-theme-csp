@@ -34,23 +34,26 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
 
 <div id="gallery"
      x-data="initGallery()"
+     @keydown.window.escape="fullscreen = false"
      class="lg:w-1/2 w-full lg:h-auto order-1"
     >
-    <div class="relative">
+    <div class="relative border border-gray-300 mb-6">
         <img
             alt="main product photo"
-            class="w-full h-auto object-cover object-center rounded"
+            class="w-full h-auto object-cover object-center rounded cursor-pointer"
+            :class="{'opacity-0': active!==0}"
             loading="lazy"
             src="<?= /* @noEscape */ $mainImageData ?>"
-            width="<?= $mediumWidth ?>"
-            height="<?= $mediumHeight ?>"
+            width="<?= /* @noEscape */ $mediumWidth ?>"
+            height="<?= /* @noEscape */ $mediumHeight ?>"
+            @click="fullscreen = true"
         />
         <template x-for="(image, index) in images" :key="index">
             <img
                 alt="main product photo"
-                class="absolute top-0 left-0 w-full h-auto object-fit object-center rounded"
-                width="<?= $mediumWidth ?>"
-                height="<?= $mediumHeight ?>"
+                class="absolute top-0 left-0 w-full h-auto object-fit object-center rounded cursor-pointer"
+                width="<?= /* @noEscape */ $mediumWidth ?>"
+                height="<?= /* @noEscape */ $mediumHeight ?>"
                 loading="lazy"
                 :src="image.img"
                 x-show="active===index+1"
@@ -60,17 +63,71 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
                 x-transition:leave="ease-in duration-500"
                 x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
+                @click="fullscreen = true"
             />
             </div>
         </template>
     </div>
-    <div id="thumbs" class="flex flex-wrap">
+
+<div :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}"
+>
+    <div class="absolute top-0 right-0 pt-4 pr-4">
+        <button @click="fullscreen = false"
+                type="button"
+                class="text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
+                aria-label="Close"
+        >
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+    <div class="relative self-center w-full" x-show="fullscreen"
+         x-transition:enter="ease-out duration-500"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+    >
+        <div class="relative mb-6">
+            <img
+                alt="main product photo"
+                class="w-full h-auto object-contain object-center cursor-pointer max-h-75"
+                :class="{'opacity-0': active!==0}"
+                loading="lazy"
+                src="<?= /* @noEscape */ $mainImageData ?>"
+                width="<?= /* @noEscape */ $mediumWidth ?>"
+                height="<?= /* @noEscape */ $mediumHeight ?>"
+                @click="fullscreen = true"
+            />
+    <template x-for="(image, index) in images" :key="index">
+        <img
+            alt="main product photo"
+            class="absolute top-0 left-0 right-0 w-full h-auto object-contain object-center max-h-75"
+            width="<?= /* @noEscape */ $mediumWidth ?>"
+            height="<?= /* @noEscape */ $mediumHeight ?>"
+            loading="lazy"
+            :src="image.full"
+            x-show="active===index+1"
+            x-transition:enter="ease-out duration-500"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="ease-in duration-500"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        />
+    </template>
+        </div>
+    </div>
+    <div id="thumbs" class="flex flex-wrap"
+    :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen}">
         <template x-for="(image, index) in images" :key="index">
-            <div>
-                <a href="#" @click.prevent="active = index+1;" :class="{ 'border' : active === index+1}">
+            <div class="mr-4 mb-2 last:mr-0">
+                <a href="#" @click.prevent="active = index+1;"
+                   class="block border border-gray-300 hover:border-container focus:border-container-darker"
+                   :class="{'border-primary': active === index+1}"
+                >
                     <img :src="image.thumb"
-                         width="<?= $smallWidth ?>"
-                         height="<?= $smallHeight ?>"
+                         width="<?= /* @noEscape */ $smallWidth ?>"
+                         height="<?= /* @noEscape */ $smallHeight ?>"
                     />
                 </a>
             </div>
@@ -81,6 +138,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
     function initGallery () {
         return {
             "active": 0,
+            "fullscreen": false,
             "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
         }
      }

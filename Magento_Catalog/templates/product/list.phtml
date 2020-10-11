@@ -38,8 +38,8 @@ $productCollection = $block->getLoadedProductCollection();
      */
     $pos = $block->getPositioned();
     ?>
-    <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
-        <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+    <div class="products wrapper mode-<?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
+        <div class="mx-auto flex items-start flex-wrap pt-4 pb-12 -mr-2">
             <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($productCollection as $product) :?>
                 <?= $block->getLayout()->getBlock('product_list_item')

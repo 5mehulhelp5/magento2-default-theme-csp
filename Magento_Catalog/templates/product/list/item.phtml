@@ -32,48 +32,123 @@ $viewMode = $block->getData('view_mode');
 $showDescription = $block->getData('show_description');
 
 if (!$product) return; ?>
-<div class="item product product-item w-full md:w-1/2 xl:w-1/3 p-6 flex flex-col">
-    <?php
-    $productImage = $block->getImage($product, $imageDisplayArea);
-    ?>
-    <?php // Product Image ?>
-    <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
-       class="product photo product-item-photo"
-       tabindex="-1">
-        <img class="hover:grow hover:shadow-lg"
-             src="<?= $productImage->getImageUrl() ?>"
-             width="<?= $productImage->getWidth() ?>"
-             height="<?= $productImage->getHeight() ?>"
-        />
-    </a>
-    <?php
-    $productNameStripped = $block->stripTags($product->getName(), null, true);
-    ?>
-    <div class="pt-3 flex items-center justify-center text-primary">
-        <a class="product-item-link"
-           href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
-            <?= /* @noEscape */
-            $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
+<div class="item product product-item w-full md:w-1/2 xl:w-1/3 flex">
+    <?php if ($product->isSaleable()): ?>
+    <form method="post"
+          action="<?= $escaper->escapeUrl($productViewModel->getAddToCartUrl($product)) ?>"
+          class="product_addtocart_form card card-interactive mr-2 mb-2"
+        <?php if ($product->getOptions()): ?>
+            enctype="multipart/form-data"
+        <?php endif; ?>
+    >
+        <?= /** @noEscape */
+        $block->getBlockHtml('formkey') ?>
+        <input type="hidden" name="product" value="<?= (int)$product->getId() ?>"/>
+    <?php else: ?>
+        <div class="card card-interactive mr-2">
+    <?php endif; ?>
+        <?php
+        $productImage = $block->getImage($product, $imageDisplayArea);
+        ?>
+        <?php // Product Image ?>
+        <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+           class="product photo product-item-photo"
+           tabindex="-1">
+            <img class="hover:shadow-sm"
+                 src="<?= $productImage->getImageUrl() ?>"
+                 width="<?= $productImage->getWidth() ?>"
+                 height="<?= $productImage->getHeight() ?>"
+            />
         </a>
+        <?php
+        $productNameStripped = $block->stripTags($product->getName(), null, true);
+        ?>
+        <div class="pt-3 flex items-center justify-center text-primary">
+            <a class="product-item-link"
+               href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                <?= /* @noEscape */
+                $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
+            </a>
 
+        </div>
+        <p class="pt-1 text-gray-900">
+            <?= /* @noEscape */ $block->getProductPrice($product) ?>
+        </p>
+        <div class="pt-3 flex justify-center">
+            <?php if ($product->isSaleable()): ?>
+            <button class="w-auto mr-auto btn btn-primary justify-center text-sm px-4 md:px-2 lg:px-4"
+               href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                <svg class="h-6 w-6 border-current inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span class="inline md:hidden lg:inline">Add to cart</span>
+            </button>
+            <?php endif; ?>
+            <script>
+                function initWishlist() {
+                    return {
+                        addToWishlist: function addToWishlist(productId){
+                            var formKey = document.querySelector('input[name=form_key]').value;
+                            var postUrl = BASE_URL+"wishlist/index/add/";
+                            fetch(postUrl, {
+                                "headers": {
+                                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                                },
+                                "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                                "method": "POST",
+                                "mode": "cors",
+                                "credentials": "include"
+                            }).then(function (response) {
+                                if (response.redirected) {
+                                    window.location.href = response.url;
+                                    return;
+                                } else if (response.ok) {
+                                    return response.json();
+                                } else {
+                                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                        [{
+                                            type: "warning",
+                                            text: "<?= $block->escapeHtml(__('Could not add item to wishlist.')) ?>"
+                                        }], 5000
+                                    );
+                                }
+                            }).then(function (response) {
+                                if(!response) { return }
+                                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                    [{
+                                        type: (response.success) ? "success" : "error",
+                                        text: (response.success)
+                                            ? "<?= $block->escapeHtml(__("%1 has been added to your Wish List.", __("Product"))) ?>"
+                                            : response.error_message
+                                    }], 5000
+                                );
+                                var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                                window.dispatchEvent(reloadCustomerDataEvent);
+                            }).catch(function (error) {
+                                typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                                    [{
+                                        type: "error",
+                                        text: error
+                                    }], 5000
+                                );
+                            });
+                        }
+                    }
+                }
+            </script>
+            <button x-data="initWishlist()"
+                    @click.prevent="addToWishlist(<?= $product->getId() ?>)"
+                    class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 hover:text-red-600 ml-4">
+                <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
+                     viewBox="0 0 24 24">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                </svg>
+            </button>
+        </div>
+    <?php if ($product->isSaleable()): ?>
+    </form>
+    <?php else: ?>
     </div>
-    <p class="pt-1 text-gray-900"><?= /* @noEscape */
-        $block->getProductPrice($product) ?></p>
-    <div class="pt-3 flex justify-center">
-        <a class="w-auto mr-auto btn btn-primary justify-center text-sm px-4 md:px-2 lg:px-4"
-           href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
-            <svg class="h-6 w-6 border-current inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            <span class="inline md:hidden lg:inline">Add to cart</span>
-        </a>
-        <button
-            class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-auto">
-            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5"
-                 viewBox="0 0 24 24">
-                <path
-                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-            </svg>
-        </button>
-    </div>
+    <?php endif; ?>
 </div>

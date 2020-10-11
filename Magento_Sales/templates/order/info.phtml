@@ -11,16 +11,16 @@
 <?php $_order = $block->getOrder() ?>
 <div class="block block-order-details-view">
     <div class="text-lg mb-4"><?= $escaper->escapeHtml(__('Order Information')) ?></div>
-    <div class="md:flex md:flex-wrap">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <?php if (!$_order->getIsVirtual()) : ?>
-            <div class="md:w-1/2">
+            <div class="w-full card">
                 <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Address')) ?></p>
                 <div class="box-content">
                     <address><?= /* @noEscape */
                         $block->getFormattedAddress($_order->getShippingAddress()) ?></address>
                 </div>
             </div>
-            <div class="md:w-1/2">
+            <div class="w-full card">
                 <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Shipping Method')) ?></p>
                 <div class="box-content">
                     <?php if ($_order->getShippingDescription()) : ?>
@@ -31,14 +31,14 @@
                 </div>
             </div>
         <?php endif; ?>
-        <div class="md:w-1/2">
+        <div class="w-full card">
             <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Billing Address')) ?></p>
             <div class="box-content">
                 <address><?= /* @noEscape */
                     $block->getFormattedAddress($_order->getBillingAddress()) ?></address>
             </div>
         </div>
-        <div class="md:w-1/2">
+        <div class="w-full card">
             <p class="font-semibold mb-2"><?= $escaper->escapeHtml(__('Payment Method')) ?></p>
             <div class="box-content">
                 <?= $block->getPaymentInfoHtml() ?>

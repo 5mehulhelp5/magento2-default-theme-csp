@@ -4,23 +4,68 @@
  * Copyright © Wigman Interactive. All rights reserved.
  * This product is licensed per Magento production install
  */
+
+declare(strict_types=1);
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
 ?>
 <script>
     function initCartDrawer() {
         return {
             open: false,
             cart: {},
-            getCart: function (data) {
+            getData: function (data) {
                 if (data.cart) {
                     this.cart = data.cart
                 }
+            },
+            getCartItems: function getCartItems () {
+                return this.cart && this.cart.items.sort(function(a,b) { return a.item_id - b.item_id }) || {}
+            },
+            deleteItemFromCart: function deleteItemFromCart (itemId) {
+                var formKey = document.querySelector('input[name=form_key]').value;
+                fetch(BASE_URL+"checkout/sidebar/removeItem/", {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    },
+                    "body": "form_key="+ formKey + "&item_id="+itemId,
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
+                }).then(function (response) {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else if (response.ok) {
+                        return response.json();
+                    } else {
+                        typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                            [{
+                                type: "warning",
+                                text: "<?= $block->escapeHtml(__('Could not remove item from quote.')) ?>"
+                            }], 5000
+                        );
+                    }
+                }).then(function (response) {
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: response.success ? "success" : "error",
+                            text: response.success
+                                ? "<?= $block->escapeHtml(__('You removed the item.')) ?>"
+                                : response.error_message
+                        }], 5000
+                    );
+                    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
+                    window.dispatchEvent(reloadCustomerDataEvent);
+                });
             }
         }
     }
 </script>
 <section id="cart-drawer"
          x-data="initCartDrawer()"
-         @private-content-loaded.window="getCart(event.detail.data)"
+         @private-content-loaded.window="getData(event.detail.data)"
          @toggle-cart.window="open=true;"
          @keydown.window.escape="open=false"
 >
@@ -55,10 +100,10 @@
                             <?= $block->escapeHtml(__('My Cart')) ?>
                         </h2>
                     </header>
-                    <div class="relative grid gap-6 bg-white py-6 sm:gap-8 px-4 sm:px-6">
-                        <template x-for="item in cart.items">
+                    <div class="relative grid gap-6 bg-white py-6 sm:gap-8 px-4 sm:px-6 border-b border-container overflow-y-auto">
+                        <template x-for="item in getCartItems()">
                             <div class="-m-3 p-3 flex items-start space-x-4 rounded-lg hover:bg-gray-100 transition ease-in-out duration-150">
-                                <a :href="item.product_url">
+                                <a :href="item.product_url" class="w-1/4">
                                     <img
                                         :src="item.product_image.src"
                                         :width="item.product_image.width"
@@ -66,10 +111,36 @@
                                         loading="lazy"
                                     />
                                 </a>
-                                <div class="space-y-1">
-                                    <p><span x-html="item.qty"></span> x <span x-html="item.product_name"></span></p>
+                                <div class="space-y-2 w-3/4">
+                                    <div>
+                                        <p class="text-xl"><span x-html="item.qty"></span> x <span x-html="item.product_name"></span></p>
+                                        <p class="text-sm"><span x-html="item.product_sku"></p>
+                                    </div>
+                                    <template x-for="option in item.options">
+                                        <div class="pt-2">
+                                            <p class="font-semibold" x-text="option.label + ':'"></p>
+                                            <p class="text-ciHighlight" x-text="option.value"></p>
+                                        </div>
+                                    </template>
                                     <p><span x-html="item.product_price"></span></p>
-                                    <p><a :href="item.configure_url">edit</a></p>
+                                    <div class="pt-4">
+                                        <a :href="item.configure_url"
+                                           class="btn btn-primary inline-flex mr-2 p-2">
+                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" size="16" class="h-5 w-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+
+                                                </path>
+                                            </svg>
+                                        </a>
+                                        <button class="btn btn-primary inline-flex p-2"
+                                            @click="deleteItemFromCart(item.item_id)"
+                                        >
+                                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" size="16" class="h-5 w-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+
                                 </div>
                             </div>
                         </template>
@@ -79,7 +150,7 @@
                             <p>Subtotal: <span x-html="cart.subtotal"></span></p>
                         </div>
                         <div class="w-full -m-3 p-3 space-x-4 rounded-lg hover:bg-gray-100 transition ease-in-out duration-150">
-                            <a href="<?= $block->getUrl('checkout/index') ?>" class="btn btn-primary inline-flex">Checkout</a>
+                            <a href="<?= $block->escapeUrl($block->getUrl('checkout/index')) ?>" class="btn btn-primary inline-flex">Checkout</a>
                             <span>or</span> <a href="<?= $block->getUrl('checkout/cart') ?>" class="underline">Go to Cart</a>
                         </div>
                     </div>

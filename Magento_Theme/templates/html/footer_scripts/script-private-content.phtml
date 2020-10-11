@@ -40,7 +40,7 @@ use Magento\Framework\View\Element\Template;
             return browserStorage;
         }
 
-        window.addEventListener('load', function () {
+        function loadSectionData () {
             var browserStorage = getBrowserStorage();
             if (!browserStorage) {
                 typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
@@ -75,7 +75,10 @@ use Magento\Framework\View\Element\Template;
             } catch (error) {
                 console.warn('Error retrieving Private Content:', error);
             }
-        });
+        };
+
+        window.addEventListener('load', loadSectionData);
+        window.addEventListener('reload-customer-section-data', loadSectionData);
 
         function dispatchPrivateContent(data) {
             var privateContentEvent = new CustomEvent("private-content-loaded", {

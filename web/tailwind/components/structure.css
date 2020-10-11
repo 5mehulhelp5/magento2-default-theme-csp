@@ -45,3 +45,11 @@
         }
     }
 }
+
+.product-image-container {
+    width: 100% !important;
+
+    img {
+        width: 100%
+    }
+}
