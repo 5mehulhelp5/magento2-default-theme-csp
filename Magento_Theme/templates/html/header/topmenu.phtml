@@ -51,7 +51,7 @@ $menuJson = $viewModelNavigationAsJson->getNavigationAsJson();
         <template x-for="item in (menu.navigation)" :key="item.id">
             <div class="lg:relative lg:mr-2 lg:hover:bg-container-lighter hover:lg:shadow-lg"
                  x-on:mouseenter="menu.isSmallResolution ? menu.hoverPanelActiveId =  0 : menu.hoverPanelActiveId = item.id"
-                 x-on:mouseleave="hoverPanelActiveId = 0">
+                 x-on:mouseleave="menu.hoverPanelActiveId = 0">
                 <span
                     class="px-3 py-2 lg:py-3 lg:text-md flex lg:block lg:transform-none transition-transform transform duration-150 ease-in-out items-center lg:bg-opacity-95"
                     :class="{'-translate-x-full' : menu.mobilePanelActiveId, 'translate-x-0' : !menu.mobilePanelActiveId }"
@@ -71,7 +71,7 @@ $menuJson = $viewModelNavigationAsJson->getNavigationAsJson();
                 </span>
                 <template x-if="Object.values(item.childData).length">
                     <div
-                        class="absolute h-full z-10 lg:h-auto right-0 top-0 lg:top-auto lg:right-auto lg:left-0 lg:shadow-lg lg:-ml-6 lg:mt-2 lg:px-6 lg:py-4 transform lg:transform-none w-full lg:w-auto bg-container-lighter transition-transform transform duration-200 ease-in-out lg:bg-opacity-95"
+                        class="absolute h-full z-10 lg:h-auto right-0 top-0 lg:top-auto lg:right-auto lg:left-0 lg:shadow-lg lg:-ml-6 lg:px-6 lg:py-4 transform lg:transform-none w-full lg:w-auto bg-container-lighter transition-transform transform duration-200 ease-in-out lg:bg-opacity-95"
                         :class="{'translate-x-full' : menu.mobilePanelActiveId !== item.id && menu.isSmallResolution, 'translate-x-0' : menu.mobilePanelActiveId === item.id && menu.isSmallResolution, 'lg:hidden' : menu.hoverPanelActiveId !== item.id, 'lg:block' : menu.overPanelActiveId === item.id}"
                     >
                         <span class="flex lg:hidden items-center px-8 py-2 my-1"
