@@ -26,12 +26,13 @@ use Magento\Framework\Escaper;
                 <?php endif; ?>
                 <?php if ($crumbInfo['link']) : ?>
                     <a href="<?= $escaper->escapeUrl($crumbInfo['link']) ?>"
-                       class="no-underline text-primary"
-                       title="<?= $escaper->escapeHtmlAttr($crumbInfo['title']) ?>">
-                        <?= $escaper->escapeHtml($crumbInfo['label']) ?>
-                    </a>
+                       class="no-underline"
+                       title="<?= $escaper->escapeHtmlAttr($crumbInfo['title']) ?>"
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php elseif ($crumbInfo['last']) : ?>
-                    <span class="text-ciHighlight"><?= $escaper->escapeHtml($crumbInfo['label']) ?></span>
+                    <span class="text-ciHighlight text-primary-lighter"
+                          aria-current="page"
+                    ><?= $escaper->escapeHtml($crumbInfo['label']) ?></span>
                 <?php else : ?>
                     <?= $escaper->escapeHtml($crumbInfo['label']) ?>
                 <?php endif; ?>
