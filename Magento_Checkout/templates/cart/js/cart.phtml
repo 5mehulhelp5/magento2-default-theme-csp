@@ -18,35 +18,36 @@ $viewModelCart = $block->getData('viewModelCart');
 <script>
 
     <?= $block->getChildHtml('js_localstorage_config') ?>
-
-    const cartId = getConfigFromLocalStorage(activeSource.cartId);
-    const signInToken = getConfigFromLocalStorage(activeSource.token);
-
-    <?php /* customer not logged in */ ?>
-    const getCartQuery = <?= /** @noEscape */ json_encode(
-        '{cart (cart_id: "%cartId") {' .
-        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
-        '}}'
-    ); ?>.replace('%cartId',cartId);
-
-    <?php /* customer is logged in */ ?>
-    const getCustomerCartQuery = <?= /** @noEscape */ json_encode(
-        '{customerCart {' .
-        /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
-        '}}'
-    ); ?>
-
-    const cartQuery = (signInToken && getCustomerCartQuery) || getCartQuery;
+    var reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
 
     function initCart() {
         return {
+            cartId: getConfigFromLocalStorage(activeSource.cartId),
             cartData: [],
             cartEmpty: true,
             isLoading: true,
-            cartQuery: cartQuery,
             isTouchDevice: false,
+            getCartId: function getCartId() {
+                this.cartId = getConfigFromLocalStorage(activeSource.cartId);
+                return this.cartId; },
+            getSignInToken: function getSignInToken() { return getConfigFromLocalStorage(activeSource.token); },
+            getCartQuery: function getCartQuery(cartId) {
+                return <?= /** @noEscape */ json_encode(
+                    '{cart (cart_id: "%cartId") {' .
+                    /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
+                    '}}'
+                ); ?>.replace('%cartId', cartId)
+            },
+            getCustomerCartQuery: function getCustomerCartQuery() {
+                return <?= /** @noEscape */ json_encode(
+                    '{customerCart {' .
+                    /* @noEscape */ $viewModelCart->getCartGraphQlQuery() .
+                    '}}'
+                ); ?>
+            },
             getCart() {
-                if (cartId) {
+                if (this.getCartId()) {
+                    var $this = this;
                     fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
                         method: 'POST',
                         headers: {
@@ -54,7 +55,7 @@ $viewModelCart = $block->getData('viewModelCart');
                         },
                         credentials: 'include',
                         body: JSON.stringify({
-                            query: cartQuery
+                            query: ($this.getSignInToken() && $this.getCustomerCartQuery()) || this.getCartQuery(this.getCartId())
                         })
                     })
                         .then(response => response.json())
@@ -68,9 +69,9 @@ $viewModelCart = $block->getData('viewModelCart');
                                 }
                             }
                         ).finally(() => {
-                        this.isLoading = false
+                        this.isLoading = false;
                     });
-                }else {
+                } else {
                     this.cartEmpty = true;
                     this.isLoading = false;
                 }
@@ -90,6 +91,9 @@ $viewModelCart = $block->getData('viewModelCart');
                 this.showCouponForm = this.cartData.applied_coupons;
                 if (this.cartData && this.cartData.items && Object.keys(this.cartData.items).length) {
                     this.cartEmpty = false;
+                }
+                else {
+                    this.cartEmpty = true;
                 }
             },
             showCouponForm: false,
@@ -155,7 +159,7 @@ $viewModelCart = $block->getData('viewModelCart');
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
-                    body: JSON.stringify({query: cartItemUpdateQuery})
+                    body: JSON.stringify({query: cartItemUpdateQuery.replace('%cartId', this.getCartId)})
                 })
                     .then(response => response.json())
                     .then(
@@ -171,7 +175,8 @@ $viewModelCart = $block->getData('viewModelCart');
                             }
                         }
                     ).finally(() => {
-                    this.isLoading = false
+                    this.isLoading = false;
+                    window.dispatchEvent(reloadCustomerDataEvent);
                 });
             },
             mutateItemRemove: function (itemId) {
@@ -201,7 +206,8 @@ $viewModelCart = $block->getData('viewModelCart');
                             }
                         }
                     ).finally(() => {
-                    this.isLoading = false
+                    this.isLoading = false;
+                    window.dispatchEvent(reloadCustomerDataEvent);
                 });
             }
         }
