@@ -5,6 +5,8 @@ use Magento\Review\Block\Form;
 
 /* @var Escaper $escaper */
 /* @var Form $block */
+
+$formId = 'review_form';
 ?>
 <div class="container mx-auto px-5 py-6 items-center" id="customer-reviews">
     <div class="card w-full px-6 py-3" x-data="initReviewForm()">
@@ -12,7 +14,7 @@ use Magento\Review\Block\Form;
             <?= $escaper->escapeHtml(__('Write Your Own Review')) ?>
         </div>
         <?php if ($block->getAllowWriteReviewFlag()): ?>
-            <form class="review-form" id="review-form" @submit.prevent="placeReview()">
+            <form class="review-form" id="<?= $escaper->escapeHtmlAttr($formId) ?>" @submit.prevent="submitForm()">
                 <?= $block->getChildHtml('form_fields_before') ?>
                 <fieldset>
                     <legend class="text-xs">
@@ -245,6 +247,7 @@ use Magento\Review\Block\Form;
                             </template>
                         </p>
                     </div>
+                    <?= $block->getChildHtml('form_additional_after') ?>
                 </div>
             </form>
 
@@ -257,15 +260,30 @@ use Magento\Review\Block\Form;
                         displaySuccessMessage: false,
                         displayErrorMessage: false,
                         errorMessages: [],
+                        errors: 0,
+                        hasCaptchaToken: 0,
+                        nickname: null,
+                        summary: null,
+                        ratings: [],
+                        review: null,
                         setErrorMessages: function setErrorMessages(messages) {
                             this.errorMessages = [messages]
                         },
-                        placeReview: function (itemId, qty) {
-                            var $this = this;
-                            var nickname = document.getElementById('nickname_field').value;
-                            var summary = document.getElementById('summary_field').value;
-                            var review = document.getElementById('review_field').value;
-                            var ratings = [];
+                        submitForm: function () {
+                            var $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
+
+                            this.validate();
+
+                            <?= $block->getChildHtml('recaptcha_validation'); ?>
+
+                            if (this.errors === 0) {
+                                this.placeReview();
+                            }
+                        },
+                        validate: function () {
+                            this.nickname = document.getElementById('nickname_field').value;
+                            this.summary = document.getElementById('summary_field').value;
+                            this.review = document.getElementById('review_field').value;
 
                             var ratingValue;
                             <?php foreach ($block->getRatings() as $rating): ?>
@@ -273,23 +291,36 @@ use Magento\Review\Block\Form;
                                 ratingValue = document.querySelector('input[name="ratings[<?= $escaper->escapeJs(
                                     $rating->getId()
                                 ) ?>]"]:checked').value;
-                                ratings[<?= $escaper->escapeJs($rating->getId()) ?>] = btoa(ratingValue);
+                                this.ratings[<?= $escaper->escapeJs($rating->getId()) ?>] = btoa(ratingValue);
                             } catch (e) {
                                 console.log(e);
                             }
                             <?php endforeach; ?>
 
-                            if (nickname && summary && review && Object.keys(ratings).length === <?= count(
-                                $block->getRatings()
-                            ) ?>) {
-                                this.isLoading = true;
-                                this.displayErrorMessage = false;
 
-                                var createProductReviewQuery = <?= /** @noEscape */ json_encode('
+                            if (!(this.nickname && this.summary && this.review && Object.keys(this.ratings).length === <?= count(
+                                $block->getRatings()
+                            ) ?>)) {
+                                this.setErrorMessages(['<?= $escaper->escapeJs(
+                                    __('Please verify you\'ve entered all required information')
+                                ) ?>']);
+                                this.displayErrorMessage = true;
+                                this.errors = 1;
+                                this.hasCaptchaToken = 0;
+                            }
+                        },
+                        placeReview: function (itemId, qty) {
+                            var $this = this;
+
+                            $this.isLoading = true;
+                            $this.displayErrorMessage = false;
+
+                            var createProductReviewQuery = <?= /** @noEscape */ json_encode(
+                                '
                         mutation {
                             createProductReview(
                                 input: {
-                                  sku: "'. $escaper->escapeJs($block->getProductInfo()->getSku()) .'",
+                                  sku: "' . $escaper->escapeJs($block->getProductInfo()->getSku()) . '",
                                   nickname: "%nickname",
                                   summary: "%summary",
                                   text: "%review",
@@ -300,42 +331,39 @@ use Magento\Review\Block\Form;
                               nickname
                             }
                             }
-                          }'); ?>
-                            .replace('%nickname',nickname)
-                            .replace('%summary',summary)
-                            .replace('%review',review)
-                            .replace('%ratings',Object.keys(ratings).map(function(key){
-                                return '{ id: "'+btoa(key)+'", value_id: "'+ratings[key]+'" }'
-                            }).join(','));
+                          }'
+                            ); ?>
+                                .replace('%nickname', $this.nickname)
+                                .replace('%summary', $this.summary)
+                                .replace('%review', $this.review)
+                                .replace('%ratings', Object.keys($this.ratings).map(function (key) {
+                                    return '{ id: "' + btoa(key) + '", value_id: "' + $this.ratings[key] + '" }'
+                                }).join(','));
 
 
-                                fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json;charset=utf-8'
-                                    },
-                                    body: JSON.stringify({query: createProductReviewQuery})
+                            fetch('<?= $escaper->escapeUrl($block->getBaseUrl()) ?>graphql', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json;charset=utf-8'
+                                },
+                                body: JSON.stringify({query: createProductReviewQuery})
+                            })
+                                .then(function (response) {
+                                    return response.json()
                                 })
-                                    .then(function(response){ return response.json() })
-                                    .then(
-                                        function(data) {
-                                            $this.isLoading = false;
-                                            if (data.errors) {
-                                                $this.setErrorMessages(['<?= $escaper->escapeJs(
-                                                    __('Submitting your review failed, please try again.')
-                                                ) ?>']);
-                                                $this.displayErrorMessage = true;
-                                            } else {
-                                                $this.displaySuccessMessage = true;
-                                            }
+                                .then(
+                                    function (data) {
+                                        $this.isLoading = false;
+                                        if (data.errors) {
+                                            $this.setErrorMessages(['<?= $escaper->escapeJs(
+                                                __('Submitting your review failed, please try again.')
+                                            ) ?>']);
+                                            $this.displayErrorMessage = true;
+                                        } else {
+                                            $this.displaySuccessMessage = true;
                                         }
-                                    );
-                            } else {
-                                this.setErrorMessages(['<?= $escaper->escapeJs(
-                                    __('Please verify you\'ve entered all required information')
-                                ) ?>']);
-                                this.displayErrorMessage = true;
-                            }
+                                    }
+                                );
                         }
                     }
                 }
