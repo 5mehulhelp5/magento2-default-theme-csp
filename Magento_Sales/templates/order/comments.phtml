@@ -1,26 +1,28 @@
 <?php
+
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
  */
-?>
-<?php
+
 /**
  * @var $block \Magento\Sales\Block\Order\Comments
  * @see \Magento\Sales\Block\Order\Comments
  */
 ?>
 <?php if ($block->hasComments()) : ?>
-    <div class="order additional details comments my-6">
-        <h3 class="subtitle"><?= $block->escapeHtml($block->getTitle()) ?></h3>
-        <dl class="order comments">
-            <?php foreach ($block->getComments() as $_commentItem) : ?>
-                <dt class="comment date">
+    <div class="order additional details comments my-3">
+        <div><strong><?= $block->escapeHtml($block->getTitle()) ?></strong></div>
+        <?php foreach ($block->getComments() as $commentItem) : ?>
+            <div class="flex justify-between">
+                <span class="inline-block w-3/12">
                     <?= /* @noEscape */
-                    $block->formatDate($_commentItem->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?>
-                </dt>
-                <dd class="comment text"><?= $block->escapeHtml($_commentItem->getComment()) ?></dd>
-            <?php endforeach; ?>
-        </dl>
+                    $block->formatDate($commentItem->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?>
+            </span>
+                <span class="inline-block w-8/12"><?= $block->escapeHtml($commentItem->getComment()) ?></span>
+            </div>
+        <?php endforeach; ?>
     </div>
-<?php endif;?>
+<?php endif; ?>

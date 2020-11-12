@@ -30,7 +30,7 @@
         <div class="my-4">
             <?= $block->getChildHtml('sales.order.info') ?>
         </div>
-
+        
         <div class="order-title">
             <p class="text-lg mt-8 mb-2"><?= $escaper->escapeHtml(__('Items Ordered')) ?></p>
             <?php if (!empty($order->getTracksCollection()->getItems())) : ?>

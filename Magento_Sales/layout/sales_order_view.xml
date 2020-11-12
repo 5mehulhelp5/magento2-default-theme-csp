@@ -15,8 +15,7 @@
     <update handle="sales_order_info_links"/>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Sales\Block\Order\View" name="sales.order.view" cacheable="false"
-                   after="sales.order.info.links">
+            <block class="Magento\Sales\Block\Order\View" name="sales.order.view" cacheable="false">
                 <block class="Magento\Sales\Block\Order\Info" name="order.date"
                        template="Magento_Sales::order/order_date.phtml"/>
                 <block class="Magento\Sales\Block\Order\Info\Buttons" name="sales.order.buttons"/>

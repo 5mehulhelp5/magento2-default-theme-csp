@@ -1,4 +1,9 @@
 @media print {
+    .page-main {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
     .order-items .lg\:grid {
         display: grid !important;
     }
@@ -19,7 +24,15 @@
         text-align: left !important;
     }
 
+    .order-items .title {
+        display: none !important;
+    }
+
     .actions-toolbar {
-        display: none;
+        display: none !important;
+    }
+
+    .order-title a {
+        display: none !important;
     }
 }

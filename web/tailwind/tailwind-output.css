@@ -3045,6 +3045,10 @@ body {
   margin-top: 0.25rem;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .ml-1 {
   margin-left: 0.25rem;
 }
@@ -3835,6 +3839,10 @@ body {
 
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .col-span-1 {
@@ -8604,10 +8612,6 @@ form select {
 
   .lg\:w-full {
     width: 100%;
-  }
-
-  .lg\:grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-6 {
