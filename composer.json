@@ -19,7 +19,7 @@
         "name": "Hyvä Themes B.V.",
         "email": "info@hyva.io"
     }],
-    "license": "see LICENSE.md or https://hyva.io/license",
+    "license": "See LICENSE.md or https://hyva.io/license",
     "autoload": {
         "files": [
             "registration.php"
