@@ -1,0 +1,31 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Catalog\Block\Category\View;
+
+/** @var $block View */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+// phpcs:disable Magento2.Security.LanguageConstruct.DirectOutput
+?>
+<?php
+    $_category  = $block->getCurrentCategory();
+    $_imgHtml   = '';
+    if ($_imgUrl = $block->getImage()->getUrl($_category)) {
+        $_imgHtml = '<div class="category-image"><img src="'
+            . $block->escapeUrl($_imgUrl)
+            . '" alt="'
+            . $block->escapeHtmlAttr($_category->getName())
+            . '" title="'
+            . $block->escapeHtmlAttr($_category->getName())
+            . '" class="image" /></div>';
+        $_imgHtml = $block->getOutput()->categoryAttribute($_category, $_imgHtml, 'image');
+        /* @noEscape */ echo $_imgHtml;
+    }
+?>

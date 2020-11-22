@@ -13,18 +13,21 @@ use Magento\Framework\Escaper;
 
 /** @var Register $block */
 /** @var Escaper $escaper */
+
+$formId = 'accountcreate';
 ?>
-<div class="container mb-8">
-    <?= $block->getChildHtml('form_fields_before') ?>
+<div class="mb-8">
     <?php /* Extensions placeholder */ ?>
     <?= $block->getChildHtml('customer.form.register.extra') ?>
     <form class="form create account form-create-account"
           action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
           x-data="initForm()"
-          x-on:submit="return checkPasswordsMatch()"
+          id="<?= $escaper->escapeHtmlAttr($formId) ?>"
+          @submit.prevent="submitForm()"
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off">
         <?= /* @noEscape */
         $block->getBlockHtml('formkey'); ?>
+        <?= $block->getChildHtml('form_fields_before') ?>
         <div class="md:grid grid-cols-2 gap-4">
             <fieldset class="my-8 card">
                 <legend><span><?= $escaper->escapeHtml(
@@ -107,6 +110,7 @@ use Magento\Framework\Escaper;
                                title="<?= $escaper->escapeHtmlAttr(__('Confirm Password')) ?>"
                                id="password-confirmation"
                                x-on:change="checkPasswordsMatch()"
+                               x-on:keyup="checkPasswordsMatch()"
                                required
                                minlength="<?= $escaper->escapeHtmlAttr($minimumPasswordLength) ?>"
                                class="form-input"
@@ -266,7 +270,6 @@ use Magento\Framework\Escaper;
                 <input type="hidden" name="default_billing" value="1">
                 <input type="hidden" name="default_shipping" value="1">
             </fieldset>
-
         <?php endif; ?>
         <div class="actions-toolbar flex">
             <div class="primary">
@@ -288,6 +291,8 @@ use Magento\Framework\Escaper;
         function initForm() {
             return {
                 passwordsMatching: true,
+                errors: 0,
+                hasCaptchaToken: 0,
                 checkPasswordsMatch: function () {
                     if (document.getElementById('password').value === document.getElementById('password-confirmation').value) {
                         this.passwordsMatching = true;
@@ -295,6 +300,16 @@ use Magento\Framework\Escaper;
                     }
                     this.passwordsMatching = false;
                     return false;
+                },
+                submitForm: function() {
+                    if(this.checkPasswordsMatch()) {
+                        var $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
+                        <?= $block->getChildHtml('recaptcha_validation'); ?>
+
+                        if (this.errors === 0) {
+                            $form.submit();
+                        }
+                    }
                 }
             }
         }

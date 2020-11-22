@@ -8,17 +8,19 @@
         "php": "~7.1.3||~7.2.0||~7.3.0||~7.4.0",
         "magento/framework": ">=102.0.0",
         "hyva-themes/magento2-reset-theme":  "*",
-        "hyva-themes/magento2-theme-module": "*"
+        "hyva-themes/magento2-theme-module": "*",
+        "hyva-themes/magento2-email-module": "*",
+        "hyva-themes/magento2-graphql-tokens": "*"
     },
     "suggest": {
         "hyva-themes/magento2-review-graphql": "*"
     },
     "type": "magento2-theme",
     "authors": [{
-        "name": "Hyvä Themes, Wigman Interactive",
+        "name": "Hyvä Themes B.V.",
         "email": "info@hyva.io"
     }],
-    "license": "see LICENSE.md or https://hyva.io/license",
+    "license": "See LICENSE.md or https://hyva.io/license",
     "autoload": {
         "files": [
             "registration.php"
