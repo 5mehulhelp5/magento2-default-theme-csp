@@ -78,7 +78,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
             </svg>
         </button>
     </div>
-    <div class="relative self-center w-full" x-show="fullscreen"
+    <div class="hidden relative self-center w-full" x-show="fullscreen"
          x-transition:enter="ease-out duration-500"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
@@ -108,7 +108,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
         </div>
     </div>
     <div id="thumbs" class="flex flex-wrap"
-    :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen}">
+    :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen}" style="min-height: 100px;">
         <template x-for="(image, index) in images" :key="index">
             <div class="mr-4 mb-2 last:mr-0">
                 <a href="#" @click.prevent="active = index+1;"
