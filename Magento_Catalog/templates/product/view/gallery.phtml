@@ -78,7 +78,9 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
             </svg>
         </button>
     </div>
-    <div class="hidden relative self-center w-full" x-show="fullscreen"
+    <div class="hidden relative self-center w-full"
+         :class="{'hidden': !fullscreen}"
+         x-show="fullscreen"
          x-transition:enter="ease-out duration-500"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
