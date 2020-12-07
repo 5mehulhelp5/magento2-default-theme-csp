@@ -108,6 +108,7 @@
                                 </arguments>
                             </block>
                         </block>
+                        <container name="product.info.additional" />
                     </block>
 
                     <block class="Magento\Catalog\Block\Product\View\Gallery" name="product.media"
@@ -119,6 +120,11 @@
                             <argument name="imageHelper" xsi:type="object">Magento\Catalog\Helper\Image</argument>
                         </arguments>
                     </block>
+
+                    <block class="Magento\Catalog\Block\Product\View"
+                           name="product.info.options.wrapper.bottom"
+                           as="product_options_wrapper_bottom"
+                           template="Magento_Catalog::product/view/options/wrapper/bottom.phtml"/>
 
                     <block name="description"
                            template="Magento_Catalog::product/view/description.phtml">

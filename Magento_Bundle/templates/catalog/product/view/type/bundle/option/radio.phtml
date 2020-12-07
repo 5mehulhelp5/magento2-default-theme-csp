@@ -1,0 +1,89 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio */ ?>
+<?php $_option = $block->getOption(); ?>
+<?php $_selections  = $_option->getSelections(); ?>
+<?php $_default     = $_option->getDefaultSelection(); ?>
+<?php list($_defaultQty, $_canChangeQty) = $block->getDefaultValues();
+?>
+
+<div class="my-2 py-2 w-full border-t border-container">
+    <label class="label text-lg font-semibold">
+        <span><?= $block->escapeHtml($_option->getTitle()) ?></span>
+    </label>
+    <div class="control mt-2">
+        <div class="nested options-list">
+            <?php if ($block->showSingle()) : ?>
+                <?= /* @noEscape */ $block->getSelectionTitlePrice($_selections[0]) ?>
+                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selections[0]) ?>
+                <input type="hidden"
+                    class="bundle-option-<?= (int)$_option->getId() ?>  product bundle option"
+                    name="bundle_option[<?= (int)$_option->getId() ?>]"
+                    value="<?= (int)$_selections[0]->getSelectionId() ?>"
+                    id="bundle-option-<?= (int)$_option->getId() ?>-<?= (int)$_selections[0]->getSelectionId() ?>"
+                    checked="checked"
+                       form="product_addtocart_form"
+                />
+            <?php else :?>
+                <?php if (!$_option->getRequired()) : ?>
+                    <div class="field choice">
+                        <input type="radio"
+                               class="radio product bundle option"
+                               id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>"
+                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               <?= ($_default && $_default->isSalable())?'':' checked="checked" ' ?>
+                               value=""
+                               form="product_addtocart_form"/>
+                        <label class="label text-sm" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>">
+                            <span><?= $block->escapeHtml(__('None')) ?></span>
+                        </label>
+                    </div>
+                <?php endif; ?>
+                <?php foreach ($_selections as $_selection) : ?>
+                    <div class="field choice mt-1 flex items-center gap-x-2">
+                        <input type="radio"
+                               class="radio product bundle option change-container-classname"
+                               id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
+                               <?= $_option->getRequired() ? 'required' : '' ?>
+                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               <?php if ($block->isSelected($_selection)) { echo ' checked="checked"'; } ?>
+                               <?php if (!$_selection->isSaleable()) { echo ' disabled="disabled"'; } ?>
+                               value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
+                               form="product_addtocart_form"/>
+                        <label class="label text-sm"
+                               for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">
+                            <span><?= /* @noEscape */ $block->getSelectionTitlePrice($_selection) ?></span>
+                        </label>
+                    </div>
+                    <div class="text-sm my-2 italic">
+                        <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selection) ?>
+                    </div>
+                <?php endforeach; ?>
+                <div id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></div>
+            <?php endif; ?>
+            <div class="field qty qty-holder mt-2">
+                <label class="label font-semibold mr-4" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input">
+                    <span><?= $block->escapeHtml(__('Quantity')) ?></span>
+                </label>
+                <input
+                       id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input"
+                       class="form-input w-24"
+                       type="<?= ($_canChangeQty) ? "number" : "hidden" ?>"
+                       name="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                       data-selector="bundle_option_qty[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                       value="<?= $block->escapeHtmlAttr($_defaultQty) ?>"
+                       form="product_addtocart_form"/>
+                <?php if (!$_canChangeQty): ?>
+                <?= $block->escapeHtmlAttr($_defaultQty) ?>
+                <?php endif; ?>
+
+            </div>
+        </div>
+    </div>
+</div>
