@@ -127,9 +127,15 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
             "fullscreen": false,
             "initialImages": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
             "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
+            "appendOnReceiveImages": true,
             receiveImages: function receiveImages(images) {
-                this.images = Array(this.initialImages).concat(images);
-                this.setActive(0);
+                if (this.appendOnReceiveImages) {
+                    this.images = [].concat(this.initialImages, images);
+                    this.setActive(images.length ? this.initialImages.length : 0);
+                } else {
+                    this.images = images;
+                    this.setActive(0);
+                }
             },
             setActive(index){
                 this.active = index;
