@@ -18,9 +18,6 @@
                     <argument name="viewModelCustomerReviews"
                               xsi:type="object">Hyva\Theme\ViewModel\Customer\ReviewList
                     </argument>
-                    <argument name="viewModelStoreConfig"
-                              xsi:type="object">Hyva\Theme\ViewModel\StoreConfig
-                    </argument>
                 </arguments>
                 <block name="js_localstorage_config" template="Hyva_Theme::js/localStorageConfig.phtml">
                     <arguments>

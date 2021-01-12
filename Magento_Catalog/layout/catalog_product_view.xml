@@ -138,7 +138,6 @@
                             <argument name="title" xsi:type="string"
                                       translate="true">We found other products you might like!
                             </argument>
-                            <argument name="viewModelStore" xsi:type="object">Hyva\Theme\ViewModel\Store</argument>
                         </arguments>
                     </block>
 
@@ -147,7 +146,6 @@
                         <arguments>
                             <argument name="type" xsi:type="string">related</argument>
                             <argument name="title" xsi:type="string" translate="true">Related Products:</argument>
-                            <argument name="viewModelStore" xsi:type="object">Hyva\Theme\ViewModel\Store</argument>
                         </arguments>
                     </block>
                 </block>

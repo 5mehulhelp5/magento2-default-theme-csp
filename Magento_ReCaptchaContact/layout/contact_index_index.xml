@@ -14,6 +14,7 @@
             <block name="recaptcha_validation" template="Magento_ReCaptchaFrontendUi::js/script_token.phtml"
                    ifconfig="recaptcha_frontend/type_for/contact">
                 <arguments>
+                    <!-- TODO remove when tested with view model registry -->
                     <argument name="viewModelStoreConfig" xsi:type="object">Hyva\Theme\ViewModel\StoreConfig</argument>
                 </arguments>
             </block>
@@ -26,6 +27,7 @@
             <block name="recaptcha_base" template="Magento_ReCaptchaFrontendUi::js/script_loader.phtml"
                    ifconfig="recaptcha_frontend/type_for/contact">
                 <arguments>
+                    <!-- TODO remove when tested with view model registry -->
                     <argument name="viewModelStoreConfig" xsi:type="object">Hyva\Theme\ViewModel\StoreConfig</argument>
                 </arguments>
             </block>
