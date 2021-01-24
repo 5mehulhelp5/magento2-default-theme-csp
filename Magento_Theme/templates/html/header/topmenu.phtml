@@ -18,13 +18,12 @@ use Magento\Framework\Escaper;
 /** @var Navigation $viewModelNavigation */
 $viewModelNavigation = $viewModels->require(Navigation::class);
 $menuItems = $viewModelNavigation->getNavigation(4);
-
 ?>
-<div class="z-20 order-2 sm:order-1 lg:order-2 navigation"
-     x-on:resize.window.debounce.200="menu.checkIsSmallResolution()"
->
+<div class="z-20 order-2 sm:order-1 lg:order-2 navigation">
     <!-- mobile -->
-    <div class="bg-container-lighter lg:hidden"
+    <div x-ref="nav-mobile"
+         @load.window="menu.setActiveMenu($refs['nav-mobile'])"
+         class="bg-container-lighter lg:hidden"
          :class="{'min-h-screen fixed top-0 left-0 w-full' : menu.open}"
          @toggle-mobile-menu.window="menu.open = !menu.open"
          @keydown.window.escape="menu.open=false"
@@ -34,7 +33,7 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                 <a @click="$dispatch('toggle-mobile-menu')"
                        class="flex items-center justify-center cursor-pointer"
                        :class="{ 'ml-auto': menu.open }">
-                    <svg class="w-16 h-16 p-4 fill-current hidden"
+                    <svg class="hidden w-16 h-16 p-4 fill-current"
                          :class="{ 'hidden' : !menu.open, 'block': menu.open }"
                          xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                          viewBox="0 0 20 20">
@@ -45,7 +44,7 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                           4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z">
                         </path>
                     </svg>
-                    <svg class="w-12 h-12 p-3 fill-current block"
+                    <svg class="block w-12 h-12 p-3 fill-current"
                          :class="{ 'hidden' : menu.open, 'block': !menu.open }"
                          xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                          viewBox="0 0 20 20">
@@ -58,11 +57,11 @@ $menuItems = $viewModelNavigation->getNavigation(4);
         </div>
 
         <nav
-            class="hidden w-full duration-150 ease-in-out transform transition-display border-t border-container"
+            class="hidden w-full duration-150 ease-in-out transform border-t transition-display border-container"
             :class="{ 'hidden' : !menu.open }"
         >
         <?php foreach ($menuItems as $index => $menuItem): ?>
-            <div>
+            <div class="level-0">
                 <span
                     class="flex items-center transition-transform duration-150 ease-in-out transform"
                     :class="{
@@ -70,16 +69,15 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                         'translate-x-0' : !menu.mobilePanelActiveId
                     }"
                 >
-                    <a class="w-full flex items-center px-8 py-4 cursor-pointer bg-container-lighter border-container border-b hover:bg-container-darker hover:underline
-                    <?php if ($menuItem['is_active'] || $menuItem['has_active']): ?>
-                            underline
-                    <?php endif; ?>"
+                    <a class="flex items-center w-full px-8 py-4 border-b cursor-pointer
+                        bg-container-lighter border-container hover:bg-container-darker hover:underline level-0"
                        href="<?= (string) $menuItem['url'] ?>"
                        title="<?= (string) $menuItem['name'] ?>">
                         <?= (string) $menuItem['name'] ?>
                     </a>
                     <?php if (!empty($menuItem['childData'])): ?>
-                    <a class="absolute bg-container-lighter border border-container flex h-8 mr-8 right-0 rounded w-8 hover:bg-container hover:border-container cursor-pointer"
+                    <a class="absolute right-0 flex w-8 h-8 mr-8 border rounded cursor-pointer
+                        bg-container-lighter border-container hover:bg-container hover:border-container"
                           @click="menu.mobilePanelActiveId =
                           menu.mobilePanelActiveId === '<?= (string) $index ?>' ?
                            0 : '<?= (string) $index ?>'"
@@ -102,7 +100,7 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                             'translate-x-0' : menu.mobilePanelActiveId === '<?= (string) $index ?>',
                         }"
                     >
-                        <a class="flex items-center px-8 py-4 cursor-pointer bg-container border-container border-b"
+                        <a class="flex items-center px-8 py-4 border-b cursor-pointer bg-container border-container"
                               @click="menu.mobilePanelActiveId = 0"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="24"
@@ -116,10 +114,9 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                             </span>
                         </a>
                         <a href="<?= (string) $menuItem['url'] ?>" title="<?= (string) $menuItem['name'] ?>"
-                           class="w-full flex items-center px-8 py-4 cursor-pointer bg-container-lighter border-container border-b hover:bg-container-darker hover:underline
-                           <?php if ($menuItem['is_active']): ?>
-                                  underline
-                           <?php endif; ?>">
+                           class="flex items-center w-full px-8 py-4 border-b cursor-pointer
+                            bg-container-lighter border-container hover:bg-container-darker hover:underline"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                  viewBox="0 0 24 24" height="24"
                                  width="24"></svg>
@@ -128,10 +125,8 @@ $menuItems = $viewModelNavigation->getNavigation(4);
 
                             <a href="<?= (string) $subMenuItem['url'] ?>"
                                title="<?= (string) $subMenuItem['name'] ?>"
-                               class="w-full flex items-center px-8 py-4 cursor-pointer bg-container-lighter border-container border-b hover:bg-container-darker hover:underline
-                               <?php if ($subMenuItem['is_active'] || $subMenuItem['has_active']): ?>
-                                      underline
-                               <?php endif; ?>"
+                               class="flex items-center w-full px-8 py-4 border-b cursor-pointer
+                                bg-container-lighter border-container hover:bg-container-darker hover:underline"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 24 24" height="24"
@@ -140,10 +135,8 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                                     <?= (string) $subMenuItem['name'] ?>
                                 </span>
                             </a>
-
                         <?php endforeach; ?>
                     </div>
-
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
@@ -151,22 +144,21 @@ $menuItems = $viewModelNavigation->getNavigation(4);
     </div>
 
     <!-- desktop -->
-    <div class="hidden lg:block lg:relative lg:min-h-0 lg:px-8 lg:w-auto lg:pt-0">
+    <div x-ref="nav-desktop"
+         @load.window="menu.setActiveMenu($refs['nav-desktop'])"
+         class="hidden lg:block lg:relative lg:min-h-0 lg:px-8 lg:w-auto lg:pt-0">
         <nav
             class="w-full duration-150 ease-in-out transform flex justify-start
             w-auto relative min-h-0 -left-6 transition-display"
         >
             <?php foreach ($menuItems as $index => $menuItem): ?>
-                <div class="relative mr-2"
+                <div class="relative mr-2 level-0"
                      @mouseenter="menu.hoverPanelActiveId = '<?= (string) $index ?>'"
                      @mouseleave="menu.hoverPanelActiveId = 0"
                 >
-                    <span class="flex items-center p-3 text-md block bg-opacity-95">
-                        <a class="py-3 text-base text-gray-700 w-full hover:underline
-                        <?php if ($menuItem['is_active'] || $menuItem['has_active']): ?>
-                            underline
-                        <?php endif; ?>"
-                           href="<?= (string) $menuItem['name'] ?>"
+                    <span class="flex items-center block p-3 text-md bg-opacity-95">
+                        <a class="w-full py-3 text-base text-gray-700 hover:underline level-0"
+                           href="<?= (string) $menuItem['url'] ?>"
                            title="<?= (string) $menuItem['name'] ?>"
                         >
                             <?= (string) $menuItem['name'] ?>
@@ -174,19 +166,13 @@ $menuItems = $viewModelNavigation->getNavigation(4);
                 </span>
                     <?php if (!empty($menuItem['childData'])): ?>
                         <div
-                            class="hidden absolute z-10 shadow-lg -ml-6 px-6 py-4 bg-container-lighter bg-opacity-95"
-                            :class="{
-                            'hidden' : menu.hoverPanelActiveId !== '<?= (string) $index ?>',
-                            'block' : menu.hoverPanelActiveId === '<?= (string) $index ?>'
-}"
-                        >
+                            class="absolute z-10 hidden px-6 py-4 -ml-6 shadow-lg bg-container-lighter bg-opacity-95"
+                            :class="{ 'hidden' : menu.hoverPanelActiveId !== '<?= (string) $index ?>',
+                                'block' : menu.hoverPanelActiveId === '<?= (string) $index ?>'}">
                             <?php foreach ($menuItem['childData'] as $subMenuItem): ?>
                                 <a href="<?= (string) $subMenuItem['url'] ?>"
                                    title="<?= (string) $subMenuItem['name'] ?>"
-                                   class="w-full py-1 my-1 block px-3 first:mt-0 hover:underline whitespace-no-wrap
-                                    <?php if ($subMenuItem['is_active'] || $subMenuItem['has_active']): ?>
-                                      underline
-                                    <?php endif; ?>"
+                                   class="block w-full px-3 py-1 my-1 whitespace-no-wrap first:mt-0 hover:underline"
                                 >
                                     <span class="text-base text-gray-700">
                                         <?= (string) $subMenuItem['name'] ?>
@@ -202,24 +188,22 @@ $menuItems = $viewModelNavigation->getNavigation(4);
 
 </div>
 <script>
-    function initHeaderNavigation($this) {
-        var checkIsSmallResolution = function () {
-            var menuIcon = document.querySelector('.menu-icon');
-            return !(
-                window.getComputedStyle(menuIcon).display === 'none' ||
-                window.getComputedStyle(menuIcon).visibility === 'hidden'
-            );
-        };
+    'use strict';
+
+    const initHeaderNavigation = () => {
         return {
-            navigation: Object.values(<?= /** @noEscape */ \json_encode($menuItems) ?>),
-            isSmallResolution: checkIsSmallResolution(),
-            checkIsSmallResolution: function () {
-                this.isSmallResolution = checkIsSmallResolution();
-            },
             mobilePanelActiveId: null,
             hoverPanelActiveId: null,
-            open: false
+            open: false,
+            setActiveMenu(menuNode) {
+                Array.from(menuNode.querySelectorAll('a')).filter(link => {
+                    return link.href === window.location.href.split('?')[0];
+                }).map(item => {
+                    item.classList.add('underline');
+                    item.closest('div.level-0') &&
+                    item.closest('div.level-0').querySelector('a.level-0').classList.add('underline');
+                });
+            }
         }
     }
 </script>
-
