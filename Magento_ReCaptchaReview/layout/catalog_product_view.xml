@@ -36,13 +36,5 @@
                 </block>
             </container>
         </referenceBlock>
-        <referenceContainer name="before.body.end">
-            <block name="recaptcha_base" template="Magento_ReCaptchaFrontendUi::js/script_loader.phtml"
-                   ifconfig="recaptcha_frontend/type_for/product_review">
-                <arguments>
-                    <argument name="viewModelStoreConfig" xsi:type="object">Hyva\Theme\ViewModel\StoreConfig</argument>
-                </arguments>
-            </block>
-        </referenceContainer>
     </body>
 </page>
