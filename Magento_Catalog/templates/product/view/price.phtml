@@ -171,7 +171,7 @@ $priceHelper = $this->helper(PriceHelper::class);
         <div class="price-container">
             <?php $regularPrice = $product->getPriceInfo()->getPrice(RegularPrice::PRICE_CODE)->getValue(); ?>
             <?php if ($product->getFinalPrice() < $regularPrice): ?>
-                <div class="old-price mr-2 inline-block">
+                <div class="old-price mr-2 flex">
                     <span id="product-price-<?= (int)$product->getId() ?>"
                           class="price-wrapper title-font font-regular text-xl line-through text-gray-900">
                         <span class="price" >
@@ -202,7 +202,7 @@ $priceHelper = $this->helper(PriceHelper::class);
         activeProductsPriceData.oldPrice &&
         activeProductsPriceData.finalPrice.amount < activeProductsPriceData.oldPrice.amount
     ">
-        <div class="old-price inline-block mr-2">
+        <div class="old-price flex mr-2">
             <span id="product-price-<?= (int)$product->getId() ?>"
                   class="price-wrapper title-font font-regular text-xl line-through text-gray-900">
                 <span class="price" x-html="formatPrice(activeProductsPriceData.oldPrice.amount)"></span>
@@ -210,7 +210,7 @@ $priceHelper = $this->helper(PriceHelper::class);
         </div>
     </template>
     <template x-if="activeProductsPriceData">
-        <div class="final-price inline-block">
+        <div class="final-price flex">
             <?php if ($product->canConfigure() && is_int($product->getPrice())): ?>
                 <span class="price-label block invisible">&nbsp;</span>
             <?php endif; ?>
