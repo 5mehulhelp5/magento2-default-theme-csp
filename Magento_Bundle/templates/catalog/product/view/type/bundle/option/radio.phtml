@@ -1,0 +1,162 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio;
+use Magento\Framework\Escaper;
+
+/** @var $block Radio */
+/** @var $escaper Escaper */
+
+$option = $block->getOption();
+$selections = $option->getSelections();
+$default = $option->getDefaultSelection();
+list($defaultQty, $canChangeQty) = $block->getDefaultValues();
+
+$optionId = $option->getId();
+$activeSelectOptions = [];
+?>
+<?php if ($block->showSingle()): ?>
+    <?= /* @noEscape */ $block->getSelectionTitlePrice($selections[0]) ?>
+    <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selections[0]) ?>
+    <input type="hidden"
+           id="bundle-option-<?= (int)$optionId ?>-<?= (int)$selections[0]->getSelectionId() ?>"
+           name="bundle_option[<?= (int)$optionId ?>]"
+           form="product_addtocart_form"
+           class="bundle-option-<?= (int)$optionId ?>  product bundle option"
+           value="<?= (int)$selections[0]->getSelectionId() ?>"
+           checked="checked"
+           data-option-id="<?= (int)$optionId ?>"
+           data-selection-id="<?= (int)$selections[0]->getSelectionId() ?>"
+           x-ref="option-<?= (int)$optionId ?>"
+    />
+<?php else: ?>
+    <?php if (!$option->getRequired()): ?>
+        <div class="field choice">
+            <input type="radio"
+                   id="bundle-option-<?= (int)$optionId ?>"
+                   name="bundle_option[<?= (int)$optionId ?>]"
+                   form="product_addtocart_form"
+                   class="radio product bundle option"
+                   <?= ($default && $default->isSalable())?'':' checked="checked" ' ?>
+                   value=""
+            />
+            <label class="label text-sm"
+                   for="bundle-option-<?= (int)$optionId ?>">
+                <span><?= $escaper->escapeHtml(__('None')) ?></span>
+            </label>
+        </div>
+    <?php endif; ?>
+    <?php foreach ($selections as $selection): ?>
+        <?php $selectionId = $selection->getSelectionId(); ?>
+        <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
+        <div class="field choice mt-1 flex items-center gap-x-2">
+            <input type="radio"
+                   id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                   name="bundle_option[<?= (int)$optionId ?>]"
+                   form="product_addtocart_form"
+                   class="radio product bundle option change-container-classname"
+                   <?= $option->getRequired() ? 'required' : '' ?>
+                   <?php if ($block->isSelected($selection)) {
+                        array_push($activeSelectOptions, $selectionId);
+                        echo 'checked = "checked"';
+                   } ?>
+                   <?php if (!$selection->isSaleable()): ?>
+                        disabled="disabled"
+                   <?php endif; ?>
+                   value="<?= (int)$selectionId ?>"
+                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                   x-on:change="
+                        activeSelectOptions['<?= (int)$optionId ?>'] = $event.target.value;
+                        $nextTick(() => {calculateTotalPrice($dispatch)});
+                   "
+            />
+            <label class="label text-sm"
+                   for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>">
+                <span><?= /* @noEscape */ $block->getSelectionTitlePrice($selection) ?></span>
+            </label>
+        </div>
+        <div class="text-sm my-2">
+            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+<div class="field qty qty-holder mt-2">
+    <label class="label font-semibold mr-4"
+           for="bundle-option-<?= (int)$optionId ?>-qty-input">
+        <span><?= $escaper->escapeHtml(__('Quantity')) ?></span>
+    </label>
+    <script>
+        const qtyHelper_<?= (int)$optionId ?> = (() => {
+            return {
+                getQtyValue(optionConfig, activeSelectOptions) {
+                    const activeSelectOption = activeSelectOptions[<?= (int)$optionId ?>];
+                    if (!activeSelectOption || !activeSelectOption.length) {
+                        return "<?= $escaper->escapeHtmlAttr($defaultQty) ?>";
+                    }
+                    const selectionConfig = optionConfig
+                        .options[<?= (int)$optionId ?>]
+                        .selections[activeSelectOption[0]];
+
+                    return selectionConfig.qty;
+
+                },
+                getQtyDisabled(optionConfig, activeSelectOptions) {
+                    const activeSelectOption = activeSelectOptions[<?= (int)$optionId ?>];
+                    if (!activeSelectOption || !activeSelectOption.length) {
+                        return true;
+                    }
+                    const selectionConfig = optionConfig
+                        .options[<?= (int)$optionId ?>]
+                        .selections[activeSelectOption[0]];
+
+                    return selectionConfig.customQty === "0";
+
+                },
+                setQtyValue(optionConfig, activeSelectOptions, value) {
+                    const activeSelectOption = activeSelectOptions[<?= (int)$optionId ?>];
+                    if (!activeSelectOption || !activeSelectOption.length) {
+                        return;
+                    }
+                    const selectionConfig = optionConfig
+                        .options[<?= (int)$optionId ?>]
+                        .selections[activeSelectOption[0]];
+
+                    selectionConfig.qty = value;
+                }
+            }
+        })();
+    </script>
+    <input
+        id="bundle-option-<?= (int)$optionId ?>-qty-input"
+        form="product_addtocart_form"
+        name="bundle_option_qty[<?= (int)$optionId ?>]"
+        class="form-input w-20 disabled:opacity-75"
+        type="number"
+        value="<?= $escaper->escapeHtmlAttr($defaultQty) ?>"
+        :value="qtyHelper_<?= (int)$optionId ?>.getQtyValue(optionConfig, activeSelectOptions)"
+        x-ref="option-<?= (int)$optionId ?>-qty"
+        x-on:change="
+            qtyHelper_<?= (int)$optionId ?>.setQtyValue(optionConfig, activeSelectOptions, $event.target.value);
+            calculateTotalPrice($dispatch)"
+        <?php if (!$canChangeQty): ?> disabled <?php endif; ?>
+        :disabled="qtyHelper_<?= (int)$optionId ?>.getQtyDisabled(optionConfig, activeSelectOptions)"
+    />
+</div>
+
+<?php
+/**
+ * Set the initial values on activeSelectOptions
+ * Because we can't tell which options are selected when configuring a product that is in
+ * the cart (through checkout/cart/configure) in the main Alpine component
+ */
+?>
+<div @set-selected-options.window="activeSelectOptions['<?= (int)$optionId ?>'] =
+        <?= $escaper->escapeHtmlAttr(json_encode($activeSelectOptions)) ?>">
+</div>

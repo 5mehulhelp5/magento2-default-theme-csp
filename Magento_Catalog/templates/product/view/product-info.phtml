@@ -40,7 +40,25 @@ $product = $productViewModel->getProduct();
             $shortDescription ?></div>
     <?php } ?>
 
-    <?= $block->getChildHtml("alert.urls") ?>
+    <div class="flex justify-between my-4">
+        <div class="text-right">
+            <?php if ($product->getIsSalable()): ?>
+                <p class="flex items-center justify-end align-middle available gap-x-2 stock"
+                   title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                    <span><?= $block->escapeHtml(__('In stock')) ?></span>
+                </p>
+            <?php else: ?>
+                <p class="flex items-center justify-end align-middle gap-x-2 unavailable stock"
+                   title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
+                    <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                    <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
+                </p>
+            <?php endif; ?>
+        </div>
+
+        <?= $block->getChildHtml("alert.urls") ?>
+    </div>
 
     <div>
         <?php foreach ($block->getAttributes() as $attributeConfig) {
@@ -69,23 +87,7 @@ $product = $productViewModel->getProduct();
         <div class="flex mt-4 ml-auto sm:mt-0">
         <?php if ($product->isSaleable()): ?>
             <?= $block->getChildHtml("product.info.quantity") ?>
-            <button type="submit"
-                    form="product_addtocart_form"
-                    title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
-                    class="btn btn-primary"
-            >
-                <svg class="w-6 h-6 border-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707
-                          1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                </svg>
-                <span class="hidden sm:block md:hidden lg:block"><?= $block->getData('submit_route_data') ?
-                        $escaper->escapeHtml(__('Update item')) :
-                        $escaper->escapeHtml(__('Add to Cart')) ?>
-                </span>
-            </button>
-
+            <?= $block->getChildHtml("product.info.addtocart") ?>
         <?php endif; ?>
         <script defer>
             function initWishlist() {
@@ -159,10 +161,18 @@ $product = $productViewModel->getProduct();
         </button>
         </div>
     </div>
+
     <?php if ($product->isSaleable()): ?>
         <div class="flex mt-4 ml-auto justify-end">
             <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>
         </div>
     <?php endif; ?>
 
+    <?php if ($tierPriceBlock = $block->getChildHtml("product.price.tier")): ?>
+    <div class="py-4 my-2 tier-price-container">
+        <?= /** @noEscape */ $tierPriceBlock ?>
+    </div>
+    <?php endif; ?>
+
+    <?= $block->getChildHtml("product.info.additional") ?>
 </div>

@@ -126,6 +126,7 @@ module.exports = {
     variants: {
         borderWidth: ['responsive', 'last', 'hover', 'focus'],
         margin: ['responsive', 'last', 'hover', 'focus'],
+        opacity: ['responsive', 'hover', 'focus','disabled'],
     },
     plugins: [
         require('@tailwindcss/forms'),

@@ -44,24 +44,46 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                         </a>
                     </div>
                     <div class="w-9/12">
-                        <a class="font-semibold text-base" x-html="item.product.name" :title="item.product.name"
+                        <a class="font-semibold text-lg" x-html="item.product.name" :title="item.product.name"
                            :href="'<?= $escaper->escapeUrl(
                                $block->getBaseUrl()
                            ) ?>' + item.product.url_key + '.html'"></a>
-                        <div class="item-options col-span-2 lg:col-span-1 lg:grid grid-cols-4 mt-2">
-                            <div class="text-sm inline-block"><?= $escaper->escapeHtml(__('Sku')) ?>:</div>
-                            <div class="text-sm col-span-3 inline-block" x-html="item.product.sku"></div>
+                        <div class="item-options col-span-2 sm:grid grid-cols-4 mt-2 pb-2">
+                            <div class="text-sm col-span-1 font-semibold inline-block">
+                                <?= $escaper->escapeHtml(__('Sku')) ?>:
+                            </div>
+                            <div class="text-sm w-full col-span-3 inline-block" x-html="item.product.sku"></div>
                         </div>
                         <template
                             x-if="item.configurable_options && Object.keys(item.configurable_options).length > 0">
                             <div>
                                 <template x-for="configurable_option in item.configurable_options">
-                                    <div class="lg:grid grid-cols-4">
-                                        <div class="text-sm inline-block"><span
-                                                x-text="configurable_option.option_label"></span>:
+                                    <div class="sm:grid grid-cols-4 pb-2">
+                                        <div class="text-sm font-semibold inline-block">
+                                            <span x-text="configurable_option.option_label"></span>:
                                         </div>
-                                        <div class="text-sm col-span-3 inline-block">
+                                        <div class="text-sm col-span-3 inline-block w-full">
                                             <span x-text="configurable_option.value_label"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template
+                            x-if="item.bundle_options && Object.keys(item.bundle_options).length > 0">
+                            <div>
+                                <template x-for="bundle_options in item.bundle_options">
+                                    <div class="sm:grid grid-cols-4 pb-2">
+                                        <div class="text-sm font-semibold inline-block">
+                                            <span x-text="bundle_options.label"></span>:
+                                        </div>
+                                        <div class="text-sm col-span-3 inline-block w-full">
+                                            <template x-for="values in bundle_options.values">
+                                                <div>
+                                                    <span x-text="values.quantity"></span>
+                                                    x <span x-text="values.label"></span>
+                                                </div>
+                                            </template>
                                         </div>
                                     </div>
                                 </template>
@@ -71,8 +93,10 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                             x-if="item.customizable_options && Object.keys(item.customizable_options).length > 0">
                             <div>
                                 <template x-for="option in item.customizable_options">
-                                    <div class="lg:grid grid-cols-4">
-                                        <div class="text-sm inline-block"><span x-text="option.label"></span>:</div>
+                                    <div class="sm:grid grid-cols-4 pb-2">
+                                        <div class="text-sm font-semibold inline-block">
+                                            <span x-text="option.label"></span>:
+                                        </div>
                                         <template x-for="selected_option in option.values">
                                             <div class="text-sm col-span-3 inline-block">
                                                 <span x-text="selected_option.label"></span>
@@ -146,7 +170,7 @@ $displayPriceExclTax = $viewModelItemOutput->isItemPriceExclTax();
                 </div>
                 <div
                     class="px-2 sm:py-1 lg:p-2 w-9/12 sm:w-4/12 lg:w-auto flex lg:block items-center
-                        sm:order-1lg:order-none md:justify-center">
+                        sm:order-1 lg:order-none md:justify-center">
                     <div class="flex items-center lg:justify-center">
                         <p class="lg:hidden text-right md:text-left mr-2">
                             <?= $escaper->escapeHtml(__('Qty')) ?>

@@ -1,0 +1,117 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\ViewModel\ProductPage;
+use Magento\Catalog\Block\Product\View;
+use Magento\Catalog\Model\Product;
+use Magento\Catalog\Pricing\Price\RegularPrice;
+use Magento\Framework\Escaper;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+/** @var Product $product */
+$product = $block->getProduct();
+
+/** @var ProductPage $productViewModel */
+$productViewModel = $block->getProductViewModel();
+
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+// todo: refactor to use a priceViewModel
+/** @var PriceHelper $priceHelper */
+$priceHelper = $this->helper(PriceHelper::class);
+?>
+<script>
+    function initPrice<?= (int) $product->getId() ?>() {
+        return {
+            activeProductsPriceData: false,
+            initialFinalPrice: 0,
+            calculatedFinalPrice: false,
+            tierPrices: <?= /** @noEscape */ json_encode($product->getTierPrice()) ?>,
+            qty: 1,
+            formatPrice(value, showSign) {
+                var formatter = new Intl.NumberFormat(
+                    document.documentElement.lang,
+                    {
+                        style: 'currency',
+                        currency: '<?= $escaper->escapeHtml($productViewModel->getCurrencyData()['code']) ?>',
+                        signDisplay: showSign ? "always" : "auto"
+                    }
+                );
+                return (typeof Intl.NumberFormat.prototype.formatToParts) ?
+                    formatter.formatToParts(value).map(({type, value}) => {
+                        switch (type) {
+                            case 'currency':
+                                return '<?= $productViewModel->getCurrencyData()['symbol'] ?: ""; ?>' || value;
+                            case 'minusSign':
+                                return '- ';
+                            case 'plusSign':
+                                return '+ ';
+                            default :
+                                return value;
+                        }
+                    }).reduce((string, part) => string + part) :
+                    formatter.format(value);
+            },
+            getFinalPrice() {
+                let finalPrice = this.initialFinalPrice;
+
+                if (this.activeProductsPriceData) {
+                    finalPrice = this.activeProductsPriceData.finalPrice;
+
+                    finalPrice = this.tierPrices.reduce((finalValue, tierPrice) => {
+                        if (this.qty >= tierPrice.price_qty) {
+                            return (
+                                this.activeProductsPriceData.oldPrice / 100 * tierPrice.percentage_value <
+                                finalValue
+                            ) ?
+                                this.activeProductsPriceData.oldPrice / 100 * tierPrice.percentage_value :
+                                finalValue;
+                        }
+                        return finalValue;
+                    }, finalPrice);
+                }
+
+                return finalPrice;
+            },
+            eventListeners: {
+                ['@update-bundle-option-prices.window'](event) {
+                    this.activeProductsPriceData = event.detail;
+                },
+                ['@update-qty-<?= (int)$product->getId() ?>.window'](event) {
+                    this.qty = event.detail;
+                }
+            }
+        }
+    }
+</script>
+<div x-data="initPrice<?= (int)$product->getId() ?>()"
+     x-spread="eventListeners"
+     class="price-box price-final_price my-4"
+>
+    <template x-if="activeProductsPriceData &&
+        getFinalPrice() < activeProductsPriceData.oldPrice
+    ">
+        <div class="old-price flex mr-2">
+            <span id="product-price-<?= (int)$product->getId() ?>"
+                  class="price-wrapper title-font font-regular text-xl line-through text-gray-900">
+                <span class="price" x-html="formatPrice(activeProductsPriceData.oldPrice)"></span>
+            </span>
+        </div>
+    </template>
+    <div class="final-price flex">
+        <span id="product-price-<?= (int)$product->getId() ?>"
+              class="price-wrapper title-font font-medium text-2xl text-gray-900">
+            <span class="price" x-html="formatPrice(getFinalPrice())"></span>
+        </span>
+    </div>
+</div>
