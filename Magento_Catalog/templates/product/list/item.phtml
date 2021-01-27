@@ -48,7 +48,7 @@ if (!$product) {
     <?php endif; ?>
 >
     <?= /** @noEscape */
-    $block->getBlockHtml('formkey') ?>
+    <?= /** @noEscape */ $block->getBlockHtml('formkey') ?>
     <input type="hidden" name="product" value="<?= (int)$product->getId() ?>"/>
 <?php else: ?>
 <div class="item product product-item card card-interactive <?= $viewIsGrid ? 'flex flex-col' : 'flex flex-col md:flex-row' ?>">
