@@ -33,7 +33,7 @@ $imageDisplayArea = $block->getData('image_display_area');
 $templateType = $block->getData('template_type');
 $viewMode = $block->getData('view_mode');
 $showDescription = $block->getData('show_description');
-$viewIsGrid = $viewMode == "grid" ? true : false;
+$viewIsGrid = $viewMode === 'grid' ? true : false;
 
 if (!$product) {
     return '';
