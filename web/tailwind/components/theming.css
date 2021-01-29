@@ -6,64 +6,30 @@ body {
     @apply text-black;
 }
 
-[x-cloak] { display: none; }
+[x-cloak] {
+    display: none;
+}
 
 .input {
     @apply w-auto rounded mr-2 border text-base py-2 px-4;
-
+    
     @screen md {
         @apply mr-4;
     }
+    
     @screen lg {
         @apply mr-0;
     }
+    
     @screen xl {
         @apply mr-4;
     }
-
+    
     &-light {
         @apply bg-white border-gray-400;
-
+        
         &:focus {
             @apply outline-none border-primary;
-        }
-    }
-}
-
-.btn {
-    @apply flex bg-gray-500 rounded-lg px-4 py-1 text-white text-base font-medium shadow-md items-center;
-
-    @screen md {
-        @apply px-6 text-lg
-    }
-    @screen xl {
-        @apply py-2 text-base
-    }
-
-    svg {
-        @apply inline-flex;
-    }
-    span {
-        vertical-align: middle;
-    }
-
-    &:hover {
-        @apply bg-gray-600;
-    }
-
-    &-primary {
-        @apply bg-primary border-2 border-primary-darker text-white shadow-md;
-
-        &:hover {
-            @apply bg-primary-lighter border-primary text-white shadow-lg;
-        }
-    }
-
-    &-secondary {
-        @apply bg-white border-2 border-primary-lighter text-black shadow-md;
-
-        &:hover {
-            @apply bg-white border-primary-darker shadow-lg;
         }
     }
 }
