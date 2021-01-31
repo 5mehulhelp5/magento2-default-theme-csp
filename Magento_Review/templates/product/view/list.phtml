@@ -72,9 +72,9 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                                         <?php $i++; ?>
                                     <?php endwhile; ?>
                                 </div>
+                            </div>
                         <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
+                    <?php endif; ?>
                     <div class="text-lg my-2" itemprop="name">
                         <?= $escaper->escapeHtml($review->getTitle()) ?>
                     </div>
