@@ -2285,6 +2285,67 @@ body {
     width: 1.5rem;
   }
 
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgba(250, 250, 250, var(--tw-bg-opacity));
+}
+
+#cart-drawer {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+
+[x-cloak] { display: none;
+}
+
+.input {
+  border-radius: 0.25rem;
+  border-width: 1px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin-right: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: auto;
+}
+
+@media (min-width: 768px) {
+
+.input {
+    margin-right: 1rem
+}
+  }
+
+@media (min-width: 1024px) {
+
+.input {
+    margin-right: 0px
+}
+  }
+
+@media (min-width: 1280px) {
+
+.input {
+    margin-right: 1rem
+}
+  }
+
+.input-light {
+    --tw-bg-opacity: 1;
+    background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgba(156, 163, 175, var(--tw-border-opacity));
+  }
+
+.input-light:focus {
+      --tw-border-opacity: 1;
+      border-color: rgba(29, 78, 216, var(--tw-border-opacity));
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+    }
+
 .btn {
   --tw-bg-opacity: 1;
   background-color: rgba(107, 114, 128, var(--tw-bg-opacity));
@@ -2385,68 +2446,6 @@ body {
       border-color: rgba(30, 64, 175, var(--tw-border-opacity));
       --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    }
-
-body {
-  --tw-bg-opacity: 1;
-  background-color: rgba(250, 250, 250, var(--tw-bg-opacity));
-}
-
-#cart-drawer {
-  --tw-text-opacity: 1;
-  color: rgba(0, 0, 0, var(--tw-text-opacity));
-}
-
-[x-cloak] {
-  display: none;
-}
-
-.input {
-  border-radius: 0.25rem;
-  border-width: 1px;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  margin-right: 0.5rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  width: auto;
-}
-
-@media (min-width: 768px) {
-
-.input {
-    margin-right: 1rem
-}
-  }
-
-@media (min-width: 1024px) {
-
-.input {
-    margin-right: 0px
-}
-  }
-
-@media (min-width: 1280px) {
-
-.input {
-    margin-right: 1rem
-}
-  }
-
-.input-light {
-    --tw-bg-opacity: 1;
-    background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-    --tw-border-opacity: 1;
-    border-color: rgba(156, 163, 175, var(--tw-border-opacity));
-  }
-
-.input-light:focus {
-      --tw-border-opacity: 1;
-      border-color: rgba(29, 78, 216, var(--tw-border-opacity));
-      outline: 2px solid transparent;
-      outline-offset: 2px;
     }
 
 .card {
