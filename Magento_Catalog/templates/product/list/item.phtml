@@ -77,7 +77,7 @@ if (!$product) {
                 $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
             </a>
         </div>
-        <div class="py-1 mx-auto w-6/12">
+        <div class="py-1 <?= $viewIsGrid ? 'mx-auto w-6/12' : 'mx-auto w-6/12 md:mx-0 md:w-auto' ?>">
             <?= $block->getReviewsSummaryHtml($product, $templateType) ?>
         </div>
         <p class="pt-1 text-gray-900">
