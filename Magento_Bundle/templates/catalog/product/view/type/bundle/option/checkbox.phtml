@@ -33,7 +33,6 @@ $optionId = $option->getId();
            form="product_addtocart_form"
            data-option-id="<?= (int)$optionId ?>"
            data-selection-id="<?= (int)$selections[0]->getSelectionId() ?>"
-           x-ref="option-<?= (int)$optionId ?>"
     />
 <?php else: ?>
     <?php foreach ($selections as $selection): ?>
@@ -51,8 +50,7 @@ $optionId = $option->getId();
                        disabled="disabled"
                    <?php endif; ?>
                    value="<?= (int)$selectionId ?>"
-                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                   x-on:change="calculateTotalPrice($dispatch)"
+                   x-on:change="calculateTotalPrice()"
             />
             <label class="label"
                    for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>">

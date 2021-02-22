@@ -34,7 +34,6 @@ $activeSelectOptions = [];
            form="product_addtocart_form"
            data-option-id="<?= (int)$optionId ?>"
            data-selection-id="<?= (int)$selections[0]->getSelectionId() ?>"
-           x-ref="option-<?= (int)$optionId ?>"
     />
 <?php else: ?>
     <select id="bundle-option-<?= (int)$optionId ?>"
@@ -44,7 +43,7 @@ $activeSelectOptions = [];
             data-option-id="<?= (int)$optionId ?>"
             x-on:change="
                 activeSelectOptions['<?= (int)$optionId ?>'] = [$event.target.value];
-                $nextTick(() => {calculateTotalPrice($dispatch)});
+                $nextTick(() => {calculateTotalPrice()});
             "
         <?= $option->getRequired() ? 'required' : '' ?>
     >
@@ -61,7 +60,6 @@ $activeSelectOptions = [];
                     disabled="disabled"
                 <?php endif; ?>
                 data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
             >
                 <?= /* @noEscape */ $block->getSelectionTitlePrice($selection, false) ?>
             </option>
@@ -144,7 +142,6 @@ $activeSelectOptions = [];
         value="<?= $escaper->escapeHtmlAttr($defaultQty) ?>"
         :value="qtyHelper_<?= (int)$optionId ?>.getQtyValue(optionConfig, activeSelectOptions)"
         form="product_addtocart_form"
-        x-ref="option-<?= (int)$optionId ?>-qty"
         x-on:change="
             qtyHelper_<?= (int)$optionId ?>.setQtyValue(optionConfig, activeSelectOptions, $event.target.value);
             calculateTotalPrice($dispatch)"

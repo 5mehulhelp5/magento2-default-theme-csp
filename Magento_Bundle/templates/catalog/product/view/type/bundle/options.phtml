@@ -42,40 +42,39 @@ $productViewModel = $viewModels->require(ProductPage::class);
                         return false;
                     },
                     calculateTotalPrice() {
-                        const $refs = this.$refs;
                         let selectedProductsPerOption = [];
 
                         for (const [optionId, option] of Object.entries(this.optionConfig.options)) {
-                            const optionCode = 'option-' + optionId;
-                            const optionRef = $refs[optionCode];
-                            const qtyRef = $refs[optionCode+'-qty'];
+                            const optionElement = document.querySelector(`option[data-option-id="${optionId}"]`);
+                            const qtyElement = document.getElementById('bundle-option-'+optionId+'-qty-input');
 
                             let selectedOption = selectedProductsPerOption[optionId] || [];
 
-                            if (optionRef) {
-                                if (optionRef.checked || optionRef.selected) {
-                                    const optionSelection = option.selections[optionRef.dataset.selectionId];
+                            if (optionElement) {
+                                if (optionElement.checked || optionElement.selected) {
+                                    const optionSelection = option.selections[optionElement.dataset.selectionId];
                                     selectedOption.push({
                                         data: optionSelection,
                                         qty: this.getMultiOptionQty(option, optionSelection) ||
-                                            (qtyRef && qtyRef.value) || 1
+                                            (qtyElement && qtyElement.value) || 1
                                     });
                                 }
                             } else {
                                 for (const [selectionId, selection] of Object.entries(option.selections)) {
-                                    const selectionCode = optionCode + '-' + selectionId;
-                                    const selectionRef = $refs[selectionCode];
+                                    const selectionElement = document.querySelector(
+                                        `option[data-option-id="${optionId}-${selectionId}"]`
+                                    );
                                     if(
-                                        selectionRef &&
+                                        selectionElement &&
                                         (
-                                            selectionRef.checked ||
-                                            selectionRef.selected
+                                            selectionElement.checked ||
+                                            selectionElement.selected
                                         )
                                     ) {
                                         selectedOption.push({
                                             data: selection,
                                             qty: this.getMultiOptionQty(option, selection) ||
-                                                (qtyRef && qtyRef.value) || 1
+                                                (qtyElement && qtyElement.value) || 1
                                         });
                                     }
                                 }

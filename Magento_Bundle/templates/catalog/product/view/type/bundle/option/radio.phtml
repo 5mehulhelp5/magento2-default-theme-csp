@@ -34,7 +34,6 @@ $activeSelectOptions = [];
            checked="checked"
            data-option-id="<?= (int)$optionId ?>"
            data-selection-id="<?= (int)$selections[0]->getSelectionId() ?>"
-           x-ref="option-<?= (int)$optionId ?>"
     />
 <?php else: ?>
     <?php if (!$option->getRequired()): ?>
@@ -71,10 +70,9 @@ $activeSelectOptions = [];
                         disabled="disabled"
                    <?php endif; ?>
                    value="<?= (int)$selectionId ?>"
-                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
                    x-on:change="
                         activeSelectOptions['<?= (int)$optionId ?>'] = $event.target.value;
-                        $nextTick(() => {calculateTotalPrice($dispatch)});
+                        $nextTick(() => {calculateTotalPrice()});
                    "
             />
             <label class="label text-sm"
@@ -142,7 +140,6 @@ $activeSelectOptions = [];
         min="0"
         value="<?= $escaper->escapeHtmlAttr($defaultQty) ?>"
         :value="qtyHelper_<?= (int)$optionId ?>.getQtyValue(optionConfig, activeSelectOptions)"
-        x-ref="option-<?= (int)$optionId ?>-qty"
         x-on:change="
             qtyHelper_<?= (int)$optionId ?>.setQtyValue(optionConfig, activeSelectOptions, $event.target.value);
             calculateTotalPrice($dispatch)"
