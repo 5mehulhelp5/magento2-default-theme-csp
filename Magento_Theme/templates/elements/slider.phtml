@@ -396,7 +396,7 @@ $graphqlQuery = $query ?: "
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active === 0 }"
                         @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / products.length) * (active-pageSize)">
+                            (getSlider().scrollWidth / products.length) * (active-pageSize); active=active-pageSize;">
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <template x-for="(product, index) in products" :key="index">
@@ -406,15 +406,15 @@ $graphqlQuery = $query ?: "
                                     'hidden': (pageSize !== 1 && !!(index % pageSize))
                                     }"
                                 @click="getSlider().scrollLeft =
-                                    (getSlider().scrollWidth / products.length) * index">
+                                    (getSlider().scrollWidth / products.length) * index; active=index;">
                         </span>
                     </template>
                     <button
                         aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
-                        :class="{ 'invisible' : active === products.length-pageSize }"
+                        :class="{ 'invisible' : active >= products.length-pageSize }"
                         @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / products.length) * (active+pageSize)">
+                            (getSlider().scrollWidth / products.length) * (active+pageSize); active=active+pageSize">
                         <?= $heroicons->chevronRightHtml("w-5 h-5", 25, 25) ?>
                     </button>
                 </div>
