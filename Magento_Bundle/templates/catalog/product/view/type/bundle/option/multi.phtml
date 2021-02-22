@@ -34,7 +34,6 @@ list($defaultQty, $canChangeQty) = $block->getDefaultValues();
            checked="checked"
            data-option-id="<?= (int)$optionId ?>"
            data-selection-id="<?= (int)$selections[0]->getSelectionId() ?>"
-           x-ref="option-<?= (int)$optionId ?>"
     />
 <?php else: ?>
     <select multiple="multiple"
@@ -48,7 +47,7 @@ list($defaultQty, $canChangeQty) = $block->getDefaultValues();
                 required="required"
             <?php endif; ?>
             data-option-id="<?= (int)$optionId ?>"
-            x-on:change="calculateTotalPrice($dispatch)"
+            x-on:change="calculateTotalPrice()"
     >
         <?php if (!$option->getRequired()): ?>
             <option value=""><?= $escaper->escapeHtml(__('None')) ?></option>
@@ -64,7 +63,6 @@ list($defaultQty, $canChangeQty) = $block->getDefaultValues();
                     disabled="disabled"
                 <?php endif; ?>
                     data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                    x-ref="option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
             >
                 <?= /* @noEscape */ $block->getSelectionQtyTitlePrice($selection, false) ?>
             </option>
