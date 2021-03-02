@@ -45,7 +45,10 @@ $currencyViewModel = $viewModels->require(Currency::class);
                         aria-haspopup="true"
                         aria-expanded="true"
                 >
-                    <?= $escaper->escapeHtml($currentCurrencyCode) ?> - <?= $currencies[$currentCurrencyCode] ? $escaper->escapeHtml($currencies[$currentCurrencyCode]) : '' ?>
+                    <?= $escaper->escapeHtml($currentCurrencyCode) ?>
+                    <?php if ($currencies[$currentCurrencyCode]): ?>
+                        - <?= $escaper->escapeHtml($currencies[$currentCurrencyCode]) ?>
+                    <?php endif; ?>
                     <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5 -mr-1 ml-2", 25, 25) ?>
                 </button>
             </div>
