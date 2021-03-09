@@ -28,6 +28,9 @@ $product = $block->getProduct();
 <section>
     <?= $block->getChildHtml('description') ?>
 </section>
+<section id="product-additional">
+    <?= $block->getChildHtml('additional') ?>
+</section>
 <section>
     <?= $block->getChildHtml('related') ?>
     <?= $block->getChildHtml('upsell') ?>
