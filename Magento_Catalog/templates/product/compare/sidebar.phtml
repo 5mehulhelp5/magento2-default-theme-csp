@@ -114,7 +114,7 @@ function initCompareSidebarClear() {
      @private-content-loaded.window="receiveCompareData($event.detail.data)"
      class="compare-widget mt-8 hidden"
      :class="{ 'hidden': !(itemCount > 0) }">
-    <div class="border-t border-container pt-4">
+    <div class="border-t border-container md:mb-6 pt-6">
         <strong class="block title text-2xl leading-7"><?= $escaper->escapeHtml(__('Compare Products')) ?></strong>
     </div>
     <template x-if="itemCount">
@@ -142,10 +142,10 @@ function initCompareSidebarClear() {
             </template>
         </ul>
     </template>
-    <div class="flex flex-wrap items-center md:mt-6 space-x-4 text-sm">
+    <div class="flex flex-wrap items-center md:mt-5 space-x-4 text-sm">
         <a href="<?= $escaper->escapeUrl($block->getUrl('catalog/product_compare/index')) ?>"
             title="<?= $escaper->escapeHtml(__('Compare Products')); ?>"
-            class="btn btn-primary py-3">
+            class="btn btn-secondary px-4 text-sm">
             <span><?= $escaper->escapeHtml(__('Compare')); ?></span>
         </a>
         <button x-data="initCompareSidebarClear()"
