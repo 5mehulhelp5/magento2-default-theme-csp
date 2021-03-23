@@ -11,6 +11,13 @@
 body {
     overflow-y: scroll;
 }
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 .page-main {
     @apply my-8;
 }
