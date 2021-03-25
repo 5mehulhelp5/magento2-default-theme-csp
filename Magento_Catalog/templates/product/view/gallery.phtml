@@ -87,8 +87,8 @@ $productName = $block->getProduct()->getName();
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
-                        :alt="image.caption || '<?= $escaper->escapeHtmlAttr($productName) ?>'"
-                        :title="image.caption || '<?= $escaper->escapeHtmlAttr($productName) ?>'"
+                        :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                        :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         @click="fullscreen = true"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-75"
                         :class="{ 'cursor-pointer': !fullscreen }"
@@ -123,8 +123,8 @@ $productName = $block->getProduct()->getName();
                        :class="{'border-primary': active === index}"
                     >
                         <img :src="image.thumb"
-                             :alt="image.caption || '<?= $escaper->escapeHtmlAttr($productName) ?>'"
-                             :title="image.caption || '<?= $escaper->escapeHtmlAttr($productName) ?>'"
+                             :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                             :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                              width="<?= /* @noEscape */ $smallWidth ?>"
                              height="<?= /* @noEscape */ $smallHeight ?>"
                         />
