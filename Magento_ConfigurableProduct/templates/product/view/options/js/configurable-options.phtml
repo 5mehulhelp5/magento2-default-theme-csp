@@ -1,0 +1,154 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+?>
+<script>
+    function initConfigurableOptions(productId, optionConfig) {
+        return {
+            optionConfig,
+            productId,
+            itemId: '<?= (int)$block->getRequest()->getParam('id') ?>',
+            allowedAttributeOptions: [],
+            selectedValues: [],
+            findSimpleIndex () {
+                var productIndexes = this.optionConfig.index;
+                var $this = this;
+                this.productIndex = Object.keys(productIndexes).find(productIndex => {
+                    var currentProductIndex = productIndexes[productIndex];
+
+                    for (var productOption in currentProductIndex) {
+                        if (
+                            $this.selectedValues[productOption] &&
+                            $this.selectedValues[productOption] !== currentProductIndex[productOption]
+                        ) {
+                            return false;
+                        }
+                    }
+                    return productIndex;
+                });
+            },
+            productIndex: 0,
+            findAllowedAttributeOptions() {
+                var allAttributes = this.optionConfig.attributes;
+                var allAttributesSorted = Object.values(allAttributes).sort((a,b) => {
+                    return a.position - b.position
+                });
+                var previousOption = false;
+                var productIndexes = this.optionConfig.index;
+                var availableIndexes = Object.keys(productIndexes);
+
+                var newAllowedAttributeOptions = [];
+
+                allAttributesSorted.forEach(attribute => {
+                    if (previousOption && this.selectedValues[previousOption]) {
+                        availableIndexes = availableIndexes.filter(availableIndex => {
+                            return productIndexes[availableIndex][previousOption] ===
+                                this.selectedValues[previousOption]
+                        })
+                    }
+                    newAllowedAttributeOptions[attribute.id] =
+                        allAttributes[attribute.id].options.filter(option => {
+                            return !!option.products.find(product => {
+                                return availableIndexes.includes(product);
+                            })
+                        });
+                    previousOption = attribute.id;
+                });
+                this.allowedAttributeOptions = newAllowedAttributeOptions;
+            },
+            getAllowedAttributeOptions(attributeId) {
+                return this.allowedAttributeOptions[attributeId] || []
+            },
+            changeOption(optionId, value) {
+                this.selectedValues[optionId] = value;
+                this.findSimpleIndex();
+                this.findAllowedAttributeOptions();
+                this.updatePrices();
+                this.updateGallery();
+            },
+            calculateIsMinimalPrice(){
+                return (
+                    this.selectedValues.filter(value => !!value).length <
+                        Object.keys(this.optionConfig.attributes).length
+                );
+            },
+            updatePrices() {
+                var value = this.productIndex ?
+                    this.optionConfig.optionPrices[this.productIndex] :
+                    this.optionConfig.prices;
+                window.dispatchEvent(
+                    new CustomEvent(
+                        "update-prices-" + this.productId,
+                        {
+                            detail: Object.assign(
+                                value,
+                                { isMinimalPrice: this.calculateIsMinimalPrice() }
+                            )
+                        }
+                    )
+                );
+            },
+            updateGallery () {
+                var value = this.productIndex ?
+                    this.optionConfig.images[this.productIndex] :
+                    Object.values(this.optionConfig.images)[0];
+
+                value && window.dispatchEvent(
+                    new CustomEvent(
+                        "update-gallery",
+                        { detail: value }
+                    )
+                );
+            },
+            onGetCartData(data) {
+                this.preselectCartItems(data);
+                this.preselectQuerystringItems();
+                this.preselectLocationHashItems();
+            },
+            preselectCartItems(data) {
+                // pre-select options based on cart data for current (quote) itemId
+                var cart = data && data.cart;
+                if (cart && cart.items) {
+                    var cartItem = cart.items.find((item) => {
+                        return (
+                            item.item_id === this.itemId
+                            && item.product_id === this.productId
+                        )
+                    });
+                    if (cartItem && cartItem.options && cartItem.options.length) {
+                        cartItem.options.map(option => {
+                            this.changeOption(option.option_id, option.option_value);
+                        })
+                    }
+                }
+            },
+            preselectQuerystringItems() {
+                // pre-select option like ?size=167
+                const urlQueryParams = new URLSearchParams(window.location.search.replace('?',''));
+                Object.values(this.optionConfig.attributes).map(attribute => {
+                    urlQueryParams.get(attribute.code) &&
+                    this.changeOption(attribute.id, urlQueryParams.get(attribute.code));
+                });
+            },
+            preselectLocationHashItems() {
+                // pre-select option like #144=167
+                const urlHashParams = new URLSearchParams(window.location.hash.replace('#',''));
+                Object.values(this.optionConfig.attributes).map(attribute => {
+                    urlHashParams.get(attribute.id) &&
+                    this.changeOption(attribute.id, urlHashParams.get(attribute.id));
+                });
+            }
+        }
+    }
+
+</script>

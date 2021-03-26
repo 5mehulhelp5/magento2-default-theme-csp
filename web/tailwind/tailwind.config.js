@@ -81,10 +81,13 @@ module.exports = {
                 }
             },
             minWidth: {
+                8: spacing["8"],
+                20: spacing["20"],
                 40: spacing["40"],
                 48: spacing["48"],
             },
             minHeight: {
+                14: spacing["14"],
                 '25': '25vh',
                 '50': '50vh',
                 '75': '75vh',

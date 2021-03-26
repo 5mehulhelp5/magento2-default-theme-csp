@@ -76,12 +76,12 @@ use Magento\LayeredNavigation\Block\Navigation;
             <?php endforeach; ?>
         </div>
     </div>
-    <script defer>
+    <script>
         function initLayeredNavigation() {
             return {
                 isMobile: false,
                 blockOpen: false,
-                checkIsMobileResolution: function () {
+                checkIsMobileResolution() {
                     this.isMobile = window.outerWidth < 768
                 }
             }

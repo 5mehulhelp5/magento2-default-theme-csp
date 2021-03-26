@@ -30,12 +30,12 @@ if (!$product) {
 /** @var ProductPage $productViewModel */
 $productViewModel = $viewModels->require(ProductPage::class);
 ?>
-<script defer>
+<script>
     function initTierPrices<?= (int) $product->getId() ?>() {
         return {
             activeProductsPriceData: false,
             getConfiguredTierPrices() {
-                if (this.activeProductsPriceData) {
+                if (this.activeProductsPriceData && this.activeProductsPriceData.tierPrices) {
                     return this.activeProductsPriceData.tierPrices.map((tierPrice) => {
                         return {
                             qty: tierPrice.qty,

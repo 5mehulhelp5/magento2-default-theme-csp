@@ -1,0 +1,89 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+
+?>
+<script>
+    function initSwatchOptions(swatchConfig) {
+        return {
+            swatchConfig,
+            getAttributeSwatchData(attributeId) {
+                const swatchConfig = Object.assign({}, this.swatchConfig[attributeId]);
+                swatchConfig['details'] = JSON.parse(swatchConfig['additional_data']);
+
+                return swatchConfig;
+            },
+            getSwatchType(typeNumber) {
+                switch (typeNumber) {
+                    case "1":
+                        return "color"
+                    case "2":
+                        return "image"
+                    case "0":
+                    default:
+                        return "text"
+                }
+            },
+            isTextSwatch(attributeId, itemId) {
+                const config = this.getSwatchConfig(attributeId, itemId);
+                const typeId = config.type.toString();
+                const type = this.getSwatchType(typeId);
+
+                return type === 'text';
+            },
+            getSwatchBackgroundStyle(attributeId, itemId) {
+                const config = this.getSwatchConfig(attributeId, itemId);
+                const typeId = config.type.toString();
+                const type = this.getSwatchType(typeId);
+
+                if (type === "color") {
+                        return 'background-color:' + config.value;
+                } else if (type === "image") {
+                        return "background: #ffffff url('" + config.value + "') no-repeat center";
+                } else {
+                    return '';
+                }
+            },
+            getSwatchConfig(attributeId, itemId) {
+                return this.swatchConfig[attributeId][itemId];
+            },
+            activeTooltipItem: false,
+            tooltipPositionElement: false,
+            getTooltipImageStyle(attributeId, itemId) {
+                const config = this.getSwatchConfig(attributeId, itemId);
+                const typeId = config.type.toString();
+                const type = this.getSwatchType(typeId);
+
+                if (type === "color") {
+                    return 'background-color:' + config.value + '; width: 110px; height: 90px;';
+                } else if (type === "image") {
+                    return "background: #ffffff url('" + config.thumb +
+                        "') center center no-repeat; width: 110px; height: 90px;";
+                } else {
+                    return '';
+                }
+            },
+            getTooltipPosition() {
+                return this.tooltipPositionElement ?
+                    `top: ${this.tooltipPositionElement.offsetTop}px;` +
+                    `left: ${
+                        this.tooltipPositionElement.offsetLeft - (
+                            this.tooltipPositionElement.closest('.snap') &&
+                            this.tooltipPositionElement.closest('.snap').scrollLeft ||
+                            0
+                        )
+                    }px;` : ''
+            }
+        }
+    }
+</script>

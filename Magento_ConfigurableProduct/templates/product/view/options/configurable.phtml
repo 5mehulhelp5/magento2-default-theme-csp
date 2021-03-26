@@ -12,136 +12,15 @@ use Magento\Framework\Escaper;
 /** @var Configurable $block */
 /** @var Escaper $escaper */
 
-$product    = $block->getProduct();
+$product = $block->getProduct();
+$productId = $product->getId();
 $attributes = $block->decorateArray($block->getAllowAttributes());
 ?>
 <?php if ($product->isSaleable() && count($attributes)):?>
-    <script defer>
-        function initConfigurableOptions() {
-            return {
-                optionConfig: <?= /* @noEscape */ $block->getJsonConfig() ?>,
-                allowedAttributeOptions: [],
-                selectedValues: [],
-                findSimpleIndex: function findSimpleIndex () {
-                  var productIndexes = this.optionConfig.index;
-                  var $this = this;
-                  this.productIndex = Object.keys(productIndexes).find(function(productIndex) {
-                      var currentProductIndex = productIndexes[productIndex];
 
-                      for (var productOption in currentProductIndex) {
-                          if (
-                              $this.selectedValues[productOption] &&
-                              $this.selectedValues[productOption] !== currentProductIndex[productOption]
-                          ) {
-                              return false;
-                          }
-                      }
-                      return productIndex;
-                  });
-                },
-                productIndex: 0,
-                findAllowedAttributeOptions: function findAllowedAttributeOptions() {
-                    var $this = this;
+    <?= $block->getChildHtml('options_configurable_js') ?>
 
-                    var allAttributes = this.optionConfig.attributes;
-                    var allAttributesSorted = Object.values(allAttributes).sort(function (a,b) {
-                        return a.position - b.position
-                    });
-                    var previousOption = false;
-                    var productIndexes = this.optionConfig.index;
-                    var availableIndexes = Object.keys(productIndexes);
-
-                    var newAllowedAttributeOptions = [];
-
-                    allAttributesSorted.forEach(function (attribute) {
-                        if (previousOption && $this.selectedValues[previousOption]) {
-                            availableIndexes = availableIndexes.filter(function(availableIndex) {
-                                return productIndexes[availableIndex][previousOption] ===
-                                    $this.selectedValues[previousOption]
-                            })
-                        }
-                        newAllowedAttributeOptions[attribute.id] =
-                            allAttributes[attribute.id].options.filter(function (option) {
-                                return !!option.products.find(function (product) {
-                                    return availableIndexes.includes(product);
-                                })
-                            });
-                        previousOption = attribute.id;
-                    });
-                    this.allowedAttributeOptions = newAllowedAttributeOptions;
-                },
-                getAllowedAttributeOptions: function getAllowedAttributeOptions(attributeId) {
-                    return this.allowedAttributeOptions[attributeId] || []
-                },
-                changeOption: function changeOption (optionId, value) {
-                    this.selectedValues[optionId] = value;
-                    this.findSimpleIndex();
-                    this.findAllowedAttributeOptions();
-                    this.updatePrices();
-                    this.updateGallery();
-                },
-                updatePrices: function updatePrices () {
-                    var value = this.productIndex ?
-                        this.optionConfig.optionPrices[this.productIndex] :
-                        this.optionConfig.prices;
-                    window.dispatchEvent(
-                        new CustomEvent(
-                            "update-prices-<?= (int)$product->getId() ?>",
-                            { detail: value }
-                        )
-                    );
-                },
-                updateGallery: function updateGallery () {
-                    var value = this.productIndex ?
-                        this.optionConfig.images[this.productIndex] :
-                        Object.values(this.optionConfig.images)[0];
-
-                    value && window.dispatchEvent(
-                        new CustomEvent(
-                            "update-gallery",
-                            { detail: value }
-                        )
-                    );
-                },
-                itemId: '<?= (int)$block->getRequest()->getParam('id') ?>',
-                productId: '<?= (int)$product->getId() ?>',
-                onGetCartData: function onGetCartData(data) {
-                    // pre-select options based on cart data for current (quote) itemId
-                    var cart = data && data.cart;
-                    if (cart && cart.items) {
-                        $this = this;
-                        var cartItem = cart.items.find(function (item) {
-                            return (
-                                item.item_id === $this.itemId
-                                && item.product_id === $this.productId
-                            )
-                        });
-                        if (cartItem && cartItem.options && cartItem.options.length) {
-                            cartItem.options.map(option => {
-                                this.changeOption(option.option_id, option.option_value);
-                            })
-                        }
-                    }
-
-                    // pre-select option like ?size=167
-                    const urlQueryParams = new URLSearchParams(window.location.search.replace('?',''));
-                    Object.values(this.optionConfig.attributes).map(attribute => {
-                        urlQueryParams.get(attribute.code) &&
-                        this.changeOption(attribute.id, urlQueryParams.get(attribute.code));
-                    });
-
-                    // pre-select option like #144=167
-                    const urlHashParams = new URLSearchParams(window.location.hash.replace('#',''));
-                    Object.values(this.optionConfig.attributes).map(attribute => {
-                        urlHashParams.get(attribute.id) &&
-                        this.changeOption(attribute.id, urlHashParams.get(attribute.id));
-                    });
-                }
-            }
-        }
-
-    </script>
-    <div x-data="initConfigurableOptions()"
+    <div x-data="initConfigurableOptions('<?= (int) $productId ?>', <?= /* @noEscape */ $block->getJsonConfig() ?>)"
          x-init="findAllowedAttributeOptions();"
          @private-content-loaded.window="onGetCartData($event.detail.data)"
          class="mb-6"
@@ -149,7 +28,8 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
         <h2 class="text-gray-900 text-xl title-font font-medium mb-4">
             <?= $escaper->escapeHtml(__('Options')) ?>
         </h2>
-    <?php foreach ($attributes as $attribute): ?>
+
+        <?php foreach ($attributes as $attribute): ?>
         <div class="flex border-t last:border-b  border-gray-300 py-2 w-full items-center">
 
             <label class="label text-gray-700 text-left w-1/2"
@@ -182,6 +62,6 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                 </select>
             </div>
         </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
 <?php endif;?>

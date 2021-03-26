@@ -34,6 +34,8 @@ $smallWidth = $block->getImageAttribute('product_page_image_small', 'width', 90)
 $smallHeight = $block->getImageAttribute('product_page_image_small', 'height', 90);
 $mediumWidth = $block->getImageAttribute('product_page_image_medium', 'width', 700);
 $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height', 700);
+
+$productName = $block->getProduct()->getName();
 ?>
 
 <div id="gallery"
@@ -74,6 +76,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
                 ?>
                 <img
                     alt="main product photo"
+                    title="<?= $escaper->escapeHtmlAttr($productName) ?>"
                     class="object-contain object-center w-full h-auto max-h-75"
                     :class="'opacity-0'"
                     loading="lazy"
@@ -84,8 +87,8 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
-                        :alt="image.caption"
-                        :title="image.caption"
+                        :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                        :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         @click="fullscreen = true"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-75"
                         :class="{ 'cursor-pointer': !fullscreen }"
@@ -120,8 +123,8 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
                        :class="{'border-primary': active === index}"
                     >
                         <img :src="image.thumb"
-                             :alt="image.caption.length > 0 ? image.caption : '<?= $escaper->escapeHtmlAttr(__('No Image')) ?>'"
-                             :title="image.caption.length > 0 ? image.caption : '<?= $escaper->escapeHtmlAttr(__('No Image')) ?>'"
+                             :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                             :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                              width="<?= /* @noEscape */ $smallWidth ?>"
                              height="<?= /* @noEscape */ $smallHeight ?>"
                         />
@@ -131,7 +134,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
         </div>
     </div>
 </div>
-<script defer>
+<script>
     function initGallery () {
         return {
             "active": 0,
@@ -148,7 +151,7 @@ $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height',
                 'gallery_switch_strategy',
                 'Magento_ConfigurableProduct'
             ) === 'append' ? 'true' : 'false' ?>,
-            receiveImages: function receiveImages(images) {
+            receiveImages(images) {
                 if (this.appendOnReceiveImages) {
                     this.images = [].concat(this.initialImages, images);
                     this.setActive(images.length ? this.initialImages.length : 0);

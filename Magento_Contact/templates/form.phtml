@@ -116,12 +116,12 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
             <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
         </div>
     </form>
-    <script defer>
+    <script>
         function initContactForm() {
             return {
                 errors: 0,
                 hasCaptchaToken: 0,
-                submitForm: function () {
+                submitForm() {
                     var $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
                     <?= $block->getChildHtml('recaptcha_validation'); ?>
 
