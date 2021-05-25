@@ -1,0 +1,32 @@
+<?php declare(strict_types=1);
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+/** @var \Magento\Catalog\Block\Product\View\Details $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+foreach ($block->getGroupSortedChildNames('detailed_info', 'getChildHtml') as $sectionName) {
+    $sectionBlock = $block->getChildBlock($sectionName);
+
+    if ($sectionBlock->getData('is_raw_section')) {
+        echo $sectionBlock->toHtml();
+    } else { ?>
+
+    <section id="<?= $escaper->escapeHtmlAttr($sectionBlock->getNameInLayout()) ?>">
+        <div class="container mx-auto flex pt-6 pb-3 mb-6 md:flex-row border-b-2 border-gray-300">
+            <h2 class="text-gray-900 text-2xl title-font font-base text-center md:text-left w-full">
+                <?= $sectionBlock->getTitle() ? $escaper->escapeHtml($sectionBlock->getTitle()) : '&nbsp;' ?>
+            </h2>
+        </div>
+        <div class="card w-full">
+            <?= $sectionBlock->toHtml() ?>
+        </div>
+    </section>
+
+<?php
+    }
+}
