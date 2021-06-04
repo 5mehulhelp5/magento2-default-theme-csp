@@ -33,6 +33,7 @@ $graphqlQuery = (string) ($block->getGraphqlQuery() ?? '');
 $queryDataProcessorJsFunction = (string) ($block->getQueryDataProcessorJs() ?? '(data) => this.items = data');
 $itemsJson = (string) ($block->getSliderItemsJson() ?? '[]');
 $slideContentTemplateHtml = $block->getChildHtml('slider.item.template') ?: '';
+$sliderItemMinHeight = (string) ($block->getSliderItemMinHeight() ?? '491px')
 
 ?>
 <script>
@@ -40,9 +41,9 @@ $slideContentTemplateHtml = $block->getChildHtml('slider.item.template') ?: '';
         return {
             active: 0,
             items: <?= /** @noEscape */ $itemsJson ?>,
-            loading: true,
+            loading: <?= /** @noEscape */ $graphqlQuery ? 'true' : 'false' ?>,
             minHeight() {
-                return 'min-height: ' + ((this.loading && '491px') || 0);
+                return 'min-height: ' + ((this.loading && '<?= $escaper->escapeJs($sliderItemMinHeight) ?>') || 0);
             },
             <?php if ($graphqlQuery): ?>
             query: <?= /** @noEscape */ json_encode($graphqlQuery) ?>,
