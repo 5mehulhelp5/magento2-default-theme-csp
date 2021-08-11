@@ -48,7 +48,7 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
         }
     }
 </script>
-<nav id="header"
+<div id="header"
      class="z-30 w-full border-b shadow bg-container-lighter border-container-lighter"
      x-data="initHeader()"
      @keydown.window.escape="searchOpen = false;"
@@ -158,5 +158,5 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
 
     <!--Authentication Pop-Up-->
     <?= $block->getChildHtml('authentication-popup'); ?>
-</nav>
+</div>
 
