@@ -50,68 +50,68 @@ $widgetButtonsToShow = explode(',', $this->getData('show_buttons'));
 $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getProduct()->getSku() : 'false';
 ?>
     <script>
-        function refreshLocalStorageData(){
-            /***
-            * Remove expired products in the local storage
-            ***/
-            if(localStorage.getItem('recently_viewed_skus')){
-                let updatedlocalStorageData = '';
-                let recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
-                
-                recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
-                    // split each product's sku and expiry data
-                    let tempSplitArray  = skuData.split(" ");
-                    let now = new Date();
-                    if(tempSplitArray[1] > now.getTime()){
-                        updatedlocalStorageData +=  ',' + tempSplitArray[0] + ' ' + tempSplitArray[1];
-                    }
-                });
-                updatedlocalStorageData = updatedlocalStorageData.replace(/[,]/, '');
-                localStorage.removeItem('recently_viewed_skus');
-                localStorage.setItem('recently_viewed_skus', updatedlocalStorageData);
-            }
-        }
-        function putDataInLocalStorage(data){
+        
+        function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
 
-            let localStorageDataToPut = data['current_product_sku'] + ' ' + data['expiry'];
-            if(!localStorage.getItem('recently_viewed_skus')){
-                localStorage.setItem('recently_viewed_skus', localStorageDataToPut);
-            }else{
-
-                // Remove expired products in the local storage
-                refreshLocalStorageData();
-                // Avoid adding sku already in the storage
-                let recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
-                let skuAlreadyInList = false;
-                
-                recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
-                    // split each product's sku and expiry data
-                    let tempSplitArray  = skuData.split(" ");
-                    if(tempSplitArray[0] == data['current_product_sku']){
-                        skuAlreadyInList = true;
-                    }
-                });
-
-                // Avoid adding sku already in the storage
-                if(!skuAlreadyInList){
-                    dar = localStorageDataToPut + ',' + localStorage.getItem('recently_viewed_skus');
-                    // if sku not already in list, append current product's data in the list
-                    localStorage.setItem('recently_viewed_skus', localStorageDataToPut + ',' + localStorage.getItem('recently_viewed_skus'));
+            const refreshLocalStorageData = function(){
+                /***
+                * Remove expired products in the local storage
+                ***/
+                if(localStorage.getItem('recently_viewed_skus')){
+                    let updatedlocalStorageData = '';
+                    let recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
+                    
+                    recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
+                        // split each product's sku and expiry data
+                        let tempSplitArray  = skuData.split(" ");
+                        let now = new Date();
+                        if(tempSplitArray[1] > now.getTime()){
+                            updatedlocalStorageData +=  ',' + tempSplitArray[0] + ' ' + tempSplitArray[1];
+                        }
+                    });
+                    updatedlocalStorageData = updatedlocalStorageData.replace(/[,]/, '');
+                    localStorage.removeItem('recently_viewed_skus');
+                    localStorage.setItem('recently_viewed_skus', updatedlocalStorageData);
                 }
             }
-        }
-        function createLocalStorageData(){
-            // get current product sku and calculate its expiry from local storage
-            let currentProductData = [];
-            currentProductData['current_product_sku'] = '<?php echo $currentProductSku; ?>';
-            let now = new Date();
-            let lifeTimeOfProducts = <?php echo $viewModelProducts->getRecentlyViewedLifeTime(); ?>;
-            lifeTimeOfProducts = lifeTimeOfProducts * 1000;
-            let expiry = now.getTime() + lifeTimeOfProducts;
-            currentProductData['expiry'] = expiry;
-            return currentProductData;
-        }
-        function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
+            const putDataInLocalStorage = function(data){
+
+                let localStorageDataToPut = data['current_product_sku'] + ' ' + data['expiry'];
+                if(!localStorage.getItem('recently_viewed_skus')){
+                    localStorage.setItem('recently_viewed_skus', localStorageDataToPut);
+                }else{
+                    // Remove expired products in the local storage
+                    refreshLocalStorageData();
+                    // Avoid adding sku already in the storage
+                    let recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
+                    let skuAlreadyInList = false;
+                    
+                    recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
+                        // split each product's sku and expiry data
+                        let tempSplitArray  = skuData.split(" ");
+                        if(tempSplitArray[0] == data['current_product_sku']){
+                            skuAlreadyInList = true;
+                        }
+                    });
+
+                    // Avoid adding sku already in the storage
+                    if(!skuAlreadyInList){
+                        // if sku not already in list, append current product's data in the list
+                        localStorage.setItem('recently_viewed_skus', localStorageDataToPut + ',' + localStorage.getItem('recently_viewed_skus'));
+                    }
+                }
+            }
+            let createLocalStorageData = function(){
+                // get current product sku and calculate its expiry from local storage
+                let currentProductData = [];
+                currentProductData['current_product_sku'] = '<?php echo $currentProductSku; ?>';
+                let now = new Date();
+                let lifeTimeOfProducts = <?php echo $viewModelProducts->getRecentlyViewedLifeTime(); ?>;
+                lifeTimeOfProducts = lifeTimeOfProducts * 1000;
+                let expiry = now.getTime() + lifeTimeOfProducts;
+                currentProductData['expiry'] = expiry;
+                return currentProductData;
+            }
 
             let currentProductSku = '<?php echo $currentProductSku; ?>';
             if(currentProductSku != 'false'){
@@ -121,7 +121,6 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                 // Remove expired products in the local storage
                 refreshLocalStorageData();
             }
-            
 
             return {
                 active: 0,
@@ -139,6 +138,8 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                     if(localStorage.getItem('recently_viewed_skus')){
                         /* Fetching Products from local storage */
                         let recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
+                        // recentlyViewedSkusArray = recentlyViewedSkusArray.reverse();
+
                         let noOfProductsToShow = this.noOfProductsToShow;
                         let currentProductSku = this.currentProductSku;
                         
@@ -150,45 +151,44 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                             }
                         });
                     }
+
                     if(!itemsToFetch.length){
                         this.noOfProductsToShow = 0;
                     }
-                    itemsToFetch = JSON.stringify(itemsToFetch);
+
+                    let itemsToFetchStringify = JSON.stringify(itemsToFetch);
+
                     this.query = `{
                         products(
                             filter: {
-                            
-                            sku: { in: ${itemsToFetch} },
-                            
-                            
+                                sku: { in: ${itemsToFetchStringify} },
                             }
-                            pageSize: ${this.noOfProductsToShow}
-                            ) {
+                            pageSize: ${this.noOfProductsToShow},
+                        ) {
                             items {
-                                
-                            sku
-                            id
-                            name
-                            small_image {
-                                label
-                                url
-                            }
-                            url_key
-                            url_suffix
-                            visibility
-                            status
-                            price_range {
-                                minimum_price {
-                                regular_price {
-                                    value
-                                    currency
+                                sku
+                                id
+                                name
+                                small_image {
+                                    label
+                                    url
                                 }
-                                final_price {
-                                    value
-                                    currency
+                                url_key
+                                url_suffix
+                                visibility
+                                status
+                                price_range {
+                                        minimum_price {
+                                        regular_price {
+                                            value
+                                            currency
+                                        }
+                                        final_price {
+                                            value
+                                            currency
+                                        }
+                                    }
                                 }
-                                }
-                            }
                             }
                         }
                     }`;
@@ -207,12 +207,25 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                                 this.currency = (data &&
                                     data.data &&
                                     data.data.currency);
-                                    return this.products = (
+
+                                    let responseProducts = (
                                         data &&
                                         data.data &&
                                         data.data.products &&
                                         data.data.products.items
                                     ) || [];
+                                    
+                                    // fix sorting of the response-products according to the sorting of the requested-products
+                                    let sortedProducts = [];
+                                    itemsToFetch.forEach(function myFunction(sku,key){
+                                        responseProducts.forEach(function myFunction(productData,index){
+                                            if(sku == productData.sku){
+                                                sortedProducts[key] = productData;
+                                            }
+                                        });
+                                    });
+
+                                    return this.products = sortedProducts;
                             }
                         ).finally(() => {
                         this.loading = false
