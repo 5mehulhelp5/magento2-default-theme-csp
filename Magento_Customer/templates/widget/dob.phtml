@@ -40,7 +40,6 @@ $heroIcons = $viewModels->require(HeroiconsOutline::class);
             ?>
 
         <input type="text"
-               readonly
                name="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>"
                id="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>"
                title="<?= $escaper->escapeHtmlAttr($block->getStoreLabel('dob')) ?>"
@@ -49,7 +48,9 @@ $heroIcons = $viewModels->require(HeroiconsOutline::class);
                <?php endif; ?>
                x-model="value"
                @click="showDatepicker = !showDatepicker"
-               @keydown.escape="showDatepicker = false"
+               @keydown="onInputKeydown($event)"
+               @paste="$event.preventDefault()"
+               autocomplete="off"
                class="form-input <?= $_validationClass ?: '' ?>"
         >
 
@@ -275,6 +276,18 @@ $heroIcons = $viewModels->require(HeroiconsOutline::class);
 
             canSelectDate(date) {
                 return !this.isToday(date) && !this.isInFuture(date)
+            },
+
+            onInputKeydown(evt) {
+                const keyCode = evt.code;
+
+                if (keyCode === "Escape") {
+                    this.showDatepicker = false;
+                }
+
+                if (keyCode !== "Enter") {
+                    evt.preventDefault();
+                }
             }
         }
     }
