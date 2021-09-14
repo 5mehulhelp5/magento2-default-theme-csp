@@ -56,7 +56,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                class="form-input <?= $validationClass ?: '' ?>"
         >
 
-        <div class="absolute top-0 right-0 px-3 py-2 text-gray-300"
+        <div class="absolute top-0 right-0 z-10 py-2 px-3 text-gray-300"
              @click="showDatepicker = true"
         >
             <?= /** @noEscape */ $heroIcons->calendarHtml('w-6 h-6'); ?>
