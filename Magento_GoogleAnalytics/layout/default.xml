@@ -3,8 +3,8 @@
     <body>
 <!--
 /**
-  * enable head.additional and disable before.body.end if you want GA to be loaded in the head of the page
-  * This does come with a performance penalty
+  * Enable head.additional and disable before.body.end if you want GA to be loaded in the head of the page.
+  * This does come with a performance penalty.
   */
 -->
 <!--
@@ -13,7 +13,7 @@
         </referenceBlock>
 -->
         <referenceContainer name="before.body.end">
-                <block class="Magento\GoogleAnalytics\Block\Ga" name="google_analyticsuniversal" as="google_analyticsuniversal" template="Magento_GoogleAnalytics::ga.phtml" after="-" />
+            <block class="Magento\GoogleAnalytics\Block\Ga" name="google_analytics" as="google_analytics" template="Magento_GoogleAnalytics::ga.phtml" after="-" />
         </referenceContainer>
     </body>
 </page>
