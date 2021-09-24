@@ -43,6 +43,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   The container is rendered below the existing totals but before the grand total.
   More details can be found in the [commit 58f447](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/commit/58f4475a4bff85315cd8ef26e8e86fb4e04038e9).
 
+- **Allow setting css classes on generic slider**
+
+  If a value is set for the property `maybe_purged_tailwind_section_classes` on block class rendering the slider, it
+  will be used as the container class="" attribute value. If the property is not set, the previous value is used,
+  meaning this is a backward compatible change.
+
+  More details can be found in [merge request #246](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/264).
 
 ### Changed
 
