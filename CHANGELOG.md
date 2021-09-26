@@ -89,6 +89,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   More details can be found in the [issue #221](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/221).
 
+  Thanks to Tomas Kalasz @ CS2 (@TKalasz) for investigating and to Ravinder @ redChamps (@rav-redchamps) for the patch!
+
 ### Removed
 
 - **Removed topmenu_static.phtml template**
