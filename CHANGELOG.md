@@ -51,6 +51,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   More details can be found in [merge request #246](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/264).
 
+- **Bugfix: add page content for customer/account/confirmation page** 
+
+  Previously, if customer registration required email confirmation, clicking the link on the on-page message triggered
+  a stack trace on the page `customer/account/confirmation`.
+  
+  More information can be found in the [issue #245](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/245).
+
+- **Add meta og tags to PDP**
+
+  Add meta og tags to the PDP.
+
 ### Changed
 
 - **Bugfix: Escape product review gql mutation payload values**
