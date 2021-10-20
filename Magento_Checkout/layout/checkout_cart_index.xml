@@ -50,12 +50,14 @@
                 </block>
             </block>
 
-            <block name="crosssell" class="Magento\Catalog\Block\Product\View"
-                   template="Magento_Theme::elements/slider.phtml">
-                <arguments>
-                    <argument name="type" xsi:type="string">crosssell</argument>
-                    <argument name="title" xsi:type="string" translate="true">You might also like:</argument>
-                </arguments>
+            <block name="cart-slider-wrapper" template="Magento_Checkout::cart/slider-wrapper.phtml">
+                <block name="crosssell" class="Magento\Catalog\Block\Product\View"
+                       template="Magento_Catalog::product/slider/product-slider.phtml">
+                    <arguments>
+                        <argument name="type" xsi:type="string">crosssell</argument>
+                        <argument name="title" xsi:type="string" translate="true">You might also like:</argument>
+                    </arguments>
+                </block>
             </block>
         </referenceContainer>
     </body>
