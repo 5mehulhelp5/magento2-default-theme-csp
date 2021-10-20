@@ -8,9 +8,7 @@
 
 declare(strict_types=1);
 
-use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Hyva\Theme\ViewModel\Store;
@@ -19,6 +17,7 @@ use Hyva\Theme\ViewModel\ProductPage;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
+/** @var Template $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
@@ -38,7 +37,6 @@ $compareViewModel = $viewModels->require(ProductCompare::class);
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 $uniqueId = '_' . uniqid();
-$query = $block->getGraphqlQuery();
 $title = __('Recently Viewed Products');
 
 
@@ -47,7 +45,7 @@ $widgetButtonsToShow = explode(',', $block->getData('show_buttons'));
 $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getProduct()->getSku() : 'false';
 ?>
     <script>
-        
+
         function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
 
             const refreshLocalStorageData = function(){
@@ -55,10 +53,10 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                 * Remove expired products in the local storage
                 ***/
                 if(localStorage.getItem('recently_viewed_skus')){
-                    
+
                     let updatedlocalStorageData = '';
                     const recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
-                    
+
                     recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
                         // split each product's sku and expiry data
                         const tempSplitArray  = skuData.split(" ");
@@ -82,7 +80,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                     // Avoid adding sku already in the storage
                     const recentlyViewedSkusArray = localStorage.getItem('recently_viewed_skus').split(",");
                     let skuAlreadyInList = false;
-                    
+
                     recentlyViewedSkusArray.forEach(function myFunction(skuData,key){
                         // split each product's sku and expiry data
                         let tempSplitArray  = skuData.split(" ");
@@ -101,29 +99,28 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
             const createLocalStorageData = function(){
                 // get current product sku and calculate its expiry from local storage
                 const currentProductData = [];
-                currentProductData['current_product_sku'] = '<?= $escaper->escapeHtmlAttr($currentProductSku) ?>';
-                let lifeTimeOfProducts = <?= $escaper->escapeHtmlAttr($viewModelProducts->getRecentlyViewedLifeTime()) ?>;
+                currentProductData['current_product_sku'] = '<?= $escaper->escapeJs($currentProductSku) ?>';
+                let lifeTimeOfProducts = <?= (int) $viewModelProducts->getRecentlyViewedLifeTime() ?>;
                 lifeTimeOfProducts = lifeTimeOfProducts * 1000;
-                const expiry = Date.now() + lifeTimeOfProducts;
-                currentProductData['expiry'] = expiry;
+                currentProductData['expiry'] = Date.now() + lifeTimeOfProducts;
                 return currentProductData;
             }
 
-            const currentProductSku = '<?= $escaper->escapeHtmlAttr($currentProductSku) ?>';
-            if(currentProductSku != 'false'){
+            const currentProductSku = '<?= $escaper->escapeJs($currentProductSku) ?>';
+            if(currentProductSku !== 'false'){
                 // Recently Viewed Products' data adding into the local storage
                 putDataInLocalStorage(createLocalStorageData());
             }else{
                 // Remove expired products in the local storage
                 refreshLocalStorageData();
             }
-            
+
             return {
                 active: 0,
                 products: [],
                 currency: [],
-                currentProductSku: '<?= $escaper->escapeHtmlAttr($currentProductSku) ?>',
-                noOfProductsToShow: <?= (int)$escaper->escapeHtmlAttr($block->getData('page_size')) ?>,
+                currentProductSku: '<?= $escaper->escapeJs($currentProductSku) ?>',
+                noOfProductsToShow: <?= (int) $block->getData('page_size') ?>,
                 loading: true,
                 minHeight() {
                     return 'min-height: ' + ((this.loading && '491px') || 0);
@@ -200,13 +197,13 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                                         result.data.products &&
                                         result.data.products.items
                                     ) || [];
-                                    
+
                                     // fix sorting of the response-products according to the sorting of the requested-products
                                     const sortedProducts = [];
 
                                     itemsToFetch.forEach(function myFunction(sku,key){
                                         responseProducts.forEach(function myFunction(productData,index){
-                                            if(sku == productData.sku){
+                                            if(sku === productData.sku){
                                                 sortedProducts[key] = productData;
                                             }
                                         });
@@ -318,8 +315,6 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
 
     </script>
 
-
-
     <section class="my-12 text-gray-700 body-font"
             x-data="initSliderComponent<?= /** @noEscape */ $uniqueId?>()"
             x-init="getProducts($nextTick);"
@@ -342,7 +337,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                             <div class="flex-none w-full py-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4">
                                 <div class="mx-1 card card-interactive">
                                     <?php if(in_array("image", $widgetAttributesToShow)): ?>
-                                        <a :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
+                                        <a :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
                                             product.url_key + (product.url_suffix || '')"
                                         class="relative flex items-center bg-white product photo product-item-photo"
                                         style="padding-top:100%"
@@ -362,7 +357,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                                     <?php if(in_array("name", $widgetAttributesToShow)): ?>
                                         <p class="flex items-center justify-center px-1 pt-3 text-primary">
                                             <a class="truncate product-item-link"
-                                            :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
+                                            :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
                                                     product.url_key + (product.url_suffix || '')"
                                             >
                                                 <span x-html="product.name"></span>
@@ -376,7 +371,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                                         <p class="flex flex-wrap gap-2 inline p-3">
                                             <?php if(in_array("learn_more", $widgetAttributesToShow)): ?>
                                                 <a class="justify-center w-auto mr-auto btn btn-primary"
-                                                :href="'<?= $escaper->escapeUrl($block->getBaseUrl()) ?>' +
+                                                :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
                                                         product.url_key + (product.url_suffix || '')">
                                                     <span class="inline"><?= $escaper->escapeHtml(__('View Product')) ?></span>
                                                 </a>
@@ -396,7 +391,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                                                 <?php if (in_array("add_to_wishlist", $widgetButtonsToShow)): ?>
                                                     <?php if ($wishlistViewModel->isEnabled()): ?>
                                                         <button
-                                                            aria-label="<?= $escaper->escapeHtml(__('Add to Wish List')) ?>"
+                                                            aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
                                                             @click.prevent="addToWishlist(product.id)"
                                                             class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
                                                         text-gray-500 bg-gray-200 border-0 rounded-full hover:text-red-600"
@@ -424,7 +419,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                 <template x-if="products.length && products.length > pageSize">
                     <div class="flex items-center justify-center flex-1 p-4" x-cloak>
                         <button
-                            aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
+                            aria-label="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
                             class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                             :class="{ 'invisible' : active === 0 }"
                             @click="getSlider().scrollLeft =
@@ -442,7 +437,7 @@ $currentProductSku = $viewModelProducts->getProduct() ? $viewModelProducts->getP
                             </span>
                         </template>
                         <button
-                            aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
+                            aria-label="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
                             class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                             :class="{ 'invisible' : active >= products.length-pageSize }"
                             @click="getSlider().scrollLeft =
