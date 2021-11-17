@@ -34,7 +34,7 @@ $icons = $viewModels->require(HeroiconsOutline::class);
 
 $recaptchaInputField = '';
 $recaptchaLegalNotice = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('sendfriend')) {
+if ($recaptchaViewModel !== null && ($recaptchaData = $recaptchaViewModel->getRecaptchaData('sendfriend'))) {
     $recaptchaInputField = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD]);
     $recaptchaLegalNotice = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK]);
 }
@@ -52,6 +52,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
               @submit.prevent="submitForm()"
         >
             <?= $block->getBlockHtml('formkey') ?>
+            <?= /** @noEscape */ $recaptchaInputField ?>
             <fieldset class="fieldset sender" id="sender_options">
                 <legend class="legend"><span><?= $escaper->escapeHtml(__('Sender')) ?></span></legend>
                 <br>
@@ -190,7 +191,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                     </button>
                 </div>
                 <div class="secondary">
-                    <a class="action back" href="#" onclick="history.back(); return false;" role="back"><span>
+                    <a class="action back" href="#" onclick="history.back(); return false;" role="link"><span>
                             <?= $escaper->escapeHtml(__('Back')) ?>
                         </span>
                     </a>
@@ -200,8 +201,8 @@ $recipients = $formData->getRecipientData() ?? '[]';
                 function rowHandler() {
                     return {
                         fields: <?= /** @noEscape */ $recipients ?>,
-                        plural: '<?= $escaper->escapeHtml(__('Invitees')) ?>',
-                        single: '<?= $escaper->escapeHtml(__('Invitee')) ?>',
+                        plural: '<?= $escaper->escapeJs(__('Invitees')) ?>',
+                        single: '<?= $escaper->escapeJs(__('Invitee')) ?>',
                         addNewField() {
                             this.fields.push({
                                 name: '',
@@ -230,7 +231,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                                 dispatchMessages([
                                     {
                                         type: "error",
-                                        text: "<?= $escaper->escapeHtmlAttr(
+                                        text: "<?= $escaper->escapeJs(
                                             __("Add one or more recipients before sending the message.")
                                         ) ?>"
                                     }
