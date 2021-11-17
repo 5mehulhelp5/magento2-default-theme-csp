@@ -41,7 +41,7 @@ $sliderItemRenderer = $block->getChildBlock('slider.item.template');
             getSlider() {
                 return this.$el.querySelector('.js_slides');
             },
-            pageSize: 1,
+            pageSize: 4,
             pageFillers: 0,
             calcPageSize() {
                 const slider = this.getSlider();
@@ -75,7 +75,7 @@ $escaper->escapeHtmlAttr($block->getData('maybe_purged_tailwind_section_classes'
          @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
 >
     <?php if ($items): ?>
-        <div class="container relative px-5">
+        <div class="relative">
             <?php if ($title): ?>
                 <div class="container flex flex-col items-center pt-6 pb-3 mx-auto mb-6 border-b-2
                     border-gray-300 md:flex-row">
@@ -106,8 +106,9 @@ $escaper->escapeHtmlAttr($block->getData('maybe_purged_tailwind_section_classes'
                         }"></div>
                 </div>
             </div>
+            <div style="min-height: 65px">
             <template x-if="itemCount > pageSize">
-                <div class="flex items-center justify-center flex-1 p-4" x-cloak>
+                <div class="flex items-center justify-center flex-1 p-4">
                     <button
                         aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
                         tabindex="-1"
@@ -140,6 +141,7 @@ $escaper->escapeHtmlAttr($block->getData('maybe_purged_tailwind_section_classes'
                     </button>
                 </div>
             </template>
+            </div>
         </div>
     <?php endif; ?>
 </section>

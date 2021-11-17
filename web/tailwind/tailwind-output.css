@@ -682,9 +682,17 @@ select {
 }
 .container {
 	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 }
 .\!container {
 	width: 100% !important;
+	margin-right: auto !important;
+	margin-left: auto !important;
+	padding-right: 1.5rem !important;
+	padding-left: 1.5rem !important;
 }
 @media (min-width: 640px) {
 	.container {
@@ -1239,6 +1247,7 @@ select {
 	--tw-ring-opacity: 0.5;
 }
 .page.messages {
+	position: -webkit-sticky;
 	position: sticky;
 	z-index: 10;
     top: 0px;
@@ -1246,6 +1255,10 @@ select {
 .page.messages .messages
     section#messages {
 	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 }
 @media (min-width: 640px) {
 	.page.messages .messages
@@ -1416,12 +1429,6 @@ body {
 	margin-top: 2rem;
 	margin-bottom: 2rem;
 }
-.container {
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-}
 .flex-columns-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -1433,6 +1440,10 @@ body {
     }
 .columns {
 	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 }
 @media (min-width: 640px) {
 	.columns {
@@ -1663,6 +1674,10 @@ body {
 }
 [data-content-type='row'][data-appearance='contained'] {
 	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 }
 @media (min-width: 640px) {
 	[data-content-type='row'][data-appearance='contained'] {
@@ -2429,6 +2444,7 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 	position: relative;
 }
 .sticky {
+	position: -webkit-sticky;
 	position: sticky;
 }
 .inset-0 {
@@ -2576,9 +2592,6 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .ml-auto {
 	margin-left: auto;
 }
-.mr-4 {
-	margin-right: 1rem;
-}
 .mb-12 {
 	margin-bottom: 3rem;
 }
@@ -2632,6 +2645,9 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 }
 .mb-2 {
 	margin-bottom: 0.5rem;
+}
+.mr-4 {
+	margin-right: 1rem;
 }
 .mr-10 {
 	margin-right: 2.5rem;
@@ -3061,11 +3077,11 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .gap-8 {
 	gap: 2rem;
 }
-.gap-2 {
-	gap: 0.5rem;
-}
 .gap-4 {
 	gap: 1rem;
+}
+.gap-2 {
+	gap: 0.5rem;
 }
 .gap-1\.5 {
 	gap: 0.375rem;
