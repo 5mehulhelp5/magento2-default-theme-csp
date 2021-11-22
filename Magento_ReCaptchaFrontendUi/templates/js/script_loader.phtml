@@ -19,20 +19,19 @@ use Magento\Framework\View\Element\Template;
 /** @var $storeConfig StoreConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
 $siteKey = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/public_key');
+$siteKeyV2 = $storeConfig->getStoreConfig('recaptcha_frontend/type_invisible/private_key');
 ?>
-<?php if ($siteKey): ?>
+
+<?php if ($siteKey || $siteKeyV2): ?>
 <script>
     'use strict';
-
     (function() {
 
-        const recaptchaUrl = "https://www.google.com/recaptcha/api.js?render=<?= $escaper->escapeJs($siteKey) ?>";
-
+        const recaptchaUrl = "https://www.google.com/recaptcha/api.js<?= $siteKey ? '?render=' . $escaper->escapeJs($siteKey) : '' ?>";
         const loadRecaptchaScript = (event) => {
             if (typeof window.grecaptcha !== 'undefined' || !event.target.form) {
                 return
             }
-
             let script = document.createElement('script');
             script.setAttribute('type', 'text/javascript');
             script.setAttribute('src', recaptchaUrl);
