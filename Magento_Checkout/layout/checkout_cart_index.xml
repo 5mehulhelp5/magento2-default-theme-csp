@@ -10,7 +10,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="checkout_cart_item_renderers"/>
-    <update handle="catalog_list_item" />
+    <update handle="hyva_product_slider" />
     <body>
         <referenceBlock name="header-content">
             <arguments>

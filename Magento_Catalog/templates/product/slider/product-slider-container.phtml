@@ -39,7 +39,6 @@ $viewMode = 'grid';
 $imageDisplayArea = 'category_page_grid';
 $showDescription = false;
 
-$uniqueId = '_' . uniqid();
 $title = (string) $block->getTitle();
 $items = $block->getItems() ?? [];
 if (is_object($items) && $items instanceof Iterator) {
@@ -54,41 +53,11 @@ $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
     ?? $block->getLayout()->createBlock(Template::class);
 
 ?>
-<script>
-    function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
-        return {
-            active: 0,
-            itemCount: <?= count($items) ?>,
-            getSlider() {
-                return this.$el.querySelector('.js_slides');
-            },
-            pageSize: 4,
-            pageFillers: 0,
-            calcPageSize() {
-                const slider = this.getSlider();
-                if (slider) {
-                    this.pageSize = Math.round(slider.clientWidth / slider.querySelector('.js_slide').clientWidth);
-                    this.pageFillers = (
-                        this.pageSize * Math.ceil(this.itemCount / this.pageSize)
-                    ) - this.itemCount;
-                }
-            },
-            calcActive() {
-                const slider = this.getSlider();
-                if (slider) {
-                    const activeFirstSlide = slider.scrollLeft / (slider.scrollWidth / (this.itemCount + this.pageFillers));
-                    this.active = Math.floor(activeFirstSlide / this.pageSize) * this.pageSize;
-                }
-            }
-        }
-    }
-
-</script>
 <section class="<?=
     $escaper->escapeHtmlAttr($block->getData('maybe_purged_tailwind_section_classes'))
     ?: 'my-12 text-gray-700 body-font';
 ?>"
-         x-data="initSliderComponent<?= /** @noEscape */ $uniqueId?>()"
+         x-data="initSliderComponent()"
          x-init="calcPageSize();"
          @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
 >
@@ -150,9 +119,7 @@ $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
                         tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active === 0 }"
-                        @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / (itemCount + pageFillers)) * (active-pageSize);
-                            active -= pageSize;">
+                        @click="goPrevious">
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <?php for ($i=0; $i < $itemCount; $i++): ?>
@@ -161,19 +128,15 @@ $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
                                     'bg-opacity-100': active === <?= (int) $i ?>,
                                     'hidden': (pageSize !== 1 && !!(<?= (int) $i ?> % pageSize))
                                     }"
-                                @click="getSlider().scrollLeft =
-                                    Math.floor(getSlider().scrollWidth / (itemCount + pageFillers)) * <?= (int) $i ?>;
-                                    active=<?= (int) $i ?>;">
+                                @click="goTo(<?= (int) $i ?>)">
                         </span>
                     <?php endfor; ?>
                     <button
                         aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
                         tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
-                        :class="{ 'invisible' : active >= itemCount-pageSize }"
-                        @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / (itemCount + pageFillers)) * (active+pageSize);
-                            active += pageSize">
+                        :class="{ 'invisible' : active >= itemCount - pageSize }"
+                        @click="goNext">
                         <?= $heroicons->chevronRightHtml("w-5 h-5", 25, 25) ?>
                     </button>
                 </div>

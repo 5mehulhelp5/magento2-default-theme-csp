@@ -35,7 +35,7 @@ $compareViewModel     = $viewModels->require(ProductCompare::class);
 $storeViewModel       = $viewModels->require(Store::class);
 
 $categoryIds       = array_filter(explode(',', $block->getData('category_ids') ?: ''));
-$pageSize          = $block->getData('page_size') ?: 18;
+$pageSize          = $block->getData('page_size') ?: 8;
 $priceFrom         = $block->getData('price_from');
 $priceTo           = $block->getData('price_to');
 $sortAttribute     = $block->getData('sort_attribute') ?: 'position';
@@ -43,6 +43,9 @@ $sortDirection     = $block->getData('sort_direction') ?: 'ASC';
 $title             = $block->getData('title') ?: '';
 $type              = $block->getData('type');
 $additionalFilters = (array) $block->getData('additional_filters');
+$itemTemplate      = $block->getData('item_template') ?? 'Magento_Catalog::product/list/item.phtml';
+$containerTemplate = $block->getData('container_template') ?? 'Magento_Catalog::product/slider/product-slider-container.phtml';
+
 
 if ($categoryIds) {
     $productListViewModel->addFilter('category_id', $categoryIds, 'in');
@@ -79,15 +82,10 @@ if (in_array($type, ['related', 'upsell', 'crosssell'], true)) {
     $items = $productListViewModel->getItems();
 }
 
-
 ?>
 <div x-data="">
     <?=
-    $sliderViewModel->getSliderForItems(
-        'Magento_Catalog::product/list/item.phtml',
-        $items,
-        'Magento_Catalog::product/slider/product-slider-container.phtml'
-    )->setData('title', $title)->toHtml();
+    $sliderViewModel->getSliderForItems($itemTemplate, $items, $containerTemplate)->setData('title', $title)->toHtml();
     ?>
 </div>
 <script>

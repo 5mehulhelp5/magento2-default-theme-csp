@@ -9,10 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\BlockCache;
-use Hyva\Theme\ViewModel\CurrentCategory;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\Store;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
@@ -29,7 +26,6 @@ $viewModelStore = $viewModels->require(Store::class);
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
-$uniqueId = '_' . uniqid();
 $title = (string) $block->getTitle();
 $items = $block->getItems() ?? [];
 if (is_object($items) && $items instanceof Iterator) {
@@ -40,44 +36,13 @@ if (!$itemCount = count($items)) {
 }
 $sliderItemRenderer = $block->getChildBlock('slider.item.template');
 ?>
-<script>
-    function initSliderComponent<?= /** @noEscape */$uniqueId ?>() {
-        return {
-            active: 0,
-            itemCount: <?= count($items) ?>,
-            getSlider() {
-                return this.$el.querySelector('.js_slides');
-            },
-            pageSize: 4,
-            pageFillers: 0,
-            calcPageSize() {
-                const slider = this.getSlider();
-                if (slider) {
-                    this.pageSize = Math.round(slider.clientWidth / slider.querySelector('.js_slide').clientWidth);
-                    this.pageFillers = (
-                        this.pageSize * Math.ceil(this.itemCount / this.pageSize)
-                    ) - this.itemCount;
-                }
-            },
-            calcActive(event) {
-                const slider = this.getSlider();
-                if (slider) {
-                    this.active = Math.ceil(
-                        Math.round(
-                            slider.scrollLeft / (slider.scrollWidth / this.itemCount)
-                        ) / this.pageSize
-                    ) * this.pageSize;
-                }
-            }
-        }
-    }
+<?= $block->fetchView($block->getTemplateFile('Magento_Theme::elements/slider-php-js.phtml')) ?>
 
-</script>
 <section class="<?=
     $escaper->escapeHtmlAttr($block->getData('maybe_purged_tailwind_section_classes'))
     ?: 'my-12 text-gray-700 body-font';
 ?>"
-         x-data="initSliderComponent<?= /** @noEscape */ $uniqueId?>()"
+         x-data="initSliderComponent()"
          x-init="calcPageSize();"
          @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
 >
@@ -121,8 +86,7 @@ $sliderItemRenderer = $block->getChildBlock('slider.item.template');
                         tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active === 0 }"
-                        @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / itemCount) * (active-pageSize); active=active-pageSize;">
+                        @click="goPrevious">
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <?php for ($i=0; $i < $itemCount; $i++): ?>
@@ -131,10 +95,7 @@ $sliderItemRenderer = $block->getChildBlock('slider.item.template');
                                     'bg-opacity-100': active === <?= (int) $i ?>,
                                     'hidden': (pageSize !== 1 && !!(<?= (int) $i ?> % pageSize))
                                     }"
-                                @click="
-                        getSlider().scrollLeft = (getSlider().scrollWidth / itemCount) * <?= (int) $i ?>;
-                        active=<?= (int) $i ?>;
-                                    ">
+                                @click="goTo(<?= (int) $i ?>)">
                         </span>
                     <?php endfor; ?>
                     <button
@@ -142,8 +103,7 @@ $sliderItemRenderer = $block->getChildBlock('slider.item.template');
                         tabindex="-1"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
                         :class="{ 'invisible' : active >= itemCount-pageSize }"
-                        @click="getSlider().scrollLeft =
-                            (getSlider().scrollWidth / itemCount) * (active+pageSize); active=active+pageSize">
+                        @click="goNext">
                         <?= $heroicons->chevronRightHtml("w-5 h-5", 25, 25) ?>
                     </button>
                 </div>
