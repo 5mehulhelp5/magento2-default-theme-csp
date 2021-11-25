@@ -47,6 +47,10 @@
                     <argument name="page_size" xsi:type="string">8</argument>
                     <argument name="sort_attribute" xsi:type="string">price</argument>
                     <argument name="sort_direction" xsi:type="string">DESC</argument>
+<!--
+                    <argument name="hide_rating_summary" xsi:type="boolean">true</argument>
+                    <argument name="hide_details" xsi:type="boolean">true</argument>
+-->
                 </arguments>
             </block>
         </referenceContainer>
