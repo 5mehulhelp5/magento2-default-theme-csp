@@ -670,19 +670,19 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                         The following code attempts to find a matching label for the tax rate.
                          */
                         const findTotalByCode = code => result.total_segments.filter(tax => tax.code === code)[0] || {};
-                        let appliedTaxes = [];
-                        if (findTotalByCode('tax').value) {
-                            const taxes = findTotalByCode('tax');
-                            const taxDetails = taxes.extension_attributes &&
-                                taxes.extension_attributes.tax_grandtotal_details &&
-                                taxes.extension_attributes.tax_grandtotal_details[0];
-                            appliedTaxes = [{
-                                amount: {currency: this.currentCurrency, value: result.tax_amount},
-                                label: taxDetails.rates && taxDetails.rates[0].title ||
-                                    taxes.title ||
-                                    '<?= $escaper->escapeHtmlAttr(__('Tax')) ?>'
-                            }]
-                        }
+
+                        const taxTotal = findTotalByCode('tax');
+                        const grandTotalTaxDetails = taxTotal.value &&
+                            taxTotal.extension_attributes &&
+                            taxTotal.extension_attributes.tax_grandtotal_details || [];
+
+                        const appliedTaxes = grandTotalTaxDetails.map(tax => {
+                            return {
+                                amount: {currency: this.currentCurrency, value: tax.amount},
+                                label: tax.rates[0].title || '<?= $escaper->escapeJs(__('Tax')) ?>',
+                            }
+                        })
+
                         let discounts = null;
                         if (result.coupon_code) {
                             this.cartData.applied_coupons = [{code: result.coupon_code}]
@@ -695,6 +695,7 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                                 }
                             ]
                         }
+
                         this.cartData.prices = {
                             applied_taxes: appliedTaxes,
                             discounts: discounts,
