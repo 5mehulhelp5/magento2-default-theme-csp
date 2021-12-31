@@ -142,7 +142,9 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                     this.cartData.items &&
                     Object.keys(this.cartData.items).length
                 );
-                this.initEstimateShipping();
+                if (this.showEstimateShipping) {
+                    this.initEstimateShipping();
+                }
                 window.dispatchEvent(new CustomEvent('cart-data-updated', {detail: {cart: this.cartData}}));
             },
             dispatchCouponMutationRequest() {
@@ -366,6 +368,7 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                     this.initEstimationRegionByCountry(country);
                 }
                 this.setEstimationPostcode(estimateShippingState.postcode || this.getEstimationPostcode());
+                this.estimateShippingRequest();
             },
             getCountriesByCustomerSectionData(data) {
                 // this is a required initialization method, called after section data is received
@@ -669,24 +672,35 @@ $directoryViewModel = $viewModels->require(DirectoryViewModel::class);
                         The following code attempts to find a matching label for the tax rate.
                          */
                         const findTotalByCode = code => result.total_segments.filter(tax => tax.code === code)[0] || {};
-                        let appliedTaxes = [];
-                        if (findTotalByCode('tax').value) {
-                            const taxes = findTotalByCode('tax');
-                            const taxDetails = taxes.extension_attributes &&
-                                taxes.extension_attributes.tax_grandtotal_details &&
-                                taxes.extension_attributes.tax_grandtotal_details[0];
-                            appliedTaxes = [{
-                                amount: {currency: this.currentCurrency, value: result.tax_amount},
-                                label: taxDetails.rates && taxDetails.rates[0].title ||
-                                    taxes.title ||
-                                    '<?= $escaper->escapeHtmlAttr(__('Tax')) ?>'
-                            }]
-                        }
 
+                        const taxTotal = findTotalByCode('tax');
+                        const grandTotalTaxDetails = taxTotal.value &&
+                            taxTotal.extension_attributes &&
+                            taxTotal.extension_attributes.tax_grandtotal_details || [];
+
+                        const appliedTaxes = grandTotalTaxDetails.map(tax => {
+                            return {
+                                amount: {currency: this.currentCurrency, value: tax.amount},
+                                label: tax.rates[0].title || '<?= $escaper->escapeJs(__('Tax')) ?>',
+                            }
+                        })
+
+                        let discounts = null;
+                        if (result.coupon_code) {
+                            this.cartData.applied_coupons = [{code: result.coupon_code}]
+                            discounts = [
+                                {
+                                    label: result.coupon_code,
+                                    amount: {
+                                        value: Math.abs(result.discount_amount)
+                                    }
+                                }
+                            ]
+                        }
 
                         this.cartData.prices = {
                             applied_taxes: appliedTaxes,
-                            discounts: null,
+                            discounts: discounts,
                             grand_total: {
                                 currency: result.quote_currency_code,
                                 value: findTotalByCode('grand_total').value || result.grand_total
