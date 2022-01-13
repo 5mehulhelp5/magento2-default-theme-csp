@@ -687,51 +687,29 @@ select {
 	padding-right: 1.5rem;
 	padding-left: 1.5rem;
 }
-.\!container {
-	width: 100% !important;
-	margin-right: auto !important;
-	margin-left: auto !important;
-	padding-right: 1.5rem !important;
-	padding-left: 1.5rem !important;
-}
 @media (min-width: 640px) {
 	.container {
 		max-width: 640px;
-	}
-	.\!container {
-		max-width: 640px !important;
 	}
 }
 @media (min-width: 768px) {
 	.container {
 		max-width: 768px;
 	}
-	.\!container {
-		max-width: 768px !important;
-	}
 }
 @media (min-width: 1024px) {
 	.container {
 		max-width: 1024px;
-	}
-	.\!container {
-		max-width: 1024px !important;
 	}
 }
 @media (min-width: 1280px) {
 	.container {
 		max-width: 1280px;
 	}
-	.\!container {
-		max-width: 1280px !important;
-	}
 }
 @media (min-width: 1536px) {
 	.container {
 		max-width: 1536px;
-	}
-	.\!container {
-		max-width: 1536px !important;
 	}
 }
 .prose {
@@ -2426,14 +2404,14 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 	white-space: nowrap;
 	border-width: 0;
 }
+.pointer-events-none {
+	pointer-events: none;
+}
 .visible {
 	visibility: visible;
 }
 .invisible {
 	visibility: hidden;
-}
-.static {
-	position: static;
 }
 .fixed {
 	position: fixed;
@@ -2443,10 +2421,6 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 }
 .relative {
 	position: relative;
-}
-.sticky {
-	position: -webkit-sticky;
-	position: sticky;
 }
 .inset-0 {
 	top: 0px;
@@ -2520,6 +2494,9 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 }
 .m-2 {
 	margin: 0.5rem;
+}
+.m-1 {
+	margin: 0.25rem;
 }
 .m-auto {
 	margin: auto;
@@ -2735,9 +2712,6 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .table {
 	display: table;
 }
-.table-caption {
-	display: table-caption;
-}
 .grid {
 	display: grid;
 }
@@ -2867,9 +2841,6 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .w-9 {
 	width: 2.25rem;
 }
-.w-6\/12 {
-	width: 50%;
-}
 .w-16 {
 	width: 4rem;
 }
@@ -2996,14 +2967,6 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 	   -moz-user-select: none;
 	    -ms-user-select: none;
 	        user-select: none;
-}
-.select-all {
-	-webkit-user-select: all;
-	   -moz-user-select: all;
-	        user-select: all;
-}
-.resize {
-	resize: both;
 }
 .list-disc {
 	list-style-type: disc;
@@ -3663,11 +3626,11 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .opacity-0 {
 	opacity: 0;
 }
-.opacity-100 {
-	opacity: 1;
-}
 .opacity-25 {
 	opacity: 0.25;
+}
+.opacity-100 {
+	opacity: 1;
 }
 .opacity-50 {
 	opacity: 0.5;
@@ -3715,9 +3678,8 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .ring-opacity-75 {
 	--tw-ring-opacity: 0.75;
 }
-.blur {
-	--tw-blur: blur(8px);
-	filter: var(--tw-filter);
+.ring-offset-2 {
+	--tw-ring-offset-width: 2px;
 }
 .filter {
 	filter: var(--tw-filter);
@@ -3924,6 +3886,11 @@ fieldset ~ fieldset {
 .focus-within\:ring-1:focus-within {
 	--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
 	--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.focus-within\:ring-2:focus-within {
+	--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+	--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
 	box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 .hover\:border-primary:hover {
@@ -4342,6 +4309,10 @@ fieldset ~ fieldset {
 		padding-left: 1.5rem;
 		padding-right: 1.5rem;
 	}
+	.md\:px-1 {
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
+	}
 	.md\:py-6 {
 		padding-top: 1.5rem;
 		padding-bottom: 1.5rem;
@@ -4567,5 +4538,9 @@ fieldset ~ fieldset {
 	}
 	.xl\:border-none {
 		border-style: none;
+	}
+	.xl\:px-2 {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
 	}
 }
