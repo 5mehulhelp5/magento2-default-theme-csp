@@ -55,6 +55,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                                 <div class="hidden">
                                     <?= $escaper->escapeHtml($vote->getRatingCode()) ?>
                                 </div>
+                                <span class="hidden" itemprop="ratingValue"><?= $starsFilled; ?></span>
                                 <div class="flex flex-row">
                                     <?php $i = 0; ?>
                                     <?php while ($i < $starsFilled): ?>
