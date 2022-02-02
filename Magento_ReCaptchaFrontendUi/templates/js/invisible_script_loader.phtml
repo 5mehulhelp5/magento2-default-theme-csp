@@ -9,15 +9,13 @@
 ?>
 
 if (!this.hasCaptchaToken) {
-    if ($form) {
-        window[$form.querySelector('div.g-recaptcha').dataset.callback] = () => {
-            this.errors = 0;
-            this.hasCaptchaToken = 1;
-            this.submitForm();
-        }
+    window.googleRecaptchaCallback = (token) => {
+        $form['g-recaptcha-response'].value = token;
+        this.errors = 0;
+        this.hasCaptchaToken = 1;
+        this.submitForm();
     }
 
     this.errors = 1;
-
     grecaptcha.execute();
 }
