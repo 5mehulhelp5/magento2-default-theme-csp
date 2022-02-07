@@ -1,4 +1,5 @@
-# Changelog
+# Changelog - Default Theme
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
@@ -6,7 +7,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.11...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.12...main
+
+## [1.1.12] - 2022-02-07
+
+[1.1.12]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.1.11...1.1.12
+
+### Added
+
+- **Add extra action block to cart drawer**
+
+  This is  new extension point that allows displaying additional checkout option buttons.
+  In Luma, this block was rendered as HTML server side but then displayed using JavaScript.
+  In Hyvä, the block is rendered server side.
+
+  More information can be found in the [merge request #386](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/386)
+
+  Many thanks to Ravinder (redChamps) for the contribution!
+
+### Changed
+
+- **Bugfix: Resolve "Users cannot scroll on mobile menu"
+
+  Please refer to [issue #301](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/301) for more information.
+
+  Thanks to Ben Crook (Space48) for reporting!
+
+### Removed
+
+- Nothing
 
 ## [1.1.11] - 2022-01-28
 
@@ -188,7 +217,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 If you're upgrading from <1.1.8 please check the documentation page on upgrading. Any additional information and known bugs/issues to this release will be documented there.
 
-[1.1.9 Upgrading docs](https://docs.hyva.io/doc/upgrading-to-119-EVHqOIvJzs)
+[1.1.9 Upgrading docs](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-1-9.html)
 
 ### Added
 
@@ -337,7 +366,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
 - **Use GraphQL variables instead of string replacements**
 
   This fixes a number of issues related to parameter escaping and serialization as well as making the queries
-  editable with the GraphqlEditor as described [in the docs](https://docs.hyva.io/doc/customizing-graphql-vtjgCN6FzD).
+  editable with the GraphqlEditor as described [in the docs](https://docs.hyva.io/hyva-themes/writing-code/customizing-graphql.html).
 
   A new GraphQlQueriesWithVariables view model provides the matching queries. The old GraphQlQueries view model still
   exists unchanged for backward compatibility.
