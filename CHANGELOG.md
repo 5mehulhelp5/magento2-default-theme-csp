@@ -27,7 +27,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Nothing
+- **Bugfix: Resolve "Users cannot scroll on mobile menu"
+
+  Please refer to [issue #301](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/301) for more information.
+
+  Thanks to Ben Crook (Space48) for reporting!
 
 ### Removed
 
