@@ -145,13 +145,11 @@ use Magento\Framework\View\Element\Template;
             },
             getAttributeOptionLabel(option) {
                 const optionProduct = this.findProductIdToUseForOptionPrice(option);
-                if (! optionProduct || optionProduct === this.productIndex) {
+                if ((! optionProduct) || (optionProduct === this.productIndex)) {
                     return option.label;
                 }
 
-                const currentPrice = this.optionConfig.optionPrices[this.productIndex]
-                    ? this.optionConfig.optionPrices[this.productIndex].finalPrice.amount
-                    : this.optionConfig.prices.finalPrice.amount; // default price if no current option selection
+                const currentPrice = this.getOptionPriceAdjustmentBasePrice();
 
                 if (this.optionConfig.optionPrices[optionProduct]) {
                     const optionPrice = this.optionConfig.optionPrices[optionProduct].finalPrice.amount;
@@ -160,6 +158,15 @@ use Magento\Framework\View\Element\Template;
                     }
                 }
                 return option.label;
+            },
+            getOptionPriceAdjustmentBasePrice() {
+                if (this.optionConfig.optionPrices[this.productIndex]) {
+                    return this.optionConfig.optionPrices[this.productIndex].finalPrice.amount
+                }
+                const cheapestForSelection = this.findCheapestProductForPartialSelection(this.selectedValues);
+                return this.optionConfig.optionPrices[cheapestForSelection]
+                    ? this.optionConfig.optionPrices[cheapestForSelection].finalPrice.amount
+                    : this.optionConfig.prices.finalPrice.amount; // default price if no option selection
             },
             changeOption(optionId, value) {
                 this.selectedValues[optionId] = value;
