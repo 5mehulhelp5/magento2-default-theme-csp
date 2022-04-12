@@ -32,6 +32,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
   More information can be found in the [issue #363](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/363)
 
+- **Add i18n/en_US.csv with all Hyvä specific strings**
+
+  This can serve as a base for custom translations.  
+  Note: Some pre-made localizations are available at https://gitlab.hyva.io/hyva-themes/internationalization (de_DE, es_ES, fr_FR, it_IRT, nl_NL, pl_PL)
+
+  More information can be found in the [merge request #223](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/223)
+
+  Many thanks to Alexander Menk (iMi digital GmbH) for the contribution!
+
 ### Changed
 
 - **Fix z-index issue on homepage for page messages**
