@@ -1224,21 +1224,6 @@ select {
 	--tw-ring-color: rgba(30, 64, 175, var(--tw-ring-opacity));
 	--tw-ring-opacity: 0.5;
 }
-.field {
-	display: inline-table;
-}
-.field.messages {
-	font-size: 0.875rem;
-	line-height: 1.25rem;
-}
-.field.field--error .messages {
-	--tw-text-opacity: 1;
-	color: rgba(239, 68, 68, var(--tw-text-opacity));
-}
-.field.generated-wrapper {
-    margin-top: 0;
-    margin-bottom: 0;
-}
 .page.messages {
 	position: -webkit-sticky;
 	position: sticky;
@@ -2740,6 +2725,9 @@ a.pagebuilder-button-secondary:focus, button.pagebuilder-button-secondary:focus,
 .mr-8 {
 	margin-right: 2rem;
 }
+.mt-10 {
+	margin-top: 2.5rem;
+}
 .box-content {
 	box-sizing: content-box;
 }
@@ -3881,7 +3869,10 @@ body > div > div.grecaptcha-badge {
 }
 form .field, fieldset .field {
 	margin-top: 0.75rem;
-	margin-bottom: 0.75rem;
+	margin-bottom: 1.75rem;
+}
+form .field.generated-wrapper, fieldset .field.generated-wrapper {
+	margin: 0px;
 }
 form label, fieldset label {
 	margin-bottom: 0.5rem;
@@ -3898,6 +3889,20 @@ form .field.choice input, fieldset .field.choice input {
 }
 form .field.choice label, fieldset .field.choice label {
 	margin-bottom: 0px;
+}
+form .field ul, fieldset .field ul {
+	margin-bottom: -1.5rem;
+}
+form .field .messages, fieldset .field .messages {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+form .field.generated-wrapper .messages, fieldset .field.generated-wrapper .messages {
+	margin: 0px;
+}
+form .field.field--error .messages, fieldset .field.field--error .messages {
+	--tw-text-opacity: 1;
+	color: rgba(239, 68, 68, var(--tw-text-opacity));
 }
 form legend, fieldset legend {
 	margin-bottom: 0.75rem;

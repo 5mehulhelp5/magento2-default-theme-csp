@@ -12,20 +12,3 @@
         @apply border-primary-lighter ring ring-primary ring-opacity-50;
     }
 }
-
-.field {
-    @apply inline-table;
-    
-    &.messages {
-        @apply text-sm;
-    }
-}
-
-.field.field--error .messages {
-    @apply text-red-500;
-}
-
-.field.generated-wrapper {
-    margin-top: 0;
-    margin-bottom: 0;
-}

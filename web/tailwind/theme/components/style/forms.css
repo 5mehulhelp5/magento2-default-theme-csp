@@ -1,7 +1,11 @@
 form,
 fieldset {
     .field {
-        @apply my-3;
+        @apply mt-3 mb-7;
+    }
+
+    .field.generated-wrapper {
+        @apply m-0;
     }
 
     label {
@@ -18,6 +22,22 @@ fieldset {
 
     .field.choice label {
         @apply mb-0
+    }
+
+    .field ul {
+        @apply -mb-6;
+    }
+
+    .field .messages {
+        @apply text-sm;
+    }
+
+    .field.generated-wrapper .messages {
+        @apply m-0;
+    }
+
+    .field.field--error .messages {
+        @apply text-red-500;
     }
 
     legend {
