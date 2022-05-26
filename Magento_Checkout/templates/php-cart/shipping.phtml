@@ -314,7 +314,7 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
                 return [];
             },
             hasAvailableRegions() {
-                return this.cartData.address.countryId && this.getAvailableRegions().length
+                return this.cartData.address && this.cartData.address.countryId && this.getAvailableRegions().length
             },
             displayError(error) {
                 if (error.name === 'AbortError') {
