@@ -41,8 +41,6 @@
                     <container name="category.product.list.additional" as="additional" label="Additional Info" after="product_list_toolbar" />
                 </block>
             </block>
-            <block class="Magento\Framework\View\Element\Template" name="cms.block.main"
-                   template="Magento_Catalog::category/cms.block.main.phtml"/>
         </referenceContainer>
 
         <referenceBlock name="product.price.render.default">
