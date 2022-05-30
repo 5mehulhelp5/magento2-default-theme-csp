@@ -81,8 +81,8 @@
 
         <referenceContainer name="footer">
             <block name="footer-content" template="Magento_Theme::html/footer.phtml">
-                <block name="footer-static-links" template="Magento_Theme::html/footer/links.phtml"/>
-                <block class="Magento\Cms\Block\Block" name="footer-cms-content">
+                <block name="footer-static-links" template="Magento_Theme::html/footer/links.phtml" group="footer"/>
+                <block class="Magento\Cms\Block\Block" name="footer-cms-content" group="footer">
                     <arguments>
                         <argument name="block_id" xsi:type="string">footer_content</argument>
                     </arguments>
