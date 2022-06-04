@@ -40,16 +40,11 @@ $formId = 'review_form';
 /** @var GraphqlViewModel $gqlViewModel */
 $gqlViewModel = $viewModels->require(GraphqlViewModel::class);
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('product_review')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE];
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on Magento_ReCaptchaReview module
+/** @var ReCaptcha $recaptcha */
+$recaptcha = $block->getData('viewModelRecaptcha');
+
 ?>
 <div class="mx-auto py-6 items-center" id="review-form">
     <div class="card w-full px-6 py-3">
@@ -64,7 +59,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                   x-data="initReviewForm()"
             >
                 <?= $block->getChildHtml('form_fields_before') ?>
-                <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml('product_review') : '' ?>
                 <fieldset>
                     <legend class="text-xs">
                         <span>
@@ -233,7 +228,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                         </template>
                     </div>
                     <?= $block->getChildHtml('form_additional_after') ?>
-                    <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+                    <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('product_review') : '' ?>
                 </div>
             </form>
 
@@ -258,10 +253,10 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                         },
                         submitForm: function () {
                             // Do not remove $form. The variable is used in the recaptcha child template.
-                            let $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
+                            const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
                             this.validate();
 
-                            <?= $block->getChildHtml('recaptcha_validation'); ?>
+                            <?= $recaptcha ? $recaptcha->getValidationJsHtml('product_review') : '' ?>
 
                             if (this.errors === 0) {
                                 this.placeReview();
@@ -339,6 +334,7 @@ mutation createProductReviewMutation(
                             };
 
                             const form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
+
                             const recaptchaHeader = form && form.elements['g-recaptcha-response']
                                 ? {'X-ReCaptcha': form.elements['g-recaptcha-response'].value}
                                 : {};

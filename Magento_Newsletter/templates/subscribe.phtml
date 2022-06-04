@@ -15,20 +15,14 @@ use Magento\Newsletter\Block\Subscribe;
 /** @var Subscribe $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-
+/** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
+
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputField = '';
-$recaptchaLegalNotice = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('newsletter')) {
-    $recaptchaInputField = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD]);
-    $recaptchaLegalNotice = $block->getBlockHtml($recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE]);
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaNewsletter module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <div class="pr-4 lg:w-1/4 md:w-1/2">
     <form class="form subscribe"
@@ -54,7 +48,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
             <button class="inline-flex flex-shrink-0 ml-auto xl:mt-0 btn btn-primary">
                 <?= $escaper->escapeHtml(__('Subscribe')) ?>
             </button>
-            <?= /** @noEscape */ $recaptchaInputField ?>
+            <?= $recaptcha ? $recaptcha->getInputHtml('newsletter') : '' ?>
         </div>
         <div>
             <template x-if="displayErrorMessage">
@@ -70,7 +64,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </div>
     </form>
     <div class="w-full">
-    <?= /** @noEscape */ $recaptchaLegalNotice ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('newsletter') : '' ?>
     </div>
     <script>
         function initNewsletterForm() {
@@ -84,9 +78,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     this.displayErrorMessage = this.errorMessages.length
                 },
                 submitForm() {
-                    // Do not rename $form, the variable is expected to be declared in the child block output
+                    // Do not rename $form, the variable is expected to be declared in the recaptcha output
                     const $form = document.querySelector('#newsletter-validate-detail');
-                    <?= $block->getChildHtml('recaptcha_validation_newsletter'); ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('newsletter') : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

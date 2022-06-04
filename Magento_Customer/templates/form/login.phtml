@@ -17,20 +17,14 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 /** @var Escaper $escaper */
 /** @var Login $block */
 /** @var ViewModelRegistry $viewModels */
-
+/** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
+
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('customer_login')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE];
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on the Magento_ReCaptchaCustomer module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
 <div class="w-full md:w-1/2 card mr-4">
     <div aria-labelledby="block-customer-login-heading">
@@ -82,7 +76,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     </div>
                 </div>
 
-                <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml('customer_login') : '' ?>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
                         <button type="submit" class="btn btn-primary" name="send">
@@ -108,7 +102,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </form>
     </div>
     <div class="w-full">
-        <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
     </div>
     <script>
         function initCustomerLoginForm() {
@@ -122,9 +116,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                     this.displayErrorMessage = this.errorMessages.length
                 },
                 submitForm() {
-                    // do not rename $form - it is the expected name in the child block output
+                    // do not rename $form, the variable is the expected name in the recaptcha output
                     const $form = document.querySelector('#customer-login-form');
-                    <?= $block->getChildHtml('recaptcha_validation_customer_login'); ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml('customer_login') : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();

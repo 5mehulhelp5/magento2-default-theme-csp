@@ -16,33 +16,54 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
+// This is the reCaptcha v3 invisible script loader
+
 /** @var $storeConfig StoreConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
-$siteKey = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/public_key');
+$siteKeyV3   = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha_v3/public_key');
+
+if (! $siteKeyV3) {
+    // No v3 google API credentials configured
+    return;
+}
+
 ?>
-<?php if ($siteKey): ?>
-    <script>
-        'use strict';
+<script>
+    'use strict';
 
-        (function() {
+    const grecaptchaV2LoadCallbacks = [];
 
-            const recaptchaUrl = "https://www.google.com/recaptcha/api.js?render=<?= $escaper->escapeJs($siteKey) ?>";
+    function executeRecaptchaLoadCallbacks () {
+        while (window.grecaptcha && grecaptchaV2LoadCallbacks.length > 0) {
+            const callback = grecaptchaV2LoadCallbacks.pop();
+            typeof callback === 'string' ? window[callback]() : callback();
+        }
+    }
 
-            const loadRecaptchaScript = (event) => {
-                if (typeof window.grecaptcha !== 'undefined' || !event.target.form) {
-                    return
-                }
+    (function() {
+        const loadRecaptchaScript = (event) => {
 
-                let script = document.createElement('script');
-                script.setAttribute('type', 'text/javascript');
-                script.setAttribute('src', recaptchaUrl);
-                document.head.appendChild(script);
+            if (window.grecaptcha || !event.target.form) {
+                return;
             }
 
-            document.body.addEventListener("input", loadRecaptchaScript, { once: true });
-            document.body.addEventListener("focus", loadRecaptchaScript, { once: true });
+            const url = 'https://www.google.com/recaptcha/api.js?onload=executeRecaptchaLoadCallbacks';
+            const siteKey = '<?= $escaper->escapeJs($siteKeyV3) ?>';
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = siteKey ? `${url}&render=${siteKey}` : url;
+            script.async = true;
+            document.head.appendChild(script);
+        }
 
-        }());
+        window.forceLoadRecaptchaScript = () => {
+            loadRecaptchaScript({target: {form: 'dummy'}});
+            executeRecaptchaLoadCallbacks();
+        };
 
-    </script>
-<?php endif; ?>
+        document.body.addEventListener("input", loadRecaptchaScript, { once: true });
+        document.body.addEventListener("focus", loadRecaptchaScript, { once: true });
+
+    }());
+
+</script>
