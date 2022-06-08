@@ -8,12 +8,15 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 
-/** @var Wishlist $viewModels */
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
 /** @var Template $block */
 /** @var HeroiconsOutline $heroiconsOutline */
@@ -51,23 +54,20 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
                     } else if (response.ok) {
                         return response.json();
                     } else {
-                        typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
-                            [{ type: "warning", text: messages.warning }], 5000
-                        );
+                        const message = { type: "warning", text: messages.warning };
+                        window.dispatchMessages && window.dispatchMessages([message], 5000);
                     }
                 }).then(function (response) {
                     if (!response) return;
-                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
-                        [{
-                            type: (response.success) ? "success" : "error",
-                            text: (response.success) ? messages.success : response.error_message
-                        }], 5000
-                    );
+                    const message = {
+                        type: (response.success) ? "success" : "error",
+                        text: (response.success) ? messages.success : response.error_message
+                    }
+                    window.dispatchMessages && window.dispatchMessages([message], 5000);
                     window.dispatchEvent(new CustomEvent("reload-customer-section-data"));
                 }).catch(function (error) {
-                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
-                        [{ type: "error", text: error }], 5000
-                    );
+                    const message = { type: "error", text: error };
+                    window.dispatchMessages && window.dispatchMessages([message], 5000);
                 });
             }
 
@@ -87,13 +87,13 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
                 addToCart: function (json) {
                     const obj = JSON.parse(json);
                     const postUrl = obj.action;
-                    const body = "form_key="+ hyva.getFormKey() + "&item="+obj.data.item+"&qty="+obj.data.qty+"&uenc="+btoa(window.location.href);
+                    const body = "form_key=" + hyva.getFormKey() + "&item=" + obj.data.item + "&qty=" + obj.data.qty + "&uenc=" + btoa(window.location.href);
                     wishlistSidebarFetchHandler(body, postUrl, /* isRemoveAction */ false);
                 },
                 removeFromWishlist: function(json) {
                     const obj = JSON.parse(json);
                     const postUrl = obj.action;
-                    const body = "form_key="+ hyva.getFormKey() + "&item="+obj.data.item+"&uenc="+btoa(window.location.href);
+                    const body = "form_key=" + hyva.getFormKey() + "&item=" + obj.data.item+"&uenc=" + btoa(window.location.href);
                     wishlistSidebarFetchHandler(body, postUrl);
                 }
             }
