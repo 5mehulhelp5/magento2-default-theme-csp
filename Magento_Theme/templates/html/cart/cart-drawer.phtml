@@ -9,8 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\StoreConfig as StoreConfigAlias;
-use Magento\Checkout\Block\Cart\Sidebar as CartSidebarBlock;
+use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -18,7 +17,7 @@ use Magento\Framework\View\Element\Template;
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
 
-$storeConfig = $viewModels->require(StoreConfigAlias::class);
+$storeConfig = $viewModels->require(StoreConfig::class);
 $maxItemsToDisplay = $storeConfig->getStoreConfig('checkout/sidebar/max_items_display_count');
 
 ?>
