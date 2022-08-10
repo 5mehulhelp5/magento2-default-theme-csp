@@ -44,7 +44,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 <a @click="$dispatch('toggle-mobile-menu')"
                        class="flex items-center justify-center cursor-pointer"
                        :class="{ 'ml-auto': open }">
-                    <?= $heroicons->xHtml('p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }"]); ?>
+                    <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : !open, 'block': open }"]); ?>
                     <?= $heroicons->menuHtml('p-3', 48, 48, [":class" => "{ 'hidden' : open, 'block': !open }"]); ?>
                 </a>
             </div>
