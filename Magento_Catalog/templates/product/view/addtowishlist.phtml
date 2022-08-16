@@ -54,7 +54,7 @@ $uniqueId = '_' . uniqid();
                     action: BASE_URL + "wishlist/index/add/",
                     data: {
                         product: productId,
-                        uenc: btoa(window.location.href)
+                        uenc: hyva.getUenc()
                     }
                 }
                 <?php endif; ?>

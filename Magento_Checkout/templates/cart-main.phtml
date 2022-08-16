@@ -46,7 +46,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
             const formData = new FormData(form);
 
             if (!formData.uenc) {
-                formData.append('uenc', btoa(window.location.href));
+                formData.append('uenc', hyva.getUenc());
             }
 
             formData.append('form_key', hyva.getFormKey());
