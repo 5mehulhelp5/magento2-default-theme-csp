@@ -9,7 +9,7 @@
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
     <update handle="1column"/>
-    
+
     <referenceContainer name="main"/>
     <referenceContainer name="columns">
         <container name="div.sidebar.main" htmlTag="aside" htmlClass="sidebar sidebar-main" before="main">
@@ -19,5 +19,4 @@
             <container name="sidebar.additional" as="sidebar_additional" label="Sidebar Additional"/>
         </container>
     </referenceContainer>
-
 </layout>
