@@ -14,9 +14,6 @@ use Magento\Catalog\Block\Product\View\Gallery;
 use Magento\Catalog\Helper\Image;
 use Magento\Framework\Escaper;
 
-use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsOutline;
-
 /** @var Escaper $escaper */
 /** @var Gallery $block */
 /** @var ViewModelRegistry $viewModels */
@@ -26,14 +23,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 /** @var ViewModelRegistry $viewModels */
 /** @var HeroiconsOutline $heroicons */
+
 $heroicons = $viewModels->require(HeroiconsOutline::class);
 $images = $block->getGalleryImages()->getItems();
-$mainImage = current(array_filter($images, function ($img) use ($block) {
-    return $block->isMainImage($img);
-}));
+$mainImage = current(array_filter($images, [$block, 'isMainImage']));
 
 if (!empty($images) && empty($mainImage)) {
-    $mainImage = $block->getGalleryImages()->getFirstItem();
+    $mainImage = reset($images);
 }
 
 /** @var Image $helper */
@@ -47,19 +43,18 @@ $smallHeight = $block->getImageAttribute('product_page_image_small', 'height', 9
 $mediumWidth = $block->getImageAttribute('product_page_image_medium', 'width', 700);
 $mediumHeight = $block->getImageAttribute('product_page_image_medium', 'height', 700);
 
-$itemCount = count($images) ?? [];
 $productName = $block->getProduct()->getName();
 ?>
 
 <div id="gallery"
      x-data="initGallery()"
-     x-init="initActive(); $nextTick( function() { calcPageSize() })"
+     x-init="initActive(); $nextTick(() => calcPageSize())"
      x-spread="eventListeners"
      class="order-1 w-full md:w-5/12 lg:w-1/2 md:h-auto"
     >
     <div :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}">
         <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="fullscreen = false; $nextTick( function() { calcPageSize() })"
+            <button @click="fullscreen = false; $nextTick(() => calcPageSize())"
                     type="button"
                     class="hidden text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500
                         transition ease-in-out duration-150"
@@ -81,7 +76,7 @@ $productName = $block->getProduct()->getName();
                  * aspect ratio for the gallery. It will be hidden as
                  * soon as JS is loaded, but will keep reserving the
                  * necessary space in the layout for the other (absolute positioned)
-                 * images. Hence `opacity-0` instead of `x-show` or `hidden`
+                 * images. Hence, `opacity-0` instead of `x-show` or `hidden`
                  */
                 ?>
                 <img
@@ -92,13 +87,13 @@ $productName = $block->getProduct()->getName();
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
-                    @click="fullscreen = true; $nextTick( function() { calcPageSize() })"
+                    @click="fullscreen = true; $nextTick(() => calcPageSize())"
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                        @click="fullscreen = true; $nextTick( function() { calcPageSize() })"
+                        @click="fullscreen = true; $nextTick(() => calcPageSize())"
                         class="absolute inset-0 object-contain object-center w-full m-auto max-h-screen-75"
                         :class="{ 'cursor-pointer': !fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
@@ -126,11 +121,11 @@ $productName = $block->getProduct()->getName();
                 </div>
             </div>
         </div>
-        <div @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })">
+        <div @resize.window.debounce="calcPageSize(); $nextTick(() => calcActive())">
             <div
                 id="thumbs"
                 class="flex items-center"
-                :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen}"
+                :class="{ 'fixed justify-center bottom-0 left-0 right-0 mx-6': fullscreen }"
                 style="min-height: 100px;"
             >
                 <button
@@ -141,6 +136,7 @@ $productName = $block->getProduct()->getName();
                     @click="scrollPrevious"
                 ><?= $heroicons->chevronLeftHtml() ?></button>
                 <div class="js_thumbs_slides thumbs-wrapper relative flex flex-nowrap w-full overflow-auto transition-all js_slides snap md:px-1 xl:px-2"
+                     x-ref="jsThumbSlides"
                      @scroll.debounce="calcPageSize(); calcActive()"
                 >
                     <template x-for="(image, index) in images" :key="index">
@@ -184,10 +180,9 @@ $productName = $block->getProduct()->getName();
             "isSlider": false,
             "initialImages": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
             "images": <?= /* @noEscape */ $block->getGalleryImagesJson() ?>,
-            "appendOnReceiveImages": <?= $block->getVar(
-                'gallery_switch_strategy',
-                'Magento_ConfigurableProduct'
-            ) === 'append' ? 'true' : 'false' ?>,
+            "appendOnReceiveImages": <?=
+                $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append' ? 'true' : 'false'
+                ?>,
             "activeSlide": 0,
             "itemCount": 0,
             "pageSize": 4,
@@ -261,7 +256,6 @@ $productName = $block->getProduct()->getName();
                     id = videoUrl.replace(/^\/(embed\/|v\/)?/, '').replace(/\/.*/, '');
                     type = 'youtube';
 
-                    <?php // phpcs:ignore Generic.Files.LineLength.TooLong ?>
                     youtubeRegex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
                     id = videoUrl.match(youtubeRegex)[1];
 
@@ -349,12 +343,12 @@ $productName = $block->getProduct()->getName();
                 this.vimeoPlayer = vimeoContainer.childNodes[0];
             },
             getSlider() {
-                return this.$el.querySelector('.js_thumbs_slides');
+                return this.$refs.jsThumbSlides;
             },
             calcPageSize() {
                 const slider = this.getSlider();
                 if (slider) {
-                    let slideEl = slider.querySelector('.js_thumbs_slide'),
+                    const slideEl = slider.querySelector('.js_thumbs_slide'),
                         marginRight = parseInt(window.getComputedStyle(slideEl).marginRight);
 
                     this.itemCount = slider.querySelectorAll('.js_thumbs_slide').length;
