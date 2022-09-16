@@ -67,7 +67,7 @@ $formId     = $block->getData('form_id') ?? '';
                         }
                     }
                 }).catch(exception => {
-                    console.error(exception || `An unknown error occurred during ReCaptcha validation. Are the tokens and the domain correctly set up?`)
+                    console.error(exception || `An unknown error occurred during ReCaptcha validation. Are the tokens and the domain correctly set up in the Google console?`)
                 });
             })
         }
