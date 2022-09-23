@@ -87,14 +87,14 @@ $additionalOptions = ['page' => 'p'];
             lg:grid-cols-8  grid-flow-row gap-2 items-center">
         <?php if ($block->getIsBottom()): ?>
             <?= $block->getPagerHtml() ?>
-            <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+            <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
         <?php else: ?>
             <?php if ($block->isExpanded()): ?>
-                <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
             <?php endif ?>
-            <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+            <?= /** @noEscape */  $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
             <?php if ($block->isExpanded()): ?>
-                <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+                <?= /** @noEscape */ $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
             <?php endif ?>
         <?php endif ?>
     </div>
