@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Framework\Escaper;
-use Magento\Framework\Locale\LocaleFormatter;
+use Hyva\Theme\Model\LocaleFormatter;
 
 /** @var Toolbar $block */
 /** @var Escaper $escaper */
-/** @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter */
+/** @var LocaleFormatter $localeFormatter */
 
 $availableLimitOptions = $block->getAvailableLimit();
 
