@@ -117,23 +117,13 @@ module.exports = hyvaModules.mergeTailwindConfig({
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   // Examples for excluding patterns from purge
-  content: [// this theme's phtml files
-  '../../**/*.phtml' // The theme-module templates are included automatically in the purge config since Hyvä 1.1.15, but
-  // for themes based on earlier releases, enable the appropriate path to the theme-module below:
-  // hyva theme-module templates (if this is the default theme in vendor/hyva-themes/magento2-default-theme)
-  //'../../../magento2-theme-module/src/view/frontend/templates/**/*.phtml',
-  // hyva theme-module templates (if this is a child theme)
-  //'../../../../../../../vendor/hyva-themes/magento2-theme-module/src/view/frontend/templates/**/*.phtml',
-  // parent theme in Vendor (if this is a child-theme)
-  //'../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml',
-  // app/code phtml files (if need tailwind classes from app/code modules)
-  //'../../../../../../../app/code/**/*.phtml',
-  // react app src files (if Hyvä Checkout is installed in app/code)
-  //'../../../../../../../app/code/**/src/**/*.jsx',
-  // react app src files in vendor (If Hyvä Checkout is installed in vendor)
-  //'../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/reactapp/src/**/*.jsx',
-  //'../../../../../../../vendor/hyva-themes/magento2-hyva-checkout/src/view/frontend/templates/react-container.phtml',
-  // widget block classes from app/code
-  //'../../../../../../../app/code/**/Block/Widget/**/*.php'
+  content: [
+    // this theme's phtml and layout XML files
+    '../../**/*.phtml',
+    '../../*/layout/*.xml'
+    // parent theme in Vendor (if this is a child-theme)
+    //'../../../../../../../vendor/hyva-themes/magento2-default-theme/**/*.phtml',
+    // app/code phtml files (if need tailwind classes from app/code modules)
+    //'../../../../../../../app/code/**/*.phtml'
   ]
 });
