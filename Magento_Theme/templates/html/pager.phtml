@@ -146,10 +146,7 @@ $pagerItemBtnClass = $pagerItemClass
                                 </a>
                             </li>
                         <?php else: ?>
-                            <li
-                                class="item -ml-px"
-                                aria-label="<?= $escaper->escapeHtml(__('Page') . ' ' . $page) ?>"
-                            >
+                            <li class="item -ml-px">
                                 <a
                                     href="<?= $escaper->escapeUrl($block->getPageUrl($page)) . /* @noEscape */ /* @noEscape *//* @noEscape *//* @noEscape */   $paginationUrlAnchor ?>"
                                     class="page <?= /* @noEscape */ $pagerItemBtnClass ?> px-4 py-2 text-gray-700"
@@ -175,10 +172,7 @@ $pagerItemBtnClass = $pagerItemClass
                     <?php endif; ?>
 
                     <?php if ($block->canShowLast()): ?>
-                        <li
-                            class="item -ml-px text-gray-500"
-                            aria-label="<?= $escaper->escapeHtml(__('Page') . ' ' . $block->getLastPageNum()) ?>"
-                        >
+                        <li class="item -ml-px text-gray-500">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getLastPageUrl()) . /* @noEscape */ /* @noEscape */ $paginationUrlAnchor ?>"
                                 class="page last <?= /* @noEscape */ $pagerItemBtnClass ?> px-4 py-2"
