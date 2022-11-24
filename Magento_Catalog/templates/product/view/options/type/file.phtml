@@ -32,6 +32,9 @@ $fileNamed = $fileName . '_name';
 /** @var ProductPrice $productPriceViewModel */
 $productPriceViewModel = $viewModels->require(ProductPrice::class);
 $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptionPrice::PRICE_CODE, $product);
+if ($productPriceViewModel->displayPriceInclAndExclTax()) {
+    $optionBasePrice = $productPriceViewModel->getCustomOptionPriceExclTax($option, CustomOptionPrice::PRICE_CODE, $product);
+}
 ?>
 <div class="flex flex-col sm:flex-row border-t border-gray-300 py-2 last:mb-6 last:border-b w-full items-center">
     <label class="label text-gray-700 text-left w-full sm:w-1/2"
@@ -43,6 +46,11 @@ $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptio
         <span x-html="getFormattedOptionPrice(<?= $escaper->escapeHtmlAttr($option->getId()) ?>) || ''">
             <?= /* @noEscape */ $block->getFormattedPrice() ?>
         </span>
+        <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+            <div class="text-xs">
+                (<?= $escaper->escapeHtml(__('Excl. Tax')) ?>: <?= /* @noEscape */ $productPriceViewModel->format($optionBasePrice) ?>)
+            </div>
+        <?php endif; ?>
     </label>
 
     <?php if ($fileExists): ?>
@@ -87,7 +95,7 @@ $optionPrice = $productPriceViewModel->getCustomOptionPrice($option, CustomOptio
                x-ref="option-<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
                x-on:change="updateCustomOptionValue(
                     $dispatch,
-                    '<?= $escaper->escapeHtmlAttr($option->getId()) ?>',
+                    '<?= $escaper->escapeJs($option->getId()) ?>',
                     $event.target
                 )"
         />
