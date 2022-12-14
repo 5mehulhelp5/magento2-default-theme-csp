@@ -8,6 +8,7 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Customer\Block\Address\Edit;
 use Magento\Customer\ViewModel\Address as AddressViewModel;
 use Magento\Framework\Escaper;
@@ -16,9 +17,11 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 /** @var Edit $block */
 /** @var Escaper $escaper */
 /** @var SecureHtmlRenderer $secureRenderer */
+/** @var ViewModelRegistry $viewModels */
 
 /** @var AddressViewModel $addressViewModel */
 $addressViewModel = $block->getViewModel();
+$directoryViewModel = $viewModels->require(\Hyva\Theme\ViewModel\Directory::class);
 
 $companyBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
 $phoneBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
@@ -166,7 +169,7 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 <div class="control">
                     <?php $countries = $block
                         ->getCountryCollection()
-                        ->setForegroundCountries($block->getTopDestinations())
+                        ->setForegroundCountries($directoryViewModel->getTopCountryCodes())
                         ->toOptionArray();
                     ?>
                     <select name="country_id"
