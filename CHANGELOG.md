@@ -7,7 +7,70 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.2.0...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.2.1...main
+
+## [1.2.1] - 2022-12-21
+
+[1.2.1]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.2.0...1.2.1
+
+### Added
+
+- **Support system config setting to hide or display stock status on PDP**
+
+  Previously, the stock status was always shown, regardless of the config setting.
+
+  For more information, please refer to the [merge request #652](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/652).
+
+  Many thanks to Kiel Pykett (Youwe) for the contribution!
+
+- **Add autoprefixer**
+
+  Previously the autoprefixer library was removed in Hyvä release 1.2.0 because it no longer was a dependency by Tailwindcss.  
+  However, since then we learned it still is a useful resource to include in the default Hyvä build process.
+
+  For more information please refer to [issue #562](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/562).
+
+### Changed
+
+- **Upgrade Tailwindcss to 3.2.4** 
+
+  This is a backwards compatible upgrade that fixes some issues in tailwind.  
+
+  For more information please refer to [issue #565](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/565).
+
+- **Fix display of original price excl. tax**
+
+  Previously, if catalog prices where configured to be displayed incl. and excl. tax, the price excl. tax was displayed without taking a special price into account.
+
+  For more information, please refer to [merge request #672](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/672).
+
+  Many thanks to Rich Jones (Aware Digital) for the contribution!
+
+- **Fix hardcoded custom option ID in html5 date picker template**
+
+  In the HTML5 version of the datetime custom option template (which is not used by default), the custom option ID was hardcoded.
+
+  For more information, please refer to the [merge request #666](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/666).
+
+  Many thanks to Kiel Pykett (Youwe) for the contribution!
+
+- **Render loader above open modals**
+
+  Previously the loader was displayed behind open modals.
+
+  For more information please refer to [merge request #654](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/654).
+
+  Many thanks to Anil Suthar (Dolphin Web Solution) for the contribution!
+
+- **Change input type for customer telephone number to from "number" to "tel"**
+
+  For more information please refer to [issue #540](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/540).
+
+  Many thanks to Sean van Zuidam (Siteation) for the contribution!
+
+### Removed
+
+- Nothing removed
 
 
 ## [1.2.0] - 2022-12-21
