@@ -30,6 +30,7 @@ if (!$product || !$product->getId()) {
     return;
 }
 ?>
+<?php if ($block->getParentBlock()->displayProductStockStatus()): ?>
 <div class="text-right">
     <?php if ($product->getIsSalable()): ?>
         <p class="flex items-center justify-end align-middle available gap-x-2 stock"
@@ -45,3 +46,4 @@ if (!$product || !$product->getId()) {
         </p>
     <?php endif; ?>
 </div>
+<?php endif; ?>
