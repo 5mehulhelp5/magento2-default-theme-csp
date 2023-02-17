@@ -49,17 +49,6 @@ $productName = $block->getProduct()->getName();
      class="order-1 w-full md:w-5/12 lg:w-1/2 md:h-auto"
     >
     <div :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}">
-        <div class="absolute top-0 right-0 pt-4 pr-4">
-            <button @click="fullscreen = false; $nextTick(() => calcPageSize())"
-                    type="button"
-                    class="hidden text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500
-                        transition ease-in-out duration-150"
-                    :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
-                    aria-label="Close"
-            >
-                <?= $heroicons->xHtml(); ?>
-            </button>
-        </div>
         <div class="relative self-center w-full"
              x-transition:enter="ease-out duration-500"
              x-transition:enter-start="opacity-0"
@@ -124,6 +113,17 @@ $productName = $block->getProduct()->getName();
                     <div id="vimeo-player" class="w-full h-full"></div>
                 </div>
             </div>
+        </div>
+        <div class="absolute top-0 right-0 pt-4 pr-4">
+            <button @click="fullscreen = false; $nextTick(() => calcPageSize())"
+                    type="button"
+                    class="hidden text-gray-400 hover:text-gray-500 focus:text-gray-500
+                        transition ease-in-out duration-150"
+                    :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
+                    aria-label="Close fullscreen"
+            >
+                <?= $heroicons->xHtml(); ?>
+            </button>
         </div>
         <div @resize.window.debounce="calcPageSize(); $nextTick(() => calcActive())">
             <div
