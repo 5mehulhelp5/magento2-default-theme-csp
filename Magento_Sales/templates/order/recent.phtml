@@ -113,12 +113,10 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         aria-describedby="order<?= $escaper->escapeHtml($order->getRealOrderId()) ?>"
                         class="p-2 hidden lg:flex items-center <?= $i % 2 === 0 ? '' : ' bg-container-darker' ?>"
                     >
-                        <span class="sr-only">
-                            <?= $escaper->escapeHtml(__('Date')) ?>&nbsp;
-                        </span>
-                        <span>
+                        <?php $date = new DateTime($order->getCreatedAt()); ?>
+                        <span aria-label="<?= $escaper->escapeHtml(__('Date')) ?> <?= $date->format('Y-m-d') ?>">
                             <?= $escaper->escapeHtml(
-                                $block->formatDate($order->getCreatedAt())
+                                $block->formatDate($date)
                             ) ?>
                         </span>
                     </div>
