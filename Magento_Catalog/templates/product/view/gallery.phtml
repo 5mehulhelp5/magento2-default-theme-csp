@@ -65,7 +65,7 @@ $productName = $block->getProduct()->getName();
                  */
                 ?>
                 <img
-                    :alt="'<?= $escaper->escapeJs($productName) ?>'"
+                    alt="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : 'placeholder'; ?>"
                     title="<?= $escaper->escapeHtmlAttr($productName) ?>"
                     class="object-contain object-center w-full h-auto max-h-screen-75"
                     :class="'opacity-0'"
