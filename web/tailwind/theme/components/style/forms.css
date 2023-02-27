@@ -61,6 +61,6 @@ fieldset ~ fieldset {
         textarea
     )[required]
 ) label:after {
-    content: ' \002A';
-    @apply text-red-500;
+    content: ' \002A' / '';
+    @apply text-red-600;
 }
