@@ -98,7 +98,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 <div class="w-8 h-8 border rounded">
                                     <?= $heroicons->chevronRightHtml(
                                         'w-full h-full p-1', 24, 24,
-                                        ["role" => "presentation", "focusable" => "false"]
+                                        ["aria-hidden" => "true"]
                                     ); ?>
                                 </div>
                             </button>
@@ -127,7 +127,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                         @click="mobilePanelActiveId = 0"
                                         aria-label="<?= $escaper->escapeHtmlAttr(__('Back to main categories')) ?>"
                                     >
-                                        <?= $heroicons->chevronLeftHtml('', 24, 24, ["role" => "presentation", "focusable" => "false"]); ?>
+                                        <?= $heroicons->chevronLeftHtml('', 24, 24, ["aria-hidden" => "true"]); ?>
                                         <span class="ml-4">
                                             <?= $escaper->escapeHtml($menuItem['name']) ?>
                                         </span>
@@ -169,7 +169,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             >
                                 <?= $heroicons->xHtml(
                                     'hidden p-4', 64, 64,
-                                    [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
+                                    [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]
                                 ); ?>
                             </button>
                         </div>
@@ -185,7 +185,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         >
             <?= $heroicons->xHtml(
                 'hidden p-4', 64, 64,
-                [":class" => "{ 'hidden' : !open, 'block': open }", "role" => "presentation", "focusable" => "false"]
+                [":class" => "{ 'hidden' : !open, 'block': open }", "aria-hidden" => "true"]
             ); ?>
         </button>
     </div>
