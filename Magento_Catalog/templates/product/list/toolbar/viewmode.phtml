@@ -24,7 +24,7 @@ use Magento\Framework\Escaper;
                 id="mode-description"
                 class="modes-label sr-only"
             >
-                <?= $escaper->escapeHtml((string)__('Products view switcher')) ?>
+                <?= $escaper->escapeHtml(__('Products view mode')) ?>
             </strong>
             <?php foreach ($block->getModes() as $code => $label): ?>
                 <?php if ($block->isModeActive($code)): ?>
