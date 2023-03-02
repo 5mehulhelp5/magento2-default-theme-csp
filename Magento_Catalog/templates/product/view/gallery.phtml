@@ -82,6 +82,7 @@ $productName = $block->getProduct()->getName();
                 />
                 <template x-for="(image, index) in images" :key="index">
                     <img
+                        x-ref="galleryMainImage"
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         @click="openFullscreen($root)"
@@ -98,7 +99,7 @@ $productName = $block->getProduct()->getName();
                             ? `${image.caption || '<?= $escaper->escapeJs($productName) ?>'}`
                             : 'Click to view image in fullscreen'
                         "
-    :role="fullscreen ?  'button' : 'img'"
+                        :role="fullscreen ?  'button' : 'img'"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
@@ -436,13 +437,14 @@ $productName = $block->getProduct()->getName();
                     ? focusableContent[focusableContent.length - 1]
                     : null;
 
-                this.focusTrapListener = this.focusTrapHandler.bind(this, firstFocusableElement, lastFocusableElement)
+                this.focusTrapListener = this.focusTrapHandler.bind(this, firstFocusableElement, lastFocusableElement);
 
                 document.addEventListener('keydown', this.focusTrapListener);
             },
             closeFullScreen() {
                 this.fullscreen = false;
-                this.$nextTick(() => this.calcPageSize())
+                this.$nextTick(() => this.calcPageSize());
+                this.$refs.galleryMainImage.focus();
 
                 document.removeEventListener('keydown', this.focusTrapListener);
             }
