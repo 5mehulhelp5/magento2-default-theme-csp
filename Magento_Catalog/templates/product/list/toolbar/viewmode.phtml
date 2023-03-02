@@ -42,12 +42,13 @@ use Magento\Framework\Escaper;
                 <?php else: ?>
                     <button
                         aria-describedby="mode-description"
-                        class="modes-mode mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>
-                        opacity-25 hover:opacity-100"
+                        class="modes-mode mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> opacity-25 hover:opacity-100"
                         title="<?= $escaper->escapeHtmlAttr($label) ?>"
                         href="#"
                         @click.prevent="changeUrl(
-                         'product_list_mode', '<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>', options.modeDefault
+                            'product_list_mode',
+                            '<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>',
+                            options.modeDefault
                         )"
                         data-role="mode-switcher"
                         data-value="<?= $escaper->escapeHtmlAttr(strtolower($code)) ?>"
