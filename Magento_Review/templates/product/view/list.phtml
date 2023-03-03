@@ -39,6 +39,7 @@ $reviewCollection->load()->addRateVotes();
 
 $items = $reviewCollection->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+$formatLong = $block->getDateFormat() ?: \IntlDateFormatter::LONG;
 $productName = $block->getProduct()->getName()
 ?>
 <?php if (count($items)): ?>
@@ -98,21 +99,25 @@ $productName = $block->getProduct()->getName()
                     <div>
                         <span><?= $escaper->escapeHtml(__('Review by')) ?></span>
                         <strong itemprop="author"><?= $escaper->escapeHtml($review->getNickname()) ?></strong>
-                        <span class="text-gray-700 inline-block ml-2">
                             <time
+                                class="text-gray-700 inline-block ml-2"
                                 itemprop="datePublished"
-                                datetime="
-                                <?= $escaper->escapeHtmlAttr(
+                                datetime="<?= $escaper->escapeHtmlAttr(
                                     $block->formatDate(
                                         $review->getCreatedAt(),
                                         $format
                                     )
-                                ); ?>">
+                                ); ?>"
+                                aria-label="<?= $block->formatDate(
+                                        $review->getCreatedAt(),
+                                        $formatLong
+                                    )
+                                ?>"
+                            >
                                 <?= $escaper->escapeHtml(
                                     $block->formatDate($review->getCreatedAt(), $format)
                                 ) ?>
                             </time>
-                        </span>
                     </div>
                     <div class="mt-2" itemprop="description">
                         <?= /* @noEscape */ nl2br($escaper->escapeHtml($review->getDetail())) ?>
