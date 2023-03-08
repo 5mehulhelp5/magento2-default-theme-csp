@@ -19,11 +19,12 @@ $starFragment = $rating / 100 * $ratingSteps - $starsFilled;
 $starsEmpty = floor($ratingSteps - $starsFilled - $starFragment);
 $yellowHex = '#f6e05e';
 $greyHex = '#cbd5e0';
-$productName = $block->getProduct()->getName()
+$productName = $block->getProduct()->getName();
+$productId = $block->getProduct()->getId();
 ?>
 <?php if ($block->isReviewEnabled()): ?>
     <div
-        x-data="initRating()"
+        x-data="initRating<?= $productId ?>()"
         @keyup.enter="scrollToRatings()"
         @click="scrollToRatings()"
         class="rating-summary flex cursor-pointer"
@@ -31,7 +32,11 @@ $productName = $block->getProduct()->getName()
             title="<?= $escaper->escapeHtmlAttr(__('Be the first to review this product')) ?>"
         <?php endif; ?>
         tabindex="0"
-        aria-label="<?= $escaper->escapeHtmlAttr(__('%1 rating. %2 out of %3 stars. Click to go to reviews.', $productName, $starsFilled + $starFragment, $ratingSteps))?>"
+        :aria-label="reviewsSection
+            ? '<?= $escaper->escapeHtmlAttr(__('%1 rating. %2 out of %3 stars. Click to go to reviews.', $productName, $starsFilled + $starFragment, $ratingSteps))?>'
+            : '<?= $escaper->escapeHtmlAttr(__('%1 rating. %2 out of %3 stars', $productName, $starsFilled + $starFragment, $ratingSteps))?>'
+        "
+        role="group"
     >
         <?php if ($rating): ?>
             <?php $i = 0; ?>
@@ -120,15 +125,15 @@ $productName = $block->getProduct()->getName()
 <script>
     'use strict';
 
-    const initRating = () => {
+    const initRating<?= $productId ?> = () => {
         return {
+            reviewsSection: document.getElementById('customer-review-list')
+                || document.getElementById('customer-reviews')
+                || document.getElementById('review-form'),
             scrollToRatings() {
-                const reviews = document.getElementById('customer-review-list')
-                    || document.getElementById('customer-reviews')
-                    || document.getElementById('review-form')
                 let scrollTimeout = null
 
-                if (!reviews) {
+                if (!this.reviewsSection) {
                     return
                 }
 
@@ -136,12 +141,15 @@ $productName = $block->getProduct()->getName()
                     clearTimeout(scrollTimeout);
 
                     scrollTimeout = setTimeout(function() {
-                        reviews.focus()
+                        if (this.reviewsSection) {
+                            this.reviewsSection.focus()
+                        }
+
                         window.removeEventListener("scroll", scrollHandler);
                     }, 50);
                 });
 
-                reviews.scrollIntoView({behavior: 'smooth'})
+                this.reviewsSection.scrollIntoView({behavior: 'smooth'})
             }
         }
     }
