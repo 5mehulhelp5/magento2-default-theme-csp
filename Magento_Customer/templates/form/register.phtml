@@ -126,7 +126,7 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                             value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getEmail()) ?>"
                             title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
                             class="form-input"
-                            @input="onChange"
+                            @input.debounce="onChange"
                         />
                     </div>
                 </div>
@@ -160,7 +160,7 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                             class="form-input"
                             required
                             data-validate='{"password-strength": {"minCharacterSets": <?= (int) $passwordMinCharacterSets ?>}}'
-                            @input="onChange"
+                            @input.debounce="onChange"
                             autocomplete="off"
                         >
                         <button
@@ -217,7 +217,7 @@ $passwordMinCharacterSets = $block->getRequiredCharacterClassesNumber();
                             title="<?= $escaper->escapeHtmlAttr(__('Confirm Password')) ?>"
                             id="password-confirmation"
                             data-validate='{"equalTo": "password"}'
-                            @input="onChange"
+                            @input.debounce="onChange"
                             required
                             class="form-input"
                             autocomplete="off"
