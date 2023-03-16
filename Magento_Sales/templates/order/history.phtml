@@ -92,7 +92,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 <div
                     role="cell"
                     class="p-2 hidden lg:flex items-center <?= $i % 2 === 0 ? '' : ' bg-container-darker' ?>"
-                    aria-label="<?= $escaper->escapeHtmlAttr($date->format('Y-m-d')) ?>"
                 >
                     <?= $escaper->escapeHtml($date->format('m/d/y')) ?>
                 </div>
