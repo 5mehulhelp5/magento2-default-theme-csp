@@ -239,8 +239,11 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                             continue;
                         } ?>
                         <div class="my-2 pt-4 pb-2 w-full border-t border-container">
-                            <label class="label text-lg font-semibold">
-                                <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
+                            <label
+                                id="option-label-<?= $option->getId() ?>"
+                                class="label text-lg font-semibold"
+                            >
+                                <?= $escaper->escapeHtml($option->getTitle()) ?>
                             </label>
                             <div class="control mt-2">
                                 <div class="nested options-list">

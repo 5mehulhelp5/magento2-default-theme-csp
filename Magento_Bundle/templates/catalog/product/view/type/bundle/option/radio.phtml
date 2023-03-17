@@ -102,14 +102,14 @@ $activeSelectOptions = [];
     <?php endforeach; ?>
 <?php endif; ?>
 <div class="field qty qty-holder mt-2">
-    <label class="label font-semibold mr-4"
-           for="bundle-option-<?= (int)$optionId ?>-qty-input">
-        <span><?= $escaper->escapeHtml(__('Quantity')) ?></span>
+    <label
+        class="label font-semibold mr-4"
+        for="bundle-option-<?= (int)$optionId ?>-qty-input"
+    >
+        <?= $escaper->escapeHtml(__('Quantity')) ?>
     </label>
-    <script>
-
-    </script>
     <input
+        aria-labelledby="option-label-<?= (int)$optionId ?>"
         id="bundle-option-<?= (int)$optionId ?>-qty-input"
         form="product_addtocart_form"
         name="bundle_option_qty[<?= (int)$optionId ?>]"
