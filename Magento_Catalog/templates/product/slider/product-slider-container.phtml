@@ -49,6 +49,7 @@ if (!$itemCount = count($items)) {
 }
 
 $sliderIndex = 1;
+$uniqueId = uniqid();
 $sliderItemRenderer = $block->getLayout()->getBlock('product_list_item')
     ?: $block->getChildBlock('slider.item.template')
     ?: $block->getLayout()->createBlock(Template::class);
@@ -58,6 +59,7 @@ $hideDetails       = (bool) $block->getData('hide_details');
 
 $sliderItemRenderer->setData('hide_details', $hideDetails);
 $sliderItemRenderer->setData('hide_rating_summary', $hideRatingSummary);
+$sliderItemRenderer->setData('slide_unique_id', $uniqueId);
 
 // The slider item renderer block is often a shared instance.
 // If a specific item template is set for this slider, the previously set template must be reset later
@@ -170,6 +172,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
                         <div class="flex shrink-0 w-full mr-1 p-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4"
                              role="group"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Slide %1', $sliderIndex++)) ?>"
+                             aria-describedby="slide-desc-<?= $escaper->escapeHtmlAttr($product->getId().'-'.$uniqueId) ?>"
                         >
                             <?= /** @noEscape */ $productListItemViewModel->getItemHtmlWithRenderer(
                                 $sliderItemRenderer,

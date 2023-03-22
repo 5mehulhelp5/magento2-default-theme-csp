@@ -68,6 +68,7 @@ $uniqueId = '_' . uniqid();
 
 $hideDetails       = $block->getData('hide_details') ?: false;
 $hideRatingSummary = $block->getData('hide_rating_summary') ?: false;
+$slideUniqueId = $block->getData('slide_unique_id');
 
 $imageCustomAttributes = $product->getData('image_custom_attributes')
     ?? $block->getData('image_custom_attributes')
@@ -96,6 +97,7 @@ $imageCustomAttributes = $product->getData('image_custom_attributes')
     <a href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
         class="product photo product-item-photo block mx-auto mb-3 <?= $viewIsGrid ? '' : 'md:w-2/6 md:mb-0 md:mr-5' ?>"
         tabindex="-1"
+        aria-hidden="true"
     >
         <?= $block->getImage($product, $imageDisplayArea)
             ->setTemplate('Magento_Catalog::product/list/image.phtml')
@@ -106,8 +108,11 @@ $imageCustomAttributes = $product->getData('image_custom_attributes')
     <div class="product-info flex flex-col grow">
         <?php $productNameStripped = $block->stripTags($product->getName(), null, true); ?>
         <div class="mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center <?= $viewIsGrid ? '' : 'md:text-left' ?>">
-            <a class="product-item-link"
-               href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+            <a
+                class="product-item-link"
+                href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>"
+                id="slide-desc-<?= $escaper->escapeHtmlAttr($product->getId().'-'.$slideUniqueId) ?>"
+            >
                 <?= /* @noEscape */ $catalogOutputHelper->productAttribute($product, $product->getName(), 'name') ?>
             </a>
         </div>
