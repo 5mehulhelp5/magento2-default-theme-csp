@@ -66,11 +66,15 @@ if (!$productId || !$attributeId) {
                 :required="getAllowedAttributeOptions(<?= (int) $attributeId ?>).filter(
                                                                     attributeOption => selectedValues[attributeOption]
                                                                 ).length === 0"
+                :aria-label="getSwatchText(<?= (int) $attributeId ?>, item.id)"
+                aria-describedby="swatch-<?= $productId ?>"
             >
-            <div x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
-                 class="whitespace-nowrap"
-                 :class="{ 'sr-only' : !isTextSwatch(<?= (int) $attributeId ?>, item.id) }"
-            ></div>
+            <template x-if="isTextSwatch(<?= (int) $attributeId ?>, item.id)">
+                <div x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
+                     class="whitespace-nowrap"
+                     aria-hidden="true"
+                ></div>
+            </template>
         </label>
     </template>
 
