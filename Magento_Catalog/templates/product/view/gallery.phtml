@@ -133,12 +133,12 @@ $productName = $block->getProduct()->getName();
                 style="min-height: 100px;"
             >
                 <button
-                    aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
                     tabindex="-1"
                     class="mr-4 text-black rounded-full outline-none focus:outline-none flex-none"
                     :class="{ 'opacity-25 pointer-events-none' : activeSlide === 0, 'hidden' : !isSlider }"
                     @click="scrollPrevious"
-                ><?= $heroicons->chevronLeftHtml() ?></button>
+                ><?= $heroicons->chevronLeftHtml('', 24, 24, ['aria-hidden' => 'true']) ?></button>
                 <div class="js_thumbs_slides thumbs-wrapper relative flex flex-nowrap w-full overflow-auto js_slides snap md:px-1 xl:px-2"
                      x-ref="jsThumbSlides"
                      @scroll.debounce="calcPageSize(); calcActive()"
@@ -157,8 +157,8 @@ $productName = $block->getProduct()->getName();
                                 </span>
                                 <img
                                     :src="image.thumb"
-                                    :alt="`${image.caption} thumb` || '<?= $escaper->escapeJs($productName) ?> thumb'"
-                                    :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
+                                    :alt="hyva.str('%1 thumb', image.caption) || '<?= $escaper->escapeJs("%1 thumb", $productName) ?>'"
+                                    :title="hyva.str('%1 thumb', image.caption) || '<?= $escaper->escapeJs("%1 thumb", $productName) ?>'"
                                     width="<?= /* @noEscape */ $smallWidth ?>"
                                     height="<?= /* @noEscape */ $smallHeight ?>"
                                 />
@@ -169,12 +169,12 @@ $productName = $block->getProduct()->getName();
                 <button
                     x-show="images.length > 1"
                     x-cloak
-                    aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
                     tabindex="-1"
                     class="ml-4 text-black rounded-full outline-none focus:outline-none flex-none"
                     :class="{ 'opacity-25 pointer-events-none' : activeSlide >= itemCount-pageSize, 'hidden' : !isSlider }"
                     @click="scrollNext"
-                ><?= $heroicons->chevronRightHtml() ?></button>
+                ><?= $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => 'true']) ?></button>
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
