@@ -180,7 +180,7 @@ $productName = $block->getProduct()->getName();
         <div class="absolute top-0 right-0 pt-4 pr-4">
             <button @click="closeFullScreen()"
                     type="button"
-                    class="hidden text-gray-400 p-3 hover:text-gray-500 focus:text-gray-500
+                    class="hidden text-gray-500 p-3 hover:text-gray-600 focus:text-gray-600
                         transition ease-in-out duration-150"
                     :class="{ 'hidden': !fullscreen, 'block': fullscreen }"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
