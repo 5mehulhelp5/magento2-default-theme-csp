@@ -61,6 +61,7 @@ $productName = $block->getProduct()->getName();
         >
             <div class="relative mb-6" aria-live="polite" aria-atomic="true">
                 <span class="sr-only"><?= $escaper->escapeHtml(__('Main image')) ?></span>
+                <span class="invisible" id="fullscreen-btn-label"><?= $escaper->escapeHtml(__('Click to view image in fullscreen')) ?></span>
                 <?php
                 /**
                  * The first image is a placeholder that determines the
@@ -95,12 +96,12 @@ $productName = $block->getProduct()->getName();
                         :src="fullscreen ? image.full : image.img"
                         x-transition.opacity.duration.500ms x-show="active===index"
                         @keydown.enter="openFullscreen($root)"
-                        tabindex="0"
-                        :aria-label="fullscreen
-                            ? `${image.caption || '<?= $escaper->escapeJs($productName) ?>'}`
-                            : 'Click to view image in fullscreen'
+                        :tabindex="fullscreen ? '-1' : '0'"
+                        :aria-describedby="fullscreen
+                            ? ''
+                            : 'fullscreen-btn-label'
                         "
-                        :role="fullscreen ?  'button' : 'img'"
+                        :role="fullscreen ? 'img' : 'button'"
                     />
                 </template>
                 <div class="absolute inset-0 hidden w-full h-full bg-white nonmobile"
