@@ -65,42 +65,44 @@ $activeSelectOptions = [];
             </label>
         </div>
     <?php endif; ?>
-    <div role="radiogroup" aria-label="<?= $escaper->escapeHtmlAttr(__('%1 options', $option->getTitle())) ?>">
-    <?php foreach ($selections as $selection): ?>
-        <?php $selectionId = $selection->getSelectionId(); ?>
-        <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
-        <div class="field choice mt-1 flex items-center gap-x-2">
-            <input type="radio"
-                   id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                   name="bundle_option[<?= (int)$optionId ?>]"
-                   form="product_addtocart_form"
-                   class="radio product bundle option change-container-classname"
-                   <?= $option->getRequired() ? 'required' : '' ?>
-                   <?php if ($block->isSelected($selection)) {
-                        array_push($activeSelectOptions, $selectionId);
-                        echo 'checked = "checked"';
-                   } ?>
-                   <?php if (!$selection->isSaleable()): ?>
-                        disabled="disabled"
-                   <?php endif; ?>
-                   value="<?= (int)$selectionId ?>"
-                   data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                   x-on:change="
-                        activeSelectOptions['<?= (int)$optionId ?>'] = [$event.target.value];
-                        $nextTick(() => {calculateTotalPrice()});
-                   "
-            />
-            <label
-                class="label text-sm"
-                for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-            >
-                <?= /* @noEscape */ $radioPriceRenderer->getSelectionTitlePrice($selection) ?>
-            </label>
-        </div>
-        <div class="text-sm my-2">
-            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
-        </div>
-    <?php endforeach; ?>
+    <div role="radiogroup"
+         aria-label="<?= $escaper->escapeHtmlAttr(__('%1 options', $option->getTitle())) ?>"
+    >
+        <?php foreach ($selections as $selection): ?>
+            <?php $selectionId = $selection->getSelectionId(); ?>
+            <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
+            <div class="field choice mt-1 flex items-center gap-x-2">
+                <input type="radio"
+                    id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                    name="bundle_option[<?= (int)$optionId ?>]"
+                    form="product_addtocart_form"
+                    class="radio product bundle option change-container-classname"
+                    <?= $option->getRequired() ? 'required' : '' ?>
+                    <?php if ($block->isSelected($selection)) {
+                            array_push($activeSelectOptions, $selectionId);
+                            echo 'checked = "checked"';
+                    } ?>
+                    <?php if (!$selection->isSaleable()): ?>
+                            disabled="disabled"
+                    <?php endif; ?>
+                    value="<?= (int)$selectionId ?>"
+                    data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                    x-on:change="
+                            activeSelectOptions['<?= (int)$optionId ?>'] = [$event.target.value];
+                            $nextTick(() => {calculateTotalPrice()});
+                    "
+                />
+                <label
+                    class="label text-sm"
+                    for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                >
+                    <?= /* @noEscape */ $radioPriceRenderer->getSelectionTitlePrice($selection) ?>
+                </label>
+            </div>
+            <div class="text-sm my-2">
+                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 <?php endif; ?>
 <div class="field qty qty-holder mt-2">

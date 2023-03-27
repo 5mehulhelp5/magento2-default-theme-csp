@@ -188,7 +188,9 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
               aria-live="assertive"
               aria-atomic="true"
         >
-            <span class="sr-only"><?= $escaper->escapeHtml(__('Final product price ')) ?></span>
+            <span class="sr-only">
+                <?= $escaper->escapeHtml(__('Final product price ')) ?>
+            </span>
             <span
                 class="price"
                 x-html="getFormattedFinalPrice()"
