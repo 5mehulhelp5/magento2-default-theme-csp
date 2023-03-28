@@ -57,6 +57,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             </a>
                             <?php if (!empty($menuItem['childData'])): ?>
                                 <button class="sr-only -right-2 h-5 w-5 focus:not-sr-only focus:absolute"
+                                        aria-haspopup="menu"
                                         :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>' ? 'true' : 'false'"
                                         @click="openMenuOnClick('<?= /* @noEscape */ (string) $index ?>')"
                                 >
