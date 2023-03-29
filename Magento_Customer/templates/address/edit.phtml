@@ -207,11 +207,12 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                 </label>
                 <div class="control">
                     <template x-if="hasAvailableRegions() && (isRegionRequired || showOptionalRegions)">
-                        <select id="region_id" name="region"
+                        <select id="region_id" name="region_id"
                                 title="<?= /* @noEscape */ $regionLabel ?>"
                                 class="form-select validate-select region_id"
                                 x-ref="region_id"
                                 x-model="selectedRegion"
+                                :required="isRegionRequired"
                                 @input.debounce="onRegionIdChange"
                         >
                             <option value=""><?= $escaper->escapeHtml(__('Please select a region, state or province.')) ?></option>
@@ -234,8 +235,8 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
                            value="<?= $escaper->escapeHtmlAttr($block->getRegion()) ?>"
                            title="<?= /* @noEscape */ $regionLabel ?>"
                            class="form-input"
+                           aria-label="<?= /* @noEscape */ $regionLabel ?>"
                            :required="isRegionRequired"
-                           @input.debounce="onChange"
                     />
                 </div>
             </div>
@@ -365,6 +366,7 @@ function initCustomerAddressEdit() {
                 this.availableRegions[this.selectedRegion].name :
                 ''
             this.onChange(event)
+            this.validateField(this.fields['region'])
         }
     }
 }
