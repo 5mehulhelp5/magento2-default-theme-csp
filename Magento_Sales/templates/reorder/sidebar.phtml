@@ -115,15 +115,16 @@ if (! $customer->customerLoggedIn()) {
                             <li class="flex items-start mb-4">
                                 <div class="shrink-0 mr-2">
                                     <label class="label hidden">
-                                        <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                        <span x-text="`${hyva.str('Add to Cart')} ${product.name}`">
+                                        </span>
                                     </label>
                                     <div class="control">
                                         <input type="checkbox"
                                                name="order_items[]"
                                                :id="checkboxId + product.id"
                                                :value="product.id"
-                                               :title="product.is_saleable
-                                                ? '<?= $escaper->escapeJs(__('Add to Cart')) ?>'
+                                               :aria-label="product.is_saleable
+                                                ? `${hyva.str('Add to Cart')} ${product.name}`
                                                 : '<?= $escaper->escapeJs(__('Product is not salable.')) ?>'"
                                                :disabled="!product.is_saleable"
                                         />
