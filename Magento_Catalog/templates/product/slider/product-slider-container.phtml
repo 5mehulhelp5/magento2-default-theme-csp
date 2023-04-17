@@ -130,6 +130,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
     x-id="['slider-nav', 'slider-end', 'slider-desc']"
     @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
     role="group"
+    aria-roledescription="carousel"
     aria-label="<?= $escaper->escapeHtml(__('Carousel %1', $title)) ?>"
     :aria-describedby="$id('slider-desc')"
 >
@@ -138,29 +139,32 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
             <?php if ($title): ?>
                 <div class="container flex flex-col items-center pt-6 pb-3 mx-auto mb-6 border-b-2
                     border-gray-300 md:flex-row">
-                    <h3
-                        class="text-2xl font-medium text-gray-900 title-font"
-
-                    >
+                    <h3 class="text-2xl font-medium text-gray-900 title-font">
                         <?= $escaper->escapeHtml($title); ?>
                     </h3>
                 </div>
-
-                <a
-                    :href="`#${$id('slider-end')}`"
-                    class="action skip sr-only focus:not-sr-only focus:absolute focus:z-20 focus:bg-white"
-                >
-                    <?= $escaper->escapeHtml(__('Press to skip carousel')) ?>
-                </a>
-                <a
-                    x-show="itemCount > pageSize"
-                    x-cloak
-                    :href="`#${$id('slider-nav')}`"
-                    class="action skip sr-only focus:not-sr-only focus:absolute focus:z-20 focus:bg-white"
-                >
-                    <?= $escaper->escapeHtml(__('Press to go to carousel navigation')) ?>
-                </a>
             <?php endif; ?>
+            <a
+                :href="`#${$id('slider-end')}`"
+                class="action skip sr-only focus:not-sr-only focus:absolute focus:z-20 focus:bg-white"
+            >
+                <?= $escaper->escapeHtml(__('Press to skip carousel')) ?>
+            </a>
+            <a
+                x-show="itemCount > pageSize"
+                x-cloak
+                :href="`#${$id('slider-nav')}`"
+                class="action skip sr-only focus:not-sr-only focus:absolute focus:z-20 focus:bg-white"
+            >
+                <?= $escaper->escapeHtml(__('Press to go to carousel navigation')) ?>
+            </a>
+            <span
+                class="sr-only"
+                :id="$id('slider-desc')"
+                tabindex="-1"
+            >
+                <?= $escaper->escapeHtml(__('Navigating through the elements of the carousel is possible using the tab key. You can skip the carousel or go straight to navigation using the skip links.')) ?>
+            </span>
 
             <div class="flex-none relative w-full overflow-x-hidden focus-within:ring-2 ring-offset-2 active:ring-0 ring-blue-500/50">
                 <div class="relative flex flex-nowrap w-full overflow-auto js_slides snap md:px-1 xl:px-2"
@@ -243,13 +247,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
                 </div>
             </template>
             </div>
-            <span :id="$id('slider-end')"></span>
-            <span
-                class="sr-only"
-                :id="$id('slider-desc')"
-            >
-                <?= $escaper->escapeHtml(__('Navigating through the elements of the carousel is possible using the tab key. You can skip the carousel or go straight to navigation using the skip links.')) ?>
-            </span>
+            <span :id="$id('slider-end')" tabindex="-1"></span>
     <?php endif; ?>
 </section>
 <?php
