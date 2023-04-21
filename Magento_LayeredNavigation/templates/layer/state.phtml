@@ -22,14 +22,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 ?>
 <?php $filters = $block->getActiveFilters() ?>
 <?php if (!empty($filters)): ?>
-<div class="filter-current bg-container-lighter border border-container p-4 md:px-8" x-data="{ open: true }">
+<div class="filter-current bg-container-lighter border border-container p-4 md:px-8" x-data="{ open: true }" role="group" aria-labelledby="filter-current-title">
     <h3 class="filter-options-title" id="filter-current-title">
         <button
             class="flex justify-between items-center cursor-pointer w-full"
             @click="open = !open"
             aria-controls="filter-current-content"
             :aria-expanded="open"
-            aria-label="<?= $escaper->escapeHtmlAttr(__("Adjust active filtering")) ?>"
             x-init="$nextTick(() => $el.focus())"
         >
             <strong><?= $escaper->escapeHtml(__('Active filtering')) ?></strong>
@@ -40,7 +39,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     24,
                     [
                         ":class" => "{ 'rotate-180': open }",
-                        "aria-hidden" => "{ true }"
+                        "aria-hidden" => 'true'
                     ]
                 ); ?>
             </span>
@@ -50,8 +49,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         id="filter-current-content"
         class="items pt-1 pb-3"
         x-show="open"
-        aria-labelledby="filter-current-title"
-        role="region"
     >
         <?php foreach ($filters as $filter): ?>
             <div class="item flex justify-between items-center">
