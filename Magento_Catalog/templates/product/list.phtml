@@ -57,11 +57,12 @@ $productCollection = $block->getLoadedProductCollection();
          */
         $pos = $block->getPositioned();
         ?>
-        <div
+        <section
             class="products wrapper mode-<?= /* @noEscape */$viewMode ?> products-<?= /* @noEscape */$viewMode ?>"
-            id="main-content"
-            role="main"
-            aria-label="<?= $escaper->escapeHtmlAttr(__('Main content')) ?>"
+            id="products-list"
+            role="region"
+            aria-label="<?= $escaper->escapeHtmlAttr(__('Products list')) ?>"
+            tabindex="-1"
         >
             <div class="mx-auto pt-4 pb-12 grid gap-4 grid-cols-1 <?= /* @noEscape */$viewMode === 'grid'
                 ? 'sm:grid-cols-2 xl:grid-cols-3'
@@ -82,7 +83,7 @@ $productCollection = $block->getLoadedProductCollection();
                     );
                 } ?>
             </div>
-        </div>
+        </section>
         <?= $block->getChildBlock('toolbar')->setIsBottom(true)->toHtml() ?>
     </section>
 <?php endif; ?>
