@@ -144,7 +144,7 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                 <?php if ($showMiniCart): ?>
                     @click.prevent="() => {
                         !isCartEmpty && $event.stopPropagation()
-                        $dispatch('toggle-cart', { isOpen: true })
+                        $dispatch('open-cart')
                     }"
                     @toggle-cart.window="isCartOpen = $event.detail.isOpen"
                     :aria-expanded="isCartOpen"
