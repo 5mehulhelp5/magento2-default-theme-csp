@@ -115,9 +115,6 @@ module.exports = hyvaModules.mergeTailwindConfig({
       container: {
         center: true,
         padding: '1.5rem'
-      },
-      boxShadow: {
-          't-lg': '0 10px 15px -3px #0000001a, 0 -16px 24px -4px #0000000d',
       }
     }
   },
