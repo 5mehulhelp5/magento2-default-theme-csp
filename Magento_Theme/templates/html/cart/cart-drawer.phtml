@@ -40,7 +40,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     this.totalCartAmount = this.cart.summary_count;
                     this.setCartItems();
                 }
-                console.log('setting isloading false');
                 this.isLoading = false;
             },
             cartItems: [],
@@ -88,7 +87,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             : result.error_message
                     }], result.success ? 5000 : 0)
                     window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
-                    console.log('result ok, dispatched reload message');
                 });
             },
             closeCartDrawer() {
