@@ -32,7 +32,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         x-data="initNewsletterForm()"
         @submit.prevent="submitForm()"
         id="newsletter-validate-detail"
-        aria-label="<?= $escaper->escapeHtml(__('Subscribe newsletter')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Subscribe to our newsletter')) ?>"
     >
         <h2
             class="mb-3 text-sm font-medium tracking-widest text-gray-900 uppercase title-font"
