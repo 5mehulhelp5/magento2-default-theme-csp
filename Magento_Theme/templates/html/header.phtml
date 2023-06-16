@@ -33,7 +33,6 @@ $showMiniCart = $storeConfig->getStoreConfig(\Magento\Checkout\Block\Cart\Sideba
                 if (data.cart) { this.cart = data.cart }
             },
             isCartEmpty() {
-                console.log('iscartempty?',!this.cart.summary_count);
                 return !this.cart.summary_count
             }
         }
