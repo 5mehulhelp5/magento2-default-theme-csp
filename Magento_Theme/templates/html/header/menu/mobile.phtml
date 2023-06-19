@@ -65,7 +65,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
     >
         <ul
             x-ref="mobileMenuNavLinks"
-            class="border-t flex flex-col gap-y-1 mt-[68px]"
+            class="border-t flex flex-col gap-y-1 mt-16"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Site navigation links')) ?>"
         >
             <?php foreach ($menuItems as $index => $menuItem): ?>
@@ -117,7 +117,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                             }"
                         >
                             <ul
-                                class="mt-[68px] transition-transform duration-200 ease-in-out translate-x-full transform"
+                                class="mt-16 transition-transform duration-200 ease-in-out translate-x-full transform"
                                 :class="{
                                     'translate-x-full' : mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
                                     'translate-x-0' : mobilePanelActiveId === '<?= /* @noEscape */ (string) $index ?>',
