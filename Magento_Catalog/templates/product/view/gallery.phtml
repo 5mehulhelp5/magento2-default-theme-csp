@@ -158,8 +158,8 @@ $productName = $block->getProduct()->getName();
                                 </span>
                                 <img
                                     :src="image.thumb"
-                                    :alt="hyva.str('%1 thumb', image.caption) || '<?= $escaper->escapeJs("%1 thumb", $productName) ?>'"
-                                    :title="hyva.str('%1 thumb', image.caption) || '<?= $escaper->escapeJs("%1 thumb", $productName) ?>'"
+                                    :alt="hyva.str('%1 thumbnail', image.caption) || '<?= $escaper->escapeJs("%1 thumbnail", $productName) ?>'"
+                                    :title="hyva.str('%1 thumbnail', image.caption) || '<?= $escaper->escapeJs("%1 thumbnail", $productName) ?>'"
                                     width="<?= /* @noEscape */ $smallWidth ?>"
                                     height="<?= /* @noEscape */ $smallHeight ?>"
                                 />
