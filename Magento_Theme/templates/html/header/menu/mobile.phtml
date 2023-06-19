@@ -70,7 +70,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         >
             <?php foreach ($menuItems as $index => $menuItem): ?>
                 <li
-                    x-ref="<?= /* @noEscape */ (string) $index ?>-main"
+                    data-child-id="<?= $escaper->escapeHtmLAttr($index) ?>-main"
                     class="level-0"
                 >
                     <div
@@ -109,8 +109,8 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                     </div>
                     <?php if (!empty($menuItem['childData'])): ?>
                         <div
-                            x-ref="<?= /* @noEscape */ (string) $index ?>"
-                            x-init="trapFocus($refs['<?= /* @noEscape */ (string) $index ?>'])"
+                            data-child-id="<?= $escaper->escapeHtmLAttr($index) ?>"
+                            x-init="trapFocus($el)"
                             class="absolute top-0 right-0 z-10 flex flex-col gap-1 w-full h-full p-1 bg-container-lighter"
                             :class="{
                                 'invisible': mobilePanelActiveId !== '<?= /* @noEscape */ (string) $index ?>'
@@ -256,14 +256,12 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 this.mobilePanelActiveId = null
             },
             openSubcategory(index) {
-                const menuNodeRef = this.$refs[index]
-
+                const menuNodeRef = document.querySelector('[data-child-id=' + index + ']')
                 this.mobilePanelActiveId = this.mobilePanelActiveId === index ? 0 : index
                 this.$nextTick(() => menuNodeRef.firstElementChild.querySelector('button').focus())
             },
             backToMainCategories(index) {
-                const menuNodeRef = this.$refs[index]
-
+                const menuNodeRef = document.querySelector('[data-child-id=' + index + ']')
                 this.mobilePanelActiveId = 0
                 this.$nextTick(() => menuNodeRef.querySelector('a').focus())
             }
