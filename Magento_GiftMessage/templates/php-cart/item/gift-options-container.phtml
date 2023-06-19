@@ -28,6 +28,7 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
 <div x-data="initGiftItemOptions({itemId: '<?= (int) $block->getItem()->getId() ?>'})" class="gift-options-component w-full flex flex-wrap my-6" :data-item-id="itemId" x-cloak>
     <div class="text-left gift-options-title w-full order-first" x-show="isGiftMsgEnabled || hasActiveOptions">
         <button
+            type="button"
             x-ref="giftOptionsTrigger"
             @click="openDialog"
             class="cursor-pointer text-primary-lighter select-none whitespace-nowrap underline"
@@ -79,7 +80,11 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
             >
                 <div class="relative">
                     <h2 class="text-lg font-medium leading-7 text-gray-900 "><?= $escaper->escapeHtml('Item Gift Options') ?></h2>
-                    <button class="absolute top-0 right-0 cursor-pointer" @click.prevent="closeDialog" aria-label="<?= $escaper->escapeHtmlAttr('Close panel') ?>">
+                    <button type="button"
+                            class="absolute top-0 right-0 cursor-pointer"
+                            @click.prevent="closeDialog"
+                            aria-label="<?= $escaper->escapeHtmlAttr('Close panel') ?>"
+                    >
                         <?= $heroicons->xHtml('inline-block', 24, 24, ["aria-hidden" => "true"]) ?>
                     </button>
                 </div>
