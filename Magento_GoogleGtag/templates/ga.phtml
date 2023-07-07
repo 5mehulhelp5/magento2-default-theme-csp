@@ -20,6 +20,7 @@ use Magento\GoogleGtag\Block\Ga;
 $storeConfig = $viewModels->require(StoreConfig::class);
 
 $measurementId = $storeConfig->getStoreConfig('google/gtag/analytics4/measurement_id');
+// phpcs:disable Generic.ControlStructures.InlineControlStructure.NotAllowed
 if (empty($measurementId)) return;
 
 $anonymize = (bool)$storeConfig->getStoreConfig('google/gtag/anonymize');
