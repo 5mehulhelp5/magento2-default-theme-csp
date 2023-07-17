@@ -35,7 +35,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
     <!-- mobile -->
     <div @load.window="setActiveMenu($root)"
          class="bg-container-lighter"
-         :class="{'h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 w-full' : open}"
+         :class="{'h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 w-screen' : open}"
          @toggle-mobile-menu.window="open = !open"
          @keydown.window.escape="open=false"
     >
