@@ -78,6 +78,7 @@ $productName = $block->getProduct()->getName();
                                 <span class="hidden" itemprop="ratingValue"><?= /** @noEscape */ $starsFilled; ?></span>
                                 <div
                                     class="flex flex-row"
+                                    role="img"
                                     aria-label="<?= $escaper->escapeHtmlAttr(__('%1 rating. %2 out of %3 stars', $productName, $starsFilled, $ratingSteps))?>"
                                 >
                                     <?php $i = 0; ?>
