@@ -68,7 +68,7 @@ if (!$productId || !$attributeId) {
                     attributeOption => selectedValues[attributeOption]
                 ).length === 0"
                 :aria-label="getSwatchText(<?= $escaper->escapeHtmlAttr($attributeId) ?>, item.id)"
-                aria-describedby="swatch-<?= $productId . '-' . $attributeId ?>"
+                aria-describedby="attribute-label-<?= $productId . '-' . $attributeId ?>"
             >
             <template x-if="isTextSwatch(<?= (int) $attributeId ?>, item.id)">
                 <div
