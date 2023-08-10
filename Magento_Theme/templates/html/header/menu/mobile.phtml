@@ -220,7 +220,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 document.body.style.position = '';
 
                 if (this.open) {
-                    this.$nextTick(() => this.$refs['mobileMenuTrigger'].focus() && hyva.releaseFocus());
+                    this.$nextTick(() => this.$refs['mobileMenuTrigger'].focus() || hyva.releaseFocus());
                 }
 
                 this.open = false
