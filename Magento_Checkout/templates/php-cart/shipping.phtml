@@ -472,7 +472,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     <div
                         class="pt-2 relative"
                         role="radiogroup"
-                        aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping methods')) ?>"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping Methods')) ?>"
                     >
                         <?= $block->getBlockHtml('block-loader') ?>
                         <template x-for="carrier in getEstimatedShippingRateCarriers()" :key="carrier">
