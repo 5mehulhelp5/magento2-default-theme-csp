@@ -31,10 +31,10 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
             function wishlistSidebarFetchHandler(body, postUrl, isRemoveAction = true) {
                 const messages = {
                     "success": isRemoveAction
-                        ? "<?= $escaper->escapeJs(__("%1 has been removed from your Wish List")) ?>"
+                        ? "<?= $escaper->escapeJs(__("%1 has been removed from your Wish List.")) ?>"
                         : "<?= $escaper->escapeJs(__("%1 has been added to your Wish List.")) ?>",
                     "warning": isRemoveAction
-                        ? "<?= $escaper->escapeJs(__("Could not remove item from your Wish List")) ?>"
+                        ? "<?= $escaper->escapeJs(__("Could not remove item from your Wish List.")) ?>"
                         : "<?= $escaper->escapeJs(__('Could not add item to your Wish List.')) ?>",
                 }
 
@@ -139,9 +139,9 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
                                             type="button"
                                             @click.prevent="addToCart(product.add_to_cart_params)"
                                             class="action tocart primary btn btn-primary text-sm"
-                                            :aria-label="hyva.str('<?= $escaper->escapeJs(__('Add to cart %1'))  ?>', product.product_name)"
+                                            :aria-label="hyva.str('<?= $escaper->escapeJs(__('Add to Cart %1'))  ?>', product.product_name)"
                                         >
-                                            <?= $escaper->escapeHtml(__('Add to cart')) ?>
+                                            <?= $escaper->escapeHtml(__('Add to Cart')) ?>
                                         </button>
                                     </template>
                                 </div>
