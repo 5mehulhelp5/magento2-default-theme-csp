@@ -56,7 +56,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
                 }, hideAfter, messageIndex);
             },
             eventListeners: {
-                ['@messages-loaded.window']() {
+                ['@messages-loaded.window'](event) {
                     this.addMessages(event.detail.messages, event.detail.hideAfter)
                 },
                 ['@private-content-loaded.window'](event) {
