@@ -48,7 +48,7 @@ $productName = $block->getProduct()->getName();
      class="w-full pt-6 md:pt-0 md:h-auto md:row-start-1 md:row-span-2 md:col-start-1"
     >
     <div
-        :class="{'w-full h-full fixed block top-0 left-0 bg-white z-50 flex': fullscreen}"
+        :class="{'w-full h-full fixed top-0 left-0 bg-white z-50 flex': fullscreen}"
         :role="fullscreen ? 'dialog' : false"
         :aria-modal="fullscreen"
         :aria-label="fullscreen ? '<?= $escaper->escapeJs(__('Gallery modal fullscreen')) ?>' : false"
