@@ -52,6 +52,7 @@ $productName = $block->getProduct()->getName();
         :role="fullscreen ? 'dialog' : false"
         :aria-modal="fullscreen"
         :aria-label="fullscreen ? '<?= $escaper->escapeJs(__('Gallery modal fullscreen')) ?>' : false"
+        x-ref="galleryBody"
     >
         <div class="relative self-center w-full"
              @touchstart="handleTouchStart"
