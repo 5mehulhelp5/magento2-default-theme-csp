@@ -224,6 +224,17 @@ $productName = $block->getProduct()->getName();
             init() {
                 this.initActive();
                 this.$nextTick(() => this.calcPageSize());
+
+                this.$watch('fullscreen', (open) => {
+                    this.$nextTick(() => {
+                        this.scrollLock(open);
+
+                        window.requestAnimationFrame(() => {
+                            this.calcPageSize();
+                            this.tabLock(this.$refs.galleryBody, open);
+                        });
+                    })
+                });
             },
             receiveImages(images) {
                 if (this.appendOnReceiveImages) {
@@ -437,44 +448,45 @@ $productName = $block->getProduct()->getName();
                     this.resetGallery();
                 }
             },
-            focusTrapHandler: function(firstFocusableElement, lastFocusableElement, e) {
-                const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-                if (!isTabPressed) {
+            openFullscreen() {
+                this.fullscreen = true;
+            },
+            closeFullScreen() {
+                this.fullscreen = false;
+            },
+            scrollLock(use = true) {
+                document.body.style.overflow = use ? "hidden" : "";
+            },
+            tabLock(target, use = true) {
+                if (!use) {
+                    document.removeEventListener('keydown', this.focusTrapListener);
                     return;
                 }
 
-                e.shiftKey
-                    ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
-                    : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
-            },
-            openFullscreen(node) {
-                this.fullscreen = true;
-                this.$nextTick(() => this.calcPageSize());
+                const focusableElements = target.querySelectorAll(
+                    'button:not([tabindex="-1"]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                ) || [];
+                const focusableContent = Array.from(focusableElements).filter(el => el.style.display !== 'none');
+                console.log(focusableElements, focusableContent);
+                if (!focusableContent.length) return;
 
-                const focusableElements = 'button, [href], input, select, textarea';
-                const focusableContent = Array.from(node.querySelectorAll(focusableElements))
-                    .filter(el => (el.attributes.tabindex >= 0 || !el.attributes.tabindex) && el.style.display !== 'none');
+                const firstFocusableElement = focusableContent[0];
+                const lastFocusableElement = focusableContent[focusableContent.length - 1];
+                firstFocusableElement.focus();
 
-                const firstFocusableElement = focusableContent.length > 0
-                    ? focusableContent[0]
-                    : null;
-                const lastFocusableElement = focusableContent.length > 0
-                    ? focusableContent[focusableContent.length - 1]
-                    : null;
+                this.focusTrapListener = (event) => {
+                    const isTabPressed = event.key === 'Tab' || event.keyCode === 9;
+                    if (!isTabPressed) return;
 
-                this.focusTrapListener = this.focusTrapHandler.bind(this, firstFocusableElement, lastFocusableElement);
+                    const isFirst = document.activeElement === firstFocusableElement;
+                    const isLast = document.activeElement === lastFocusableElement;
+
+                    event.shiftKey
+                        ? isFirst && (event.preventDefault(), lastFocusableElement.focus())
+                        : isLast && (event.preventDefault(), firstFocusableElement.focus());
+                };
 
                 document.addEventListener('keydown', this.focusTrapListener);
-            },
-            closeFullScreen() {
-                if (this.fullscreen) {
-                    this.$refs.galleryMainImage.focus();
-                }
-                this.fullscreen = false;
-                this.$nextTick(() => this.calcPageSize());
-
-                document.removeEventListener('keydown', this.focusTrapListener);
             },
             handleTouchStart(event) {
                 if (this.images.length <= 1) {
