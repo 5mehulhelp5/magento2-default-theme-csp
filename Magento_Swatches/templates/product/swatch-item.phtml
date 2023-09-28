@@ -81,9 +81,7 @@ if (!$productId || !$attributeId) {
     <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && !optionIsActive(<?= (int) $attributeId ?>, item.id)">
         <div
             class="relative border-2 shadow-sm opacity-50 cursor-pointer select-none border-container-darker swatch-option bg-container-lighter"
-            :class="{
-                                                        'w-6 h-6' : !isTextSwatch(<?= (int) $attributeId ?>, item.id),
-                                                    }"
+            :class="{ 'w-6 h-6' : !isTextSwatch(<?= (int) $attributeId ?>, item.id) }"
             :style="getSwatchBackgroundStyle('<?= (int) $attributeId ?>',item.id)"
         >
             <div x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
