@@ -444,6 +444,9 @@ $productName = $block->getProduct()->getName();
                     this.resetGallery();
                 }
             },
+            scrollLock(use = true) {
+                document.body.style.overflow = use ? "hidden" : "";
+            },
             focusTrapHandler: function(firstFocusableElement, lastFocusableElement, e) {
                 const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
 
