@@ -528,10 +528,12 @@ $productName = $block->getProduct()->getName();
                 return this.active + 1 === this.itemCount ? 0 : this.active + 1;
             },
             previousItem() {
-                this.setActiveAndScrollTo(this.active > 0 ? this.active - 1 : this.itemCount - 1);
+                if (this.active === 0) return;
+                this.setActiveAndScrollTo(this.active - 1);
             },
             nextItem() {
-                this.setActiveAndScrollTo(this.active + 1 === this.itemCount ? 0 : this.active + 1);
+                if ((this.active + 1) === this.itemCount) return;
+                this.setActiveAndScrollTo(this.active + 1);
             },
         }
      }
