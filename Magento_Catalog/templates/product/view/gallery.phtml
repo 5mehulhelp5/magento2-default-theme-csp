@@ -434,17 +434,6 @@ $productName = $block->getProduct()->getName();
                     this.resetGallery();
                 }
             },
-            focusTrapHandler: function(firstFocusableElement, lastFocusableElement, e) {
-                const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
-
-                if (!isTabPressed) {
-                    return;
-                }
-
-                e.shiftKey
-                    ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
-                    : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault());
-            },
             openFullscreen(node) {
                 this.fullscreen = true;
                 this.$nextTick(() => this.calcPageSize());
