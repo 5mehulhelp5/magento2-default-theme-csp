@@ -106,10 +106,6 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 <span><?= $escaper->escapeHtml(__('Submit')) ?></span>
             </button>
         </div>
-        <span
-            class="text-red-600 text-end text-sm block mt-1"
-            aria-hidden="true"
-        ><?= $escaper->escapeHtml(__('* Required fields')) ?></span>
         <div class="w-full">
             <?= $block->getChildHtml('form.additional.after') ?>
             <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
