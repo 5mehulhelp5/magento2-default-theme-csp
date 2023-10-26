@@ -45,7 +45,7 @@ $uniqueId = '_' . uniqid();
 <script>
     function initWishlist<?= /** @noEscape */ $uniqueId ?>() {
         return {
-            addToWishlist: function addToWishlist(productId) {
+            addToWishlist(productId) {
 
                 const postParams = <?php if ($updateParams): ?>
                     <?= /* @noEscape */ $updateParams ?>
@@ -54,13 +54,15 @@ $uniqueId = '_' . uniqid();
                     action: BASE_URL + "wishlist/index/add/",
                     data: {
                         product: productId,
-                        uenc: btoa(window.location.href)
+                        uenc: hyva.getUenc()
                     }
                 }
                 <?php endif; ?>
 
-                postParams.data['form_key'] = document.querySelector('input[name=form_key]').value;
-                postParams.data['qty'] = document.getElementById(`qty[${productId}]`).value || 1;
+                postParams.data['form_key'] = hyva.getFormKey();
+                postParams.data['qty'] = document.getElementById(`qty[${productId}]`)
+                    ? document.getElementById(`qty[${productId}]`).value || 1
+                    : 1;
 
                 let postData = Object.keys(postParams.data).map(key => {
                     return `${key}=${postParams.data[key]}`;
@@ -90,7 +92,7 @@ $uniqueId = '_' . uniqid();
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
-                }).then(function (response) {
+                }).then((response) => {
                     if (response.redirected) {
                         window.location.href = response.url;
                     } else if (response.ok) {
@@ -103,7 +105,7 @@ $uniqueId = '_' . uniqid();
                             }], 5000
                         );
                     }
-                }).then(function (response) {
+                }).then((response) => {
                     if (!response) {
                         return;
                     }
@@ -119,7 +121,7 @@ $uniqueId = '_' . uniqid();
                     );
                     const reloadCustomerDataEvent = new CustomEvent("reload-customer-section-data");
                     window.dispatchEvent(reloadCustomerDataEvent);
-                }).catch(function (error) {
+                }).catch((error) => {
                     typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
                         [{
                             type: "error",
@@ -135,11 +137,12 @@ $uniqueId = '_' . uniqid();
 <button x-data="initWishlist<?= /** @noEscape */ $uniqueId ?>()"
         @click.prevent="addToWishlist(<?= (int)$product->getId() ?>)"
         title="<?= $escaper->escapeHtmlAttr(
-            __(($updateParams) ? 'Update Wish List' : 'Add to Wish List')
+            ($updateParams) ? __('Update Wish List') : __('Add to Wish List')
         ) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(
-            __(($updateParams) ? 'Update Wish List' : 'Add to Wish List')
+            ($updateParams) ? __('Update Wish List') : __('Add to Wish List')
         ) ?>"
+        id="add-to-wishlist"
         class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex
                 items-center justify-center text-gray-500 hover:text-red-600 ml-4">
     <?= $heroicons->heartHtml("w-5 h-5", 25, 25) ?>

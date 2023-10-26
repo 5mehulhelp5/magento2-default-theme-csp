@@ -11,15 +11,13 @@ declare(strict_types=1);
 use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Currency;
+use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\RecentlyViewedProducts;
 use Hyva\Theme\ViewModel\Store;
-use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
-
-// phpcs:disable Generic.Files.LineLength
 
 /**
  * These variables are automatically assigned to any template
@@ -62,7 +60,6 @@ $storeConfig = $viewModels->require(StoreConfig::class);
 /** @var Currency $viewModelCurrency */
 $viewModelCurrency = $viewModels->require(Currency::class);
 
-$title = $title ?? __('Recently Viewed Products');
 ?>
 <script>
 
@@ -115,6 +112,8 @@ $title = $title ?? __('Recently Viewed Products');
 
             fetchProducts(itemsToShow) {
                 const skusToFetch = itemsToShow.map(product => product.sku);
+                <?php /* It is not possible to query prices incl and excl tax from the GraphQL api */ ?>
+                <?php /* If display incl + excl is required, ensure catalog/recently_products/synchronize_with_backend is set to No */ ?>
                 const query = `<?= /** @noEscape */ $gqlViewModel->query(
                     "recently_viewed_products_query",
                     'query ($skus: [String!]!) {
@@ -148,7 +147,7 @@ $title = $title ?? __('Recently Viewed Products');
 }'
                 ) ?>`;
                 const variables = JSON.stringify({skus: skusToFetch});
-                window.fetch('/graphql?' + new URLSearchParams({query, variables}), {
+                window.fetch(BASE_URL + 'graphql?' + new URLSearchParams({query, variables}), {
                     method: 'GET',
                     headers: {
                         'Store': '<?= $escaper->escapeJs($viewModelStore->getStoreCode()) ?>',
@@ -192,19 +191,17 @@ $title = $title ?? __('Recently Viewed Products');
             },
 
             addToWishlist(productId) {
-                const params = {
-                    form_key: hyva.getFormKey(),
-                    product: productId,
-                    uenc: btoa(window.location.href)
-                };
-                fetch(BASE_URL + 'wishlist/index/add/', {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                const formKey = hyva.getFormKey();
+                const postUrl = BASE_URL + 'wishlist/index/add/';
+
+                fetch(postUrl, {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    body: new URLSearchParams(params),
-                    method: 'POST',
-                    mode: 'cors',
-                    credentials: 'include'
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
                 }).then(response => {
                     if (response.redirected) {
                         window.location.href = response.url;
@@ -241,19 +238,17 @@ $title = $title ?? __('Recently Viewed Products');
             }, // end addToWishlist()
 
             addToCompare(productId) {
-                const params = {
-                    form_key: hyva.getFormKey(),
-                    product: productId,
-                    uenc: btoa(window.location.href)
-                };
-                fetch(BASE_URL + 'catalog/product_compare/add/', {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                const formKey = hyva.getFormKey();
+                const postUrl = BASE_URL + 'catalog/product_compare/add/';
+
+                fetch(postUrl, {
+                    "headers": {
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    body: new URLSearchParams(params),
-                    method: 'POST',
-                    mode: 'cors',
-                    credentials: 'include'
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
                 }).then(response => {
                     if (response.redirected) {
                         window.location.href = response.url;
@@ -271,7 +266,7 @@ $title = $title ?? __('Recently Viewed Products');
             // slider properties
             active: 0,
             getSlider() {
-                return this.$el.querySelector('.js_slides');
+                return this.$root.querySelector('.js_slides');
             },
             pageSize: 4,
             pageFillers: 0,

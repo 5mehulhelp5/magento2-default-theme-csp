@@ -34,13 +34,15 @@ $wishlistViewModel    = $viewModels->require(Wishlist::class);
 $compareViewModel     = $viewModels->require(ProductCompare::class);
 $storeViewModel       = $viewModels->require(Store::class);
 
-$categoryIds       = array_filter(explode(',', $block->getData('category_ids') ?: ''));
+$categoryIds       = $block->getData('category_ids') ?: '';
+$isAnchorCategory  = $block->getData('include_child_category_products');
 $pageSize          = $block->getData('page_size') ?: 8;
 $priceFrom         = $block->getData('price_from');
 $priceTo           = $block->getData('price_to');
 $sortAttribute     = $block->getData('sort_attribute') ?: '';
 $sortDirection     = $block->getData('sort_direction') ?: 'ASC';
 $title             = $block->getData('title') ?: '';
+$headingTag        = $block->getData('heading_tag') ?: 'h3';
 $hideDetails       = $block->getData('hide_details') ?? false;
 $hideRatingSummary = $block->getData('hide_rating_summary') ?? false;
 $type              = $block->getData('type');
@@ -53,6 +55,11 @@ $containerTemplate = $block->getData('container_template')
 
 if ($categoryIds) {
     $productListViewModel->addFilter('category_id', $categoryIds, 'in');
+}
+
+if ($isAnchorCategory) {
+    // Only has an effect if a single category ID filter is set, and that category is an anchor category
+    $productListViewModel->includeChildCategoryProducts();
 }
 
 if ($priceFrom) {
@@ -78,7 +85,6 @@ $productListViewModel->setPageSize($pageSize);
 $productListViewModel->addFilter('website_id', $storeViewModel->getWebsiteId());
 $productListViewModel->addFilter('visibility', [
     ProductVisibility::VISIBILITY_IN_CATALOG,
-    ProductVisibility::VISIBILITY_IN_SEARCH,
     ProductVisibility::VISIBILITY_BOTH,
 ], 'in');
 if ($sortAttribute) {
@@ -97,16 +103,21 @@ if (in_array($type, ['related', 'upsell', 'crosssell'], true)) {
     $items = $productListViewModel->getItems();
 }
 
+$sliderHtml = $sliderViewModel->getSliderForItems($itemTemplate, $items, $containerTemplate)
+    ->setData('hide_details', $hideDetails)
+    ->setData('hide_rating_summary', $hideRatingSummary)
+    ->setData('title', $title)
+    ->setData('item_relation_type', $type)
+    ->setData('heading_tag', $headingTag)
+    ->toHtml();
+
+if (empty($sliderHtml)) {
+    return '';
+}
 ?>
 <div class="product-slider">
     <div>
-        <?=
-        $sliderViewModel->getSliderForItems($itemTemplate, $items, $containerTemplate)
-                        ->setData('hide_details', $hideDetails)
-                        ->setData('hide_rating_summary', $hideRatingSummary)
-                        ->setData('title', $title)
-                        ->toHtml();
-        ?>
+        <?= /* @noEscape */ $sliderHtml ?>
     </div>
     <script>
         'use strict';
@@ -116,20 +127,18 @@ if (in_array($type, ['related', 'upsell', 'crosssell'], true)) {
 
                 <?php if ($wishlistViewModel->isEnabled()): ?>
                 window.addEventListener('product-add-to-wishlist', (event) => {
+                    const formKey = hyva.getFormKey();
+                    const postUrl = BASE_URL + 'wishlist/index/add/';
                     const productId = event.detail.productId;
-                    fetch(BASE_URL + "wishlist/index/add/", {
-                        headers: {
+
+                    fetch(postUrl, {
+                        "headers": {
                             "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                         },
-                        body: new URLSearchParams({
-                                form_key: hyva.getFormKey(),
-                                product: productId,
-                                uenc: btoa(window.location.href)
-                            }
-                        ),
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "include"
+                        "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
+                        "method": "POST",
+                        "mode": "cors",
+                        "credentials": "include"
                     }).then(function (response) {
                         if (response.redirected) {
                             window.location.href = response.url;

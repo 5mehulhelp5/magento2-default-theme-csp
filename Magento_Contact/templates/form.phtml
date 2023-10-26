@@ -13,27 +13,22 @@ use Magento\Contact\Helper\Data as ContactHelper;
 use Magento\Framework\Escaper;
 use Hyva\Theme\ViewModel\ReCaptcha;
 
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var ContactForm $block */
 /** @var Escaper $escaper */
+/** @var ReCaptcha $recaptcha|null */
 
 $formId = 'contact';
 /** @var ContactHelper $contactHelper */
 $contactHelper = $this->helper(ContactHelper::class);
 
-/** @var ReCaptcha $recaptchaViewModel */
-//Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency on
-//Magento's Recaptcha module
-$recaptchaViewModel = $block->getData('viewModelRecaptcha');
-$recaptchaInputFieldBlock = '';
-$recaptchaLegalNoticeBlock = '';
-if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRecaptchaData('contact')) {
-    $recaptchaInputFieldBlock = $recaptchaData[ReCaptcha::RECAPTCHA_INPUT_FIELD];
-    $recaptchaLegalNoticeBlock = $recaptchaData[ReCaptcha::RECAPTCHA_LEGAL_NOTICE_BLOCK];
-}
+// Do not replace this with $viewModels->require(ReCaptcha::class); that would break the dependency
+// on the Magento_ReCaptchaContact module
+$recaptcha = $block->getData('viewModelRecaptcha');
 ?>
-<div class="flex-columns-wrapper justify-between py-8 gap-4">
+<div class="flex flex-col md:flex-row justify-between py-8 gap-4">
     <form class="form contact card lg:w-1/2 md:w-2/3"
           action="<?= $escaper->escapeUrl($block->getFormAction()) ?>"
           id="<?= $escaper->escapeHtmlAttr($formId) ?>"
@@ -102,7 +97,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                               ) ?></textarea>
                 </div>
                 <?= $block->getChildHtml('form.additional.info') ?>
-                <?= $block->getBlockHtml($recaptchaInputFieldBlock) ?>
+                <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
             </div>
         </fieldset>
         <div class="w-full">
@@ -113,7 +108,7 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         </div>
         <div class="w-full">
             <?= $block->getChildHtml('form.additional.after') ?>
-            <?= $block->getBlockHtml($recaptchaLegalNoticeBlock) ?>
+            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
         </div>
     </form>
     <script>
@@ -122,9 +117,9 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
                 errors: 0,
                 hasCaptchaToken: 0,
                 submitForm() {
-                    // Do not rename $form, it is expected to be declared in the child block output
+                    // Do not rename $form, the variable is expected to be declared in the recaptcha output
                     const $form = document.querySelector('#<?= $escaper->escapeJs($formId) ?>');
-                    <?= $block->getChildHtml('recaptcha_validation'); ?>
+                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CONTACT) : '' ?>
 
                     if (this.errors === 0) {
                         $form.submit();
@@ -134,8 +129,6 @@ if ($recaptchaViewModel !== null && $recaptchaData = $recaptchaViewModel->getRec
         }
     </script>
     <div class="card lg:w-1/2 md:w-1/3">
-        <h2 class="sm:text-2xl text-xl font-medium title-font mb-4 text-gray-900"><span><?= $escaper->escapeHtml(
-            __('Contact Details')
-        ) ?></span></h2>
-        <p>Contact info</p></div>
+        <?= $block->getChildHtml('contact.details') ?>
+    </div>
 </div>

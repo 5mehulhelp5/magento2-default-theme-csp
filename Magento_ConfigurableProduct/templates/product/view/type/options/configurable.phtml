@@ -16,9 +16,7 @@ $product = $block->getProduct();
 $productId = $product->getId();
 $attributes = $block->decorateArray($block->getAllowAttributes());
 ?>
-<?php if ($product->isSaleable() && count($attributes)):?>
-
-    <?= $block->getChildHtml('options_configurable_js') ?>
+<?php if ($product->isSaleable() && count($attributes)): ?>
 
     <script>
         function initConfigurableDropdownOptions_<?= (int) $productId ?>() {
@@ -30,7 +28,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
     </script>
 
     <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>()"
-         x-init="init();"
+         x-init="init()"
          @private-content-loaded.window="onGetCartData($event.detail.data)"
          class="mb-6"
     >
@@ -63,7 +61,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                     >
                         <option
                             :value="item.id"
-                            x-html="item.label"
+                            x-html="getAttributeOptionLabel(item)"
                             :selected="selectedValues[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>] ===
                                 item.id">
                         </option>

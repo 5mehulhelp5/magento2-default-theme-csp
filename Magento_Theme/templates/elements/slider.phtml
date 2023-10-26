@@ -201,11 +201,14 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                 });
             },
             addToWishlist(productId) {
-                fetch(BASE_URL + "wishlist/index/add/", {
+                const formKey = hyva.getFormKey();
+                const postUrl = BASE_URL + 'wishlist/index/add/';
+
+                fetch(postUrl, {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    "body": "form_key="+ hyva.getFormKey() + "&product="+productId+"&uenc="+btoa(window.location.href),
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
@@ -245,14 +248,14 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                 });
             },
             addToCompare(productId) {
-                const formKey = document.querySelector('input[name=form_key]').value;
+                const formKey = hyva.getFormKey();
                 const postUrl = BASE_URL + 'catalog/product_compare/add/';
 
                 fetch(postUrl, {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
@@ -270,7 +273,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                 });
             },
             getSlider() {
-                return this.$el.querySelector('.js_slides');
+                return this.$root.querySelector('.js_slides');
             },
             pageSize: 4,
             pageFillers: 0,
@@ -313,9 +316,11 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                     </h3>
                 </div>
             <?php endif; ?>
-            <div class="relative w-full overflow-x-hidden focus-within:ring-1 active:ring-0 ring-blue-500
-                        ring-opacity-50">
-                <div class="relative flex flex-nowrap w-full overflow-auto transition-all js_slides snap"
+            <div class="relative w-full overflow-x-hidden focus-within:ring-1 active:ring-0 ring-blue-500/50">
+                <div class="relative flex flex-nowrap w-full overflow-auto js_slides snap"
+                    <?php if ($title): ?>
+                        id="<?= $escaper->escapeHtmlAttr(strtolower(str_replace(' ', '-', trim($title)))) ?>"
+                    <?php endif; ?>
                      @scroll.debounce="calcActive"
                 >
                     <template x-for="product in products">
@@ -403,12 +408,12 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <template x-for="(product, index) in products" :key="index">
-                        <span class="flex-shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow
-                                     cursor-pointer"
+                        <span class="shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
                               tabindex="-1"
                               :class="{
                                     'bg-opacity-100': active === index,
-                                    'hidden': (pageSize !== 1 && !!(index % pageSize))
+                                    'bg-opacity-25': active !== index,
+                                    'hidden': (pageSize !== 1 && !!(index % pageSize)),
                                     }"
                               @click="getSlider().scrollLeft =
                                     (getSlider().scrollWidth / products.length) * index; active=index;">

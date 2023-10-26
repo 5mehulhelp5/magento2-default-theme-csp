@@ -12,6 +12,7 @@ use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Search\Helper\Data as SearchHelper;
 
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var Escaper $escaper */
@@ -25,12 +26,14 @@ $helper = $this->helper(SearchHelper::class);
 
     function initMiniSearch() {
         return {
-            minSearchLength: 3,
+            minSearchLength: <?= (int) $helper->getMinQueryLength() ?>,
             suggestions: [],
             suggest() {
-                const term = this.$refs.searchInput.value;
-                if (term.length >= this.minSearchLength) {
-                    this.fetchSuggestions(term);
+                const search = this.$refs.searchInput;
+                if (search.value.length >= this.minSearchLength) {
+                    search.setCustomValidity('');
+                    search.reportValidity();
+                    this.fetchSuggestions(search.value);
                 } else {
                     this.suggestions = [];
                 }
@@ -48,8 +51,18 @@ $helper = $this->helper(SearchHelper::class);
                 .then(result => this.suggestions = result);
             },
             search(term) {
-                this.$refs.searchInput.value = term;
-                document.getElementById('search_mini_form').submit();
+                const search = this.$refs.searchInput;
+                term = term || search.value;
+                if (term.length < this.minSearchLength) {
+                    search.setCustomValidity('<?= $escaper->escapeJs(
+                        __('Minimum Search query length is %1', $helper->getMinQueryLength())
+                    ) ?>');
+                    search.reportValidity();
+                } else {
+                    search.setCustomValidity('');
+                    search.value = term;
+                    this.$refs.form.submit();
+                }
             },
             focusElement(element) {
                 if (element && element.nodeName === "DIV") {
@@ -63,8 +76,8 @@ $helper = $this->helper(SearchHelper::class);
     }
 </script>
 <div class="container py-2 mx-auto text-black" x-data="initMiniSearch()">
-     <form class="form minisearch" id="search_mini_form"
-          action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get">
+     <form class="form minisearch" id="search_mini_form" x-ref="form" @submit.prevent="search()"
+          action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get" role="search">
         <label class="hidden" for="search" data-role="minisearch-label">
             <span><?= $escaper->escapeHtml(__('Search')) ?></span>
         </label>
@@ -73,14 +86,18 @@ $helper = $this->helper(SearchHelper::class);
                type="search"
                autocomplete="off"
                name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
-               value="<?= $escaper->escapeHtmlAttr($helper->getEscapedQueryText()) ?>"
+               value="<?= /** @noEscape */ $helper->getEscapedQueryText() ?>"
                placeholder="<?= $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
                maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
                class="w-full p-2 text-lg leading-normal transition appearance-none text-grey-800
                 focus:outline-none focus:border-transparent lg:text-xl"
                @focus.once="suggest"
                @input.debounce.300="suggest"
-               @keydown.arrow-down.prevent="focusElement($el.querySelector('[tabindex]'))"
+               @keydown.arrow-down.prevent="focusElement($root.querySelector('[tabindex]'))"
+               @search-open.window.debounce.10="
+                    $el.focus()
+                    $el.select()
+               "
         />
          <template x-if="suggestions.length > 0">
              <div class="w-full leading-normal transition appearance-none text-grey-800 flex flex-col mt-1">

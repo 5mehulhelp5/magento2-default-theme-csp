@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
 use Hyva\Theme\ViewModel\ProductPage;
+use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -18,9 +19,14 @@ use Magento\Framework\Escaper;
 /** @var View $block */
 /** @var Escaper $escaper */
 /** @var Product $product */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var ProductPrice $productPriceViewModel */
+$productPriceViewModel = $viewModels->require(ProductPrice::class);
 
 /** @var ViewModelRegistry $viewModels */
 $currentProduct = $viewModels->require(CurrentProduct::class);
+
 $product = $currentProduct->get();
 
 if (!$product) {
@@ -29,6 +35,7 @@ if (!$product) {
 
 /** @var ProductPage $productViewModel */
 $productViewModel = $viewModels->require(ProductPage::class);
+
 ?>
 <script>
     function initTierPrices<?= (int) $product->getId() ?>() {
@@ -40,40 +47,23 @@ $productViewModel = $viewModels->require(ProductPage::class);
                         return {
                             qty: tierPrice.qty,
                             price: tierPrice.price,
+                            basePrice: tierPrice.basePrice,
                             percentage: tierPrice.percentage
                         }
                     })
                 }
                 return false;
             },
-            formatPrice(value, showSign) {
-                const formatter = new Intl.NumberFormat(
-                    document.documentElement.lang,
-                    {
-                        style: 'currency',
-                        currency: '<?= $escaper->escapeHtml($productViewModel->getCurrencyData()['code']) ?>',
-                        signDisplay: showSign ? "always" : "auto"
-                    }
-                );
-                return (typeof Intl.NumberFormat.prototype.formatToParts === 'function') ?
-                    formatter.formatToParts(value).map(({type, value}) => {
-                        switch (type) {
-                            case 'currency':
-                                return '<?= $productViewModel->getCurrencyData()['symbol'] ?: ""; ?>' || value;
-                            case 'minusSign':
-                                return '- ';
-                            case 'plusSign':
-                                return '+ ';
-                            default :
-                                return value;
-                        }
-                    }).reduce((string, part) => string + part) :
-                    formatter.format(value);
-            },
             getItemHtml(item) {
+                const price = <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                    `${hyva.formatPrice(item.price)} (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${hyva.formatPrice(item.basePrice)})`;
+                <?php else: ?>
+                    hyva.formatPrice(item.price);
+                <?php endif; ?>
                 return '<?= $escaper->escapeHtml(__('Buy %1 for %2 each and', '%1', '%2')) ?>'
                     .replace('%1', item.qty)
-                    .replace('%2', this.formatPrice(item.price))
+                    .replace('%2', price)
+
             },
             eventListeners: {
                 ['@update-prices-<?= (int) $product->getId() ?>.window'](event) {
@@ -85,7 +75,7 @@ $productViewModel = $viewModels->require(ProductPage::class);
 </script>
 <div
      x-data="initTierPrices<?= (int)$product->getId() ?>()"
-     x-spread="eventListeners"
+     x-bind="eventListeners"
 >
     <template x-if="getConfiguredTierPrices()">
         <ul class="prices-tier items mb-4">

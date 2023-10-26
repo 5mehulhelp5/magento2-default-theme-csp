@@ -9,12 +9,16 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
 ?>
 
 <script>
@@ -68,7 +72,7 @@ function initCompareOnCompareSidebar() {
             }
         },
         removeFromCompare: function(productId) {
-            const formKey = document.querySelector('input[name=form_key]').value;
+            const formKey = hyva.getFormKey();
             const postUrl = BASE_URL + 'catalog/product_compare/remove/';
             const confirmMessage = "<?= $escaper
                 ->escapeHtml(__('Are you sure you want to remove this item from your Compare Products list?')) ?>";
@@ -77,7 +81,7 @@ function initCompareOnCompareSidebar() {
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 },
-                "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
                 "method": "POST",
                 "mode": "cors",
                 "credentials": "include"
@@ -91,7 +95,7 @@ function initCompareOnCompareSidebar() {
 function initCompareSidebarClear() {
     return {
         clearCompare: function() {
-            const formKey = document.querySelector('input[name=form_key]').value;
+            const formKey = hyva.getFormKey();
             const postUrl = BASE_URL + 'catalog/product_compare/clear/';
             const confirmMessage = "<?= $escaper
                 ->escapeHtml(__('Are you sure you want to remove all items from your Compare Products list?')) ?>";
@@ -100,7 +104,7 @@ function initCompareSidebarClear() {
                 "headers": {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                 },
-                "body": "form_key="+ formKey + "&uenc="+btoa(window.location.href),
+                "body": "form_key=" + formKey + "&uenc=" + hyva.getUenc(),
                 "method": "POST",
                 "mode": "cors",
                 "credentials": "include"
@@ -115,36 +119,41 @@ function initCompareSidebarClear() {
 <div x-data="initCompareOnCompareSidebar()"
      @private-content-loaded.window="receiveCompareData($event.detail.data)"
      class="compare-widget mt-8 hidden"
-     :class="{ 'hidden': !(itemCount > 0) }">
-    <div class="border-t border-container mb-6 pt-5">
-        <strong class="block title text-primary font-semibold text-lg">
-            <?= $escaper->escapeHtml(__('Compare Products')) ?>
-        </strong>
-    </div>
+     :class="{ 'hidden': !itemCount }"
+     :aria-hidden="!itemCount"
+>
+    <h2 class="border-t border-container mb-6 pt-5 text-primary font-semibold text-lg"
+        id="compare-sidebar"
+    >
+        <?= $escaper->escapeHtml(__('Compare Products')) ?>
+    </h2>
     <template x-if="itemCount">
-        <ul class="my-4">
+        <ul class="my-4" aria-labelledby="compare-sidebar">
             <template x-for="product in compareItems">
                 <li class="flex items-start mb-4">
-                    <a :href="product.product_url"
-                        class="block mb-3 w-10 h-10 flex-shrink-0 mr-4"
-                        :title="product.name">
-                        <img :src="product.image" :alt="product.name" loading="lazy">
+                    <a
+                        :href="product.product_url"
+                        class="block mb-3 w-10 h-10 shrink-0 mr-4"
+                        aria-hidden="true"
+                        tabindex="-1"
+                    >
+                        <img
+                            :src="product.image"
+                            alt=""
+                            loading="lazy"
+                        >
                     </a>
                     <strong class="mr-2 text-sm leading-6 font-normal">
-                        <a :href="product.product_url" :title="product.name" x-text="product.name"></a>
+                        <a :href="product.product_url" :title="product.name" x-html="product.name"></a>
                     </strong>
                     <button
+                        type="button"
                         @click.prevent="removeFromCompare(product.id)"
-                        aria-label="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>"
-                        class="p-1 inline-flex flex-shrink-0 items-center justify-center text-gray-500
+                        :aria-label="hyva.str('<?= $escaper->escapeJs(__('Remove product "%1" from the comparison')) ?>', product.name)"
+                        class="p-1 inline-flex shrink-0 items-center justify-center text-gray-500
                                hover:text-primary ml-auto"
-                        title="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                             stroke-width="2" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
+                    >
+                        <?= $heroicons->xHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                     </button>
                 </li>
             </template>
@@ -152,14 +161,14 @@ function initCompareSidebarClear() {
     </template>
     <div class="flex flex-wrap items-center md:mt-5 space-x-4 text-sm">
         <a href="<?= $escaper->escapeUrl($block->getUrl('catalog/product_compare/index')) ?>"
-            title="<?= $escaper->escapeHtml(__('Compare Products')); ?>"
+            title="<?= $escaper->escapeHtmlAttr(__('Compare Products')); ?>"
             class="btn btn-secondary px-4 text-sm">
             <span><?= $escaper->escapeHtml(__('Compare')); ?></span>
         </a>
         <button x-data="initCompareSidebarClear()"
             @click.prevent="clearCompare()"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Remove all Products')) ?>"
-            class="p-1 inline-flex flex-shrink-0 items-center justify-center text-gray-500 hover:text-primary ml-auto">
+            class="p-1 inline-flex shrink-0 items-center justify-center text-gray-500 hover:text-primary ml-auto">
             <span><?= $escaper->escapeHtml(__('Clear all')); ?></span>
         </button>
     </div>

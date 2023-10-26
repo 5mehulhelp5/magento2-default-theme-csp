@@ -1,11 +1,24 @@
 form,
 fieldset {
     .field {
-        @apply my-3;
+        @apply mt-1
+    }
+
+    /* Reserve space for single line form validation messages */
+    .field.field-reserved {
+        @apply mb-7
+    }
+
+    .field.field-reserved ul:last-of-type {
+        @apply -mb-6 pb-1 /* The sum has to match the value set above for field.field-reserved */
+    }
+
+    .field.field-reserved ul {
+        @apply text-sm
     }
 
     label {
-        @apply mb-2 block text-secondary-darker;
+        @apply mb-2 block text-secondary-darker
     }
 
     .field.choice {
@@ -20,6 +33,11 @@ fieldset {
         @apply mb-0
     }
 
+    .field.field-error .messages {
+        @apply text-red-600;
+        max-width: fit-content;
+    }
+
     legend {
         @apply text-primary text-xl mb-3
     }
@@ -30,5 +48,5 @@ fieldset {
 }
 
 fieldset ~ fieldset {
-    @apply mt-8;
+    @apply mt-8
 }

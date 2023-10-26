@@ -8,8 +8,23 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\StoreConfig;
+
+/** @var ViewModelRegistry $viewModels */
+/** @var HeroiconsOutline $heroicons */
+/** @var StoreConfig $storeConfig */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+$storeConfig = $viewModels->require(StoreConfig::class);
+
+$defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general/messages/success_message_timeout');
+
 ?>
 <script>
+    <?php if ($defaultSuccessMessageTimeout): ?>
+    window.defaultSuccessMessageTimeout = <?= (int) $defaultSuccessMessageTimeout ?>;
+    <?php endif; ?>
     function initMessages() {
         "use strict";
         return {
@@ -27,6 +42,9 @@ declare(strict_types=1);
             addMessages(messages, hideAfter) {
                 messages.map((message) => {
                     this.messages = this.messages.concat(message);
+                    if (hideAfter === undefined && message.type === 'success' && window.defaultSuccessMessageTimeout) {
+                        hideAfter = window.defaultSuccessMessageTimeout;
+                    }
                     if (hideAfter) {
                         this.setHideTimeOut(this.messages.length -1, hideAfter);
                     }
@@ -38,7 +56,7 @@ declare(strict_types=1);
                 }, hideAfter, messageIndex);
             },
             eventListeners: {
-                ['@messages-loaded.window']() {
+                ['@messages-loaded.window'](event) {
                     this.addMessages(event.detail.messages, event.detail.hideAfter)
                 },
                 ['@private-content-loaded.window'](event) {
@@ -60,11 +78,13 @@ declare(strict_types=1);
 </script>
 <section id="messages"
          x-data="initMessages()"
-         x-spread="eventListeners"
+         x-bind="eventListeners"
+         aria-live="assertive"
+         role="alert"
 >
     <template x-if="!isEmpty()">
         <div class="w-full">
-            <div role="alert" class="messages container mx-auto py-3">
+            <div class="messages container mx-auto py-3">
                 <template x-for="(message, index) in messages" :key="index">
                     <div>
                         <template x-if="message">
@@ -72,16 +92,14 @@ declare(strict_types=1);
                                  :ui-id="'message-' + message.type"
                             >
                                 <span x-html="message.text"></span>
-                                <a href="#" class="close cursor-pointer" title="close"
-                                   @click.prevent="removeMessage(index)">
-                                    <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg"
-                                         width="18" height="18" viewBox="0 0 18 18">
-                                        <path
-                                            d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47
-                                                4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
-                                        </path>
-                                    </svg>
-                                </a>
+                                <button
+                                    type="button"
+                                    class="text-gray-600 hover:text-black"
+                                    aria-label="<?= $escaper->escapeHtml(__('Close message')) ?>"
+                                    @click.prevent="removeMessage(index)"
+                                >
+                                    <?= $heroicons->xHtml('stroke-current', 18, 18, ['aria-hidden' => 'true']); ?>
+                                </button>
                             </div>
                         </template>
                     </div>

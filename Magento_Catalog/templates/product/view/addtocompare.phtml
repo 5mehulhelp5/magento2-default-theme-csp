@@ -40,14 +40,14 @@ if (!$product->getId() || !$compareViewModel->showOnProductPage()) {
     function initCompareOnProductView() {
         return {
             addToCompare: function (productId) {
-                const formKey = document.querySelector('input[name=form_key]').value;
+                const formKey = hyva.getFormKey();
                 const postUrl = BASE_URL + 'catalog/product_compare/add/';
 
                 fetch(postUrl, {
                     "headers": {
                         "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
                     },
-                    "body": "form_key="+ formKey + "&product="+productId+"&uenc="+btoa(window.location.href),
+                    "body": "form_key=" + formKey + "&product=" + productId + "&uenc=" + hyva.getUenc(),
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
@@ -72,6 +72,7 @@ if (!$product->getId() || !$compareViewModel->showOnProductPage()) {
         @click.prevent="addToCompare(<?= (int)$product->getId() ?>)"
         title="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
+        id="add-to-compare"
         class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center
             justify-center text-gray-500 hover:text-yellow-500 ml-2">
     <?= $heroicons->scaleHtml("w-5 h-5", 25, 25) ?>

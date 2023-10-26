@@ -8,13 +8,20 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\ProductListItem;
+use Hyva\Theme\ViewModel\ProductPage;
 use Magento\Catalog\Block\Product\ListProduct;
 use Magento\Catalog\Block\Product\ReviewRendererInterface;
-use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
 
 /** @var ListProduct $block */
 /** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+$productViewModel         = $viewModels->require(ProductPage::class);
+$productListItemViewModel = $viewModels->require(ProductListItem::class);
+
 ?>
 <?php if ($block->getProductCollection() && $block->getProductCollection()->getSize()): ?>
     <?php
@@ -33,18 +40,18 @@ use Magento\Framework\Escaper;
         <?php endif ?>
         <div class="block-content">
             <div class="mx-auto grid gap-4 <?= $mode === 'grid' ? 'sm:grid-cols-2 lg:grid-cols-4' : 'grid-cols-1' ?>">
-                <?php /** @var Product $item */ ?>
                 <?php foreach ($items as $item): ?>
-                    <?= /** @noEscape */ $block->getLayout()->getBlock('product_list_item')
-                        ->setData('product', $item)
-                        ->setData('view_mode', $mode)
-                        ->setData('image_display_area', $image)
-                        ->setData('show_description', $description)
-                        ->setData('template_type', $templateType)
-                        ->toHtml() ?>
+                    <?= $productListItemViewModel->getItemHtml(
+                        $item,
+                        $block,
+                        $mode,
+                        $templateType,
+                        $image,
+                        $description
+                    ) ?>
                 <?php endforeach ?>
             </div>
-            <?= /** @noEscape */ $block->getPagerHtml() ?>
+            <?= $block->getPagerHtml() ?>
         </div>
     </div>
 <?php endif ?>
