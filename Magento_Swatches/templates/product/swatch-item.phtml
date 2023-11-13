@@ -44,6 +44,7 @@ if (!$productId || !$attributeId) {
                 'w-6 h-6' : !isTextSwatch(<?= (int) $attributeId ?>, item.id)
             }"
             :style="getSwatchBackgroundStyle('<?= (int) $attributeId ?>',item.id)"
+            @touchstart=""
             <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
                 @mouseenter.self="activeTooltipItem = {
                     attribute: '<?= (int) $attributeId ?>',
