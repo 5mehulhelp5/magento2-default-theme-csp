@@ -1352,7 +1352,7 @@ This default-theme release only exists to keep the version synchronized with the
 
   For more information please refer to the [issue #433](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/433).
 
-  Many thanks to Stephanie Ehrling (Artplants) for the report and suggesting a fix!
+  Many thanks to Stephanie Ehrling (ECOPLAN) for the report and suggesting a fix!
 
 - **Bugfix: Show new password mismatch method on customer edit form**
 
