@@ -101,10 +101,9 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
 
     </script>
 
-    <div
-        x-data="initWishlistOnWishlistSidebar()"
-        @private-content-loaded.window="receiveWishlistData($event.detail.data)"
-        class="wishlist-widget"
+    <div x-data="initWishlistOnWishlistSidebar()"
+         @private-content-loaded.window="receiveWishlistData($event.detail.data)"
+         class="wishlist-widget"
     >
         <template x-if="itemCount">
             <div class="mt-8">
