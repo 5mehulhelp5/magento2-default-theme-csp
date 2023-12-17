@@ -132,7 +132,10 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 isMobile: false,
                 blockOpen: false,
                 checkIsMobileResolution() {
-                    this.isMobile = getComputedStyle(this.$refs.LayeredNavigationMobileToggleIcon).display !== "none";
+                    const mobileElement = this.$refs.LayeredNavigationMobileToggleIcon;
+                    this.isMobile = mobileElement
+                        ? getComputedStyle(mobileElement).display !== "none"
+                        : window.matchMedia('(max-width: 767px)').matches; // Fallback to `md` breakpoint
                 }
             }
         }
