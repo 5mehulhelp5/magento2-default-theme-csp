@@ -67,8 +67,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         </h2>
         <div
             id="filters-content"
-            class="block-content filter-content pt-4"
-            x-show="isMobile && blockOpen || !isMobile"
+            class="block-content filter-content hidden md:block pt-4"
+            :class="{ 'hidden': isMobile && !blockOpen }"
         >
             <?= $block->getChildHtml('state') ?>
             <a
