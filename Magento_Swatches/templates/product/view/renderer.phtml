@@ -76,7 +76,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                                     id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
                                     aria-hidden="true"
                                 >
-                                    <span class="font-medium"><?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?></span>
+                                    <span><?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?></span>
                                     <span
                                         class="text-gray-500"
                                         x-text="getSwatchText(<?= (int)$attributeId ?>, selectedValues[<?= (int)$attributeId ?>])"
@@ -104,7 +104,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                         <label class="w-1/2 text-left text-gray-700 label"
                                for="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
                         >
-                            <span class="font-medium">
+                            <span>
                                 <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
                             </span>
                         </label>
