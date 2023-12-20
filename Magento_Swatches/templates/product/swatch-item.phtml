@@ -72,7 +72,7 @@ if (!$productId || !$attributeId) {
                                                                 ).length === 0"
             >
             <div x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
-                 class="ointer-events-none select-none whitespace-nowrap"
+                 class="pointer-events-none select-none whitespace-nowrap"
                  :class="{ 'sr-only' : !isTextSwatch(<?= (int) $attributeId ?>, item.id) }"
             ></div>
         </label>
