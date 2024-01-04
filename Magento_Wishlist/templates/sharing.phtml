@@ -69,7 +69,6 @@ use Magento\Wishlist\Block\Customer\Sharing;
             <div class="control">
                 <textarea name="emails"
                           :class=" { 'border-red-500 focus:border-red-500 focus:ring-red-500': !isValid }"
-                          cols="60"
                           rows="5"
                           id="email_address"
                           @blur="validateForm()"
@@ -82,7 +81,7 @@ use Magento\Wishlist\Block\Customer\Sharing;
         <div class="field text">
             <label class="label" for="message"><span><?= $escaper->escapeHtml(__('Message')) ?></span></label>
             <div class="control">
-                <textarea id="message" name="message" cols="60" rows="5" maxlength="<?= (int) $block->getTextSharingLimit() ?>"><?= /* @noEscape */ $block->getEnteredData('message') ?></textarea>
+                <textarea id="message" name="message" rows="5" maxlength="<?= (int) $block->getTextSharingLimit() ?>"><?= /* @noEscape */ $block->getEnteredData('message') ?></textarea>
             </div>
         </div>
     </fieldset>
