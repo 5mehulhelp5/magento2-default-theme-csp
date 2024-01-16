@@ -147,93 +147,95 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                         <?= $heroicons->xHtml(); ?>
                     </button>
                 </div>
-                <div class="flex flex-col h-full py-6 space-y-6 bg-white shadow-xl overflow-y-auto">
-                    <div class="block-customer-login bg-container border border-container mx-4 p-4 shadow-sm">
-                        <p id="authenticate-customer-login" class="text-lg leading-7 text-gray-900">
-                            <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout using your account')) ?></strong>
-                        </p>
+                <template x-if="open">
+                    <div class="flex flex-col h-full py-6 space-y-6 bg-white shadow-xl overflow-y-auto">
+                        <div class="block-customer-login bg-container border border-container mx-4 p-4 shadow-sm">
+                            <p id="authenticate-customer-login" class="text-lg leading-7 text-gray-900">
+                                <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout using your account')) ?></strong>
+                            </p>
 
-                        <form class="form form-login"
-                              method="post"
-                              @submit.prevent="submitForm();"
-                              id="login-form"
-                        >
-                            <?= $recaptcha ? $recaptcha->getInputHtml('customer_login', 'auth-popup') : '' ?>
-                            <div class="fieldset login">
-                                <div class="field email required">
-                                    <label class="label" for="form-login-username" form="login-form" >
-                                        <span><?= $escaper->escapeHtml(__('Email Address')) ?></span>
-                                    </label>
-                                    <div class="control">
-                                        <input name="username"
-                                               id="form-login-username"
-                                               x-ref="customer-email"
-                                               @change="errors = 0"
-                                               type="email"
-                                               required
-                                               class="form-input input-text"
-                                        >
+                            <form class="form form-login"
+                                method="post"
+                                @submit.prevent="submitForm();"
+                                id="login-form"
+                            >
+                                <?= $recaptcha ? $recaptcha->getInputHtml('customer_login', 'auth-popup') : '' ?>
+                                <div class="fieldset login">
+                                    <div class="field email required">
+                                        <label class="label" for="form-login-username" form="login-form" >
+                                            <span><?= $escaper->escapeHtml(__('Email Address')) ?></span>
+                                        </label>
+                                        <div class="control">
+                                            <input name="username"
+                                                id="form-login-username"
+                                                x-ref="customer-email"
+                                                @change="errors = 0"
+                                                type="email"
+                                                required
+                                                class="form-input input-text"
+                                            >
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="field password required">
-                                    <label for="form-login-password" class="label" form="login-form">
-                                        <span><?= $escaper->escapeHtml(__('Password')) ?></span>
-                                    </label>
-                                    <div class="control">
-                                        <input name="password"
-                                               id="form-login-password"
-                                               type="password"
-                                               class="form-input input-text"
-                                               required
-                                               x-ref="customer-password"
-                                               @change="errors = 0"
-                                        >
+                                    <div class="field password required">
+                                        <label for="form-login-password" class="label" form="login-form">
+                                            <span><?= $escaper->escapeHtml(__('Password')) ?></span>
+                                        </label>
+                                        <div class="control">
+                                            <input name="password"
+                                                id="form-login-password"
+                                                type="password"
+                                                class="form-input input-text"
+                                                required
+                                                x-ref="customer-password"
+                                                @change="errors = 0"
+                                            >
+                                        </div>
                                     </div>
-                                </div>
 
-                                <input name="context" type="hidden" value="checkout" />
-                                <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
-                                    <button type="submit"<?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" data-recaptcha-btn<?php endif; ?>
-                                            class="inline-flex btn btn-primary disabled:opacity-75"
-                                    >
-                                        <?= $escaper->escapeHtml(__('Sign In')) ?>
-                                    </button>
-                                    <a href="<?= $escaper
-                                        ->escapeUrl($block->getUrl('customer/account/forgotpassword')) ?>"
-                                    >
-                                        <?= $escaper->escapeHtml(__('Forgot Your Password?')) ?>
+                                    <input name="context" type="hidden" value="checkout" />
+                                    <div class="actions-toolbar flex justify-between pt-6 pb-2 items-center">
+                                        <button type="submit"<?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" data-recaptcha-btn<?php endif; ?>
+                                                class="inline-flex btn btn-primary disabled:opacity-75"
+                                        >
+                                            <?= $escaper->escapeHtml(__('Sign In')) ?>
+                                        </button>
+                                        <a href="<?= $escaper
+                                            ->escapeUrl($block->getUrl('customer/account/forgotpassword')) ?>"
+                                        >
+                                            <?= $escaper->escapeHtml(__('Forgot Your Password?')) ?>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mx-4">
+                            <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
+                        </div>
+                        <div class="block-new-customer bg-container border border-container mx-4 p-4 shadow-sm">
+                            <p id="authenticate-new-customer" class="text-lg mb-2 leading-7 text-gray-900">
+                                <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout as a new customer')) ?></strong>
+                            </p>
+
+                            <div class="block-content">
+                                <p class="mb-1">
+                                    <?= $escaper->escapeHtml(__('Creating an account has many benefits:')) ?>
+                                </p>
+                                <ul class="list-disc pl-5">
+                                    <li> <?= $escaper->escapeHtml(__('See order and shipping status')) ?></li>
+                                    <li> <?= $escaper->escapeHtml(__('Track order history')) ?></li>
+                                    <li> <?= $escaper->escapeHtml(__('Check out faster')) ?></li>
+                                </ul>
+                                <div class="actions-toolbar flex justify-between mt-6 mb-2 items-center">
+                                    <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/create')) ?>"
+                                    class="inline-flex btn btn-primary">
+                                        <?= $escaper->escapeHtml(__('Create an Account')) ?>
                                     </a>
                                 </div>
-
-                            </div>
-                        </form>
-                    </div>
-                    <div class="mx-4">
-                        <?= $recaptcha ? $recaptcha->getLegalNoticeHtml('customer_login') : '' ?>
-                    </div>
-                    <div class="block-new-customer bg-container border border-container mx-4 p-4 shadow-sm">
-                        <p id="authenticate-new-customer" class="text-lg mb-2 leading-7 text-gray-900">
-                            <strong class="font-medium"><?= $escaper->escapeHtml(__('Checkout as a new customer')) ?></strong>
-                        </p>
-
-                        <div class="block-content">
-                            <p class="mb-1">
-                                <?= $escaper->escapeHtml(__('Creating an account has many benefits:')) ?>
-                            </p>
-                            <ul class="list-disc pl-5">
-                                <li> <?= $escaper->escapeHtml(__('See order and shipping status')) ?></li>
-                                <li> <?= $escaper->escapeHtml(__('Track order history')) ?></li>
-                                <li> <?= $escaper->escapeHtml(__('Check out faster')) ?></li>
-                            </ul>
-                            <div class="actions-toolbar flex justify-between mt-6 mb-2 items-center">
-                                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/create')) ?>"
-                                   class="inline-flex btn btn-primary">
-                                    <?= $escaper->escapeHtml(__('Create an Account')) ?>
-                                </a>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </div>
         </div>
 </section>
