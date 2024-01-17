@@ -102,11 +102,6 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     }
                 `"
             >
-                <?= $heroicons->scaleHtml(
-                    "w-8 h-8 md:h-6 md:w-6 hover:text-black",
-                    25,
-                    25
-                ) ?>
 
 
                 <span class="absolute top-0 right-0 h-5 px-2 py-1 -mt-5 -mr-4 text-xs font-semibold
@@ -121,6 +116,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                         <?= $escaper->escapeHtml(__('items')) ?>
                     </span>
                 </span>
+                <?= $heroicons->scaleHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
             </a>
 
             <!--Search Icon-->
@@ -136,14 +132,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 :aria-expanded="searchOpen"
                 x-ref="searchButton"
             >
-                <?= $heroicons->searchHtml(
-                    "w-8 h-8 md:h-6 md:w-6 hover:text-black",
-                    25,
-                    25,
-                    [
-                        "aria-hidden" => "true"
-                    ]
-                ) ?>
+                <?= $heroicons->searchHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
             </button>
 
             <!--Customer Icon & Dropdown-->
@@ -183,12 +172,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 <?php endif ?>
             >
 
-                <?= $heroicons->shoppingCartHtml(
-                    "w-8 h-8 md:h-6 md:w-6 hover:text-black",
-                    25,
-                    25
-                ) ?>
-
+                <?= $heroicons->shoppingCartHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
                 <span
                     x-text="cart.summary_count"
                     x-show="!isCartEmpty()"
