@@ -81,7 +81,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
         <!--Main Navigation-->
         <?= $block->getChildHtml('topmenu') ?>
 
-        <div class="flex items-center sm:gap-1 order-3">
+        <div class="flex items-center gap-2 md:gap-1 order-3 md:-mr-1">
             <!--Compare Icon-->
             <a id="compare-link"
                class="relative inline-block rounded p-1 hover:bg-primary/10 outline-offset-2 invisible"
@@ -102,10 +102,10 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     }
                 `"
             >
-                <?= $heroicons->scaleHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
+                <?= $heroicons->scaleHtml("md:h-6 md:w-6", 28, 28, ["aria-hidden" => "true"]) ?>
                 <span
                     x-text="itemCount"
-                    class="absolute -top-1.5 -right-2 h-5 px-2 py-1 rounded-full bg-yellow-500 text-white
+                    class="absolute -top-1.5 -right-1.5 h-5 px-2 py-1 rounded-full bg-yellow-500 text-white
                         text-xs font-semibold leading-none text-center uppercase tabular-nums"
                     aria-hidden="true"
                 ></span>
@@ -124,7 +124,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 :aria-expanded="searchOpen"
                 x-ref="searchButton"
             >
-                <?= $heroicons->searchHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
+                <?= $heroicons->searchHtml("md:h-6 md:w-6", 28, 28, ["aria-hidden" => "true"]) ?>
             </button>
 
             <!--Customer Icon & Dropdown-->
@@ -163,12 +163,12 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                     title="<?= $escaper->escapeHtmlAttr(__('View cart')) ?>"
                 <?php endif ?>
             >
-                <?= $heroicons->shoppingCartHtml("md:h-6 md:w-6", 32, 32, ["aria-hidden" => "true"]) ?>
+                <?= $heroicons->shoppingCartHtml("md:h-6 md:w-6", 28, 28, ["aria-hidden" => "true"]) ?>
                 <span
                     x-text="cart.summary_count"
                     x-show="!isCartEmpty()"
                     x-cloak
-                    class="absolute -top-1.5 -right-2 h-5 px-2 py-1 rounded-full bg-primary text-white
+                    class="absolute -top-1.5 -right-1.5 h-5 px-2 py-1 rounded-full bg-primary text-white
                         text-xs font-semibold leading-none text-center uppercase tabular-nums"
                     aria-hidden="true"
                 ></span>
