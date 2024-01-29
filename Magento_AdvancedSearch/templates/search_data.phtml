@@ -1,0 +1,33 @@
+<?php
+
+use Magento\AdvancedSearch\Block\SearchData;
+use Magento\Framework\Locale\LocaleFormatter;
+use Magento\Search\Model\QueryResult;
+use Magento\Framework\Escaper;
+
+/** @var SearchData $block */
+/** @var Escaper $escaper */
+/** @var LocaleFormatter $localeFormatter */
+/** @var QueryResult[] $data */
+
+$data = $block->getItems();
+?>
+
+<?php if (count($data)): ?>
+    <dl class="my-6">
+        <dt class="mb-2 font-bold"><?= $escaper->escapeHtml(__($block->getTitle())) ?></dt>
+        <?php foreach ($data as $additionalInfo): ?>
+            <dd>
+                <a
+                    class="hover:underline"
+                    href="<?= $escaper->escapeUrl($block->getLink($additionalInfo->getQueryText())) ?>"
+                >
+                    <span><?= $escaper->escapeHtml($additionalInfo->getQueryText()) ?></span>
+                    <?php if ($block->isShowResultsCount()): ?>
+                        <span class="count text-primary">(<?= /* @noEscape */ $localeFormatter->formatNumber((int)$additionalInfo->getResultsCount()) ?>)</span>
+                    <?php endif; ?>
+                </a>
+            </dd>
+        <?php endforeach; ?>
+    </dl>
+<?php endif; ?>
