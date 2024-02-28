@@ -28,6 +28,6 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
         title="<?= $escaper->escapeHtml(__('Move to Wishlist')) ?>"
         aria-label="<?= $escaper->escapeHtml(__('Move to Wishlist')) ?>"
     >
-        <?= $heroicons->heartHtml('w-6 h-6') ?>
+        <?= $heroicons->heartHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
     </button>
 <?php endif ?>
