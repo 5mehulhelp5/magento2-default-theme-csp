@@ -124,30 +124,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 const contentNode = document.createElement('div');
                 contentNode.innerHTML = this.cart.extra_actions;
 
-                // Extract all the script tags from the new content.
-                // Script tags won't execute when inserted into a dom-element directly,
-                // therefore we need to inject them to the head of the document.
-                const tmpScripts = contentNode.getElementsByTagName('script');
+                hyva.activateScripts(contentNode);
 
-                if (tmpScripts.length > 0) {
-                    // Push all script tags into an array
-                    // (to prevent dom manipulation while iterating over dom nodes)
-                    const scripts = [];
-                    for (let i = 0; i < tmpScripts.length; i++) {
-                        scripts.push(tmpScripts[i]);
-                    }
-
-                    // Iterate over all script tags and duplicate+inject each into the head
-                    for (let i = 0; i < scripts.length; i++) {
-                        let script = document.createElement('script');
-                        script.innerHTML = scripts[i].innerHTML;
-
-                        document.head.appendChild(script);
-
-                        // Remove the original (non-executing) node from the page
-                        scripts[i].parentNode.removeChild(scripts[i]);
-                    }
-                }
                 return contentNode.innerHTML;
             }
         }
