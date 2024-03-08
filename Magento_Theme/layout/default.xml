@@ -25,7 +25,7 @@
         </referenceContainer>
 
         <referenceContainer name="main.content">
-            <block class="Magento\Framework\View\Element\Template" name="skip_to_content.target" before="-" template="Magento_Theme::html/skiptarget.phtml">
+            <block name="skip_to_content.target" before="-" template="Magento_Theme::html/skiptarget.phtml">
                 <arguments>
                     <argument name="target_id" xsi:type="string">contentarea</argument>
                 </arguments>
@@ -33,7 +33,7 @@
         </referenceContainer>
 
         <referenceContainer name="header.container">
-            <block class="Magento\Framework\View\Element\Template" name="skip_to_content" template="Magento_Theme::html/skip.phtml" before="-">
+            <block name="skip_to_content" template="Magento_Theme::html/skip.phtml" before="-">
                 <arguments>
                     <argument name="target" xsi:type="string">contentarea</argument>
                     <argument name="label" translate="true" xsi:type="string">Skip to Content</argument>
@@ -76,7 +76,7 @@
                            template="Magento_Theme::html/header/menu/desktop.phtml"
                     ></block>
                 </block>
-                <block class="Magento\Framework\View\Element\Template" name="additional" as="additional" />
+                <container name="header-content.additional" as="additional" />
             </block>
         </referenceContainer>
 
@@ -113,6 +113,6 @@
             <block class="Magento\Theme\Block\Html\Footer" name="absolute_footer" template="Magento_Theme::html/absolute_footer.phtml" />
         </referenceContainer>
 
-        <block class="Magento\Framework\View\Element\Template" name="head.additional" as="head.additional" template="Magento_Theme::html/container.phtml"/>
+        <block name="head.additional" as="head.additional" template="Magento_Theme::html/container.phtml"/>
     </body>
 </page>
