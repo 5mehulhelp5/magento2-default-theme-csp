@@ -40,15 +40,15 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
             class="relative"
             aria-label="<?= $escaper->escapeHtmlAttr(__('Main menu')) ?>"
         >
-            <ul class="flex justify-start flex-wrap gap-x-7 py-3">
+            <ul class="flex justify-start flex-wrap gap-x-7 py-4">
                 <?php foreach ($menuItems as $index => $menuItem): ?>
                     <li class="relative level-0"
                         @mouseenter="hoverPanelActiveId = '<?= /* @noEscape */ (string) $index ?>'"
                         @mouseleave="hoverPanelActiveId = 0"
                         @keyup.escape="hoverPanelActiveId = 0"
                     >
-                        <span class="flex items-center gap-1 p-3 text-md bg-opacity-95">
-                            <a class="w-full text-base text-gray-700 hover:underline level-0"
+                        <span class="flex items-center text-md">
+                            <a class="w-full text-base text-gray-700 hover:underline level-0 py-2 px-0.5"
                                href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
                                title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
                                @focus="hoverPanelActiveId = 0"
