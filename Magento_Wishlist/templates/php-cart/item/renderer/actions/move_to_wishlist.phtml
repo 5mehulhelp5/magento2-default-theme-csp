@@ -25,8 +25,8 @@ $heroicons = $viewModels->require(HeroiconsSolid::class);
         class="towishlist hover:text-red-600"
         x-data
         @click.prevent='hyva.postForm(<?= /* @noEscape */ $block->getMoveFromCartParams() ?>)'
-        title="<?= $escaper->escapeHtml(__('Move to Wishlist')) ?>"
-        aria-label="<?= $escaper->escapeHtml(__('Move to Wishlist')) ?>"
+        title="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
     >
         <?= $heroicons->heartHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
     </button>
