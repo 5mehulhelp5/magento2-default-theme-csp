@@ -15,6 +15,8 @@ use Magento\Theme\Block\Html\Title;
 /** @var Title $block */
 
 $cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : 'text-3xl';
+$titleContainerClasses = $block->getData('maybe_purged_tailwind_section_classes')
+    ?? 'container flex flex-col md:flex-row flex-wrap my-6 font-bold lg:mt-8' . $cssClass;
 $titleHtml = '';
 if (trim((string)$block->getPageHeading())) {
     $titleHtml = '<span class="base" data-ui-id="page-title-wrapper" '
@@ -25,8 +27,7 @@ if (trim((string)$block->getPageHeading())) {
 }
 ?>
 <?php if ($titleHtml): ?>
-<div class="container flex flex-col md:flex-row flex-wrap my-6 font-bold
-    lg:mt-8 <?= /** @noEscape */ $cssClass ?>">
+<div class="<?= $escaper->escapeHtmlAttr($titleContainerClasses) ?>">
     <h1 class="text-gray-900 page-title title-font"
         <?php if ($block->getId()): ?> id="<?= $escaper->escapeHtmlAttr($block->getId()) ?>" <?php endif; ?>>
         <?= /* @noEscape */ $titleHtml ?>
