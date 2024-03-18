@@ -17,6 +17,7 @@ use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Catalog\Pricing\Price\TierPrice;
 use Magento\Framework\Escaper;
+use Magento\Tax\Model\Config;
 
 /** @var AbstractProduct $block */
 /** @var Escaper $escaper */
@@ -114,10 +115,8 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
                 <?php /* only sets the basePrice key if display "display incl + excl" is set. Other product types always set it. */ ?>
                 <?php /* If display is set to excl tax, we need to fall back to 'price' for configurable products. */ ?>
                 const getOptionTierPrice = (tierPrice, withTax) => {
-                    <?php if ($product->getTypeId() === 'configurable'): ?>
-                    return withTax
-                        ? tierPrice['price']
-                        : (undefined !== tierPrice['basePrice'] ? tierPrice['basePrice'] : tierPrice['price']);
+                    <?php if ($product->getTypeId() === 'configurable' && $productPriceViewModel->getPriceDisplayType() === Config::DISPLAY_TYPE_EXCLUDING_TAX): ?>
+                    return tierPrice['price'];
                     <?php else: ?>
                     return tierPrice[withTax ? 'price' : 'basePrice'];
                     <?php endif; ?>
@@ -304,17 +303,6 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
         </div>
     </template>
     <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
-    <template x-if="activeProductsPriceData &&
-        activeProductsPriceData.oldPrice &&
-        activeProductsPriceData[finalPriceKey].amount < activeProductsPriceData[regularPriceKey].amount
-    ">
-        <div class="old-price-excl-tax">
-            <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
-            <span class="font-regular text-gray-900">
-                <span class="price" x-html="hyva.formatPrice(activeProductsPriceData['baseOldPrice'].amount + getCustomOptionBasePrice())"></span>
-            </span>
-        </div>
-    </template>
     <template x-if="activeProductsPriceData">
         <div class="price-excl-taxinline-block">
             <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
