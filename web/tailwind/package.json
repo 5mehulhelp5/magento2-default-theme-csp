@@ -22,7 +22,7 @@
     "output-success": "echo \"\\033[0;32mDone!\\033[0m\""
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "browserslist": [
     "last 3 version",
