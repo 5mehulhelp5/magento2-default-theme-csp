@@ -61,7 +61,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                     data-sr-button-id="<?= $escaper->escapeHtmlAttr($index) ?>"
                                     :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>' ? 'true' : 'false'"
                                     @click="openMenuOnClick('<?= /* @noEscape */ (string) $index ?>')"
-                                    class="rounded p-1 hover:bg-primary/10 outline-offset-2"
+                                    class="rounded p-1"
                                 >
                                     <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5", 25, 25, ['aria-hidden' => 'true']) ?>
                                     <span class="sr-only">
