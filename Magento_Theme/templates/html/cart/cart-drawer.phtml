@@ -89,13 +89,17 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
                 });
             },
+            scrollLock(use = true) {
+                document.body.style.overflow = use ? "hidden" : "";
+            },
             toggleCartDrawer(event) {
                 if (event.detail && event.detail.isOpen !== undefined) {
                     if (event.detail.isOpen) {
-                        this.openCartDrawer()
+                        this.openCartDrawer();
                     } else {
-                        this.open = false
-                        this.$refs && this.$refs.cartDialogContent && hyva.releaseFocus(this.$refs.cartDialogContent)
+                        this.open = false;
+                        this.scrollLock(false);
+                        this.$refs && this.$refs.cartDialogContent && hyva.releaseFocus(this.$refs.cartDialogContent);
                     }
                 } else {
                     <?php
@@ -109,12 +113,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             },
             openCartDrawer() {
                 this.open = true;
+                this.scrollLock(true);
                 this.$nextTick(() => {
                     this.$refs && this.$refs.cartDialogContent && hyva.trapFocus(this.$refs.cartDialogContent)
                 })
             },
             closeCartDrawer() {
-                this.$dispatch('toggle-cart', { isOpen: false })
+                this.$dispatch('toggle-cart', { isOpen: false });
             }
         }
     }
