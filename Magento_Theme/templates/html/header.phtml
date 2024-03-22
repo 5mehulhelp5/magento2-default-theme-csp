@@ -122,6 +122,9 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
                 <?= $heroicons->searchHtml("md:h-6 md:w-6", 28, 28, ["aria-hidden" => "true"]) ?>
             </button>
 
+            <!-- Additional Header Elements -->
+            <?= $block->getChildHtml('additional') ?>
+
             <!--Customer Icon & Dropdown-->
             <?= $block->getChildHtml('customer') ?>
 
