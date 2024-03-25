@@ -57,7 +57,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
                 ['data' => ['price_render_handle' => 'catalog_product_prices']]
             );
         }
-        echo $priceRender->render(FinalPrice::PRICE_CODE, $product);
+        echo /** @noEscape */ $priceRender->render(FinalPrice::PRICE_CODE, $product);
         return;
     }
 }

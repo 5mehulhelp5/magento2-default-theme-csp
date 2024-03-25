@@ -85,7 +85,7 @@ $orders = $block->getOrders();
                             <?= $extra->getChildHtml() ?>
                         <?php endif; ?>
                         <td class="p-2">
-                            <?= $order->getShippingAddress() ? $block->escapeHtml($order->getShippingAddress()->getName()) : '&nbsp;' ?>
+                            <?= $order->getShippingAddress() ? $escaper->escapeHtml($order->getShippingAddress()->getName()) : '&nbsp;' ?>
                         </td>
                         <td class="p-2 hidden lg:table-cell">
                             <?= /* @noEscape */$order->formatPrice($order->getGrandTotal()) ?>

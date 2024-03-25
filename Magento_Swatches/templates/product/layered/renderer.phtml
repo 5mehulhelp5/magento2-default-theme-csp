@@ -30,11 +30,11 @@ $swatchData = $block->getSwatchData();
         return {
             getSwatchType(typeNumber) {
                 switch ("" + typeNumber) {
-                    case '<?= Swatch::SWATCH_TYPE_VISUAL_COLOR ?>':
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_VISUAL_COLOR ?>':
                         return "color"
-                    case '<?= Swatch::SWATCH_TYPE_VISUAL_IMAGE ?>':
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_VISUAL_IMAGE ?>':
                         return "image"
-                    case '<?= Swatch::SWATCH_TYPE_TEXTUAL ?>':
+                    case '<?= /** @noEscape */ Swatch::SWATCH_TYPE_TEXTUAL ?>':
                     default:
                         return "text"
                 }

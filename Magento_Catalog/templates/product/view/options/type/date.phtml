@@ -61,8 +61,7 @@ $htmlInputTypes = [
 
     <div class="flex flex-wrap gap-y-2 sm:ml-2 text-gray-900 text-left w-full sm:w-1/2"
           x-data="initValidateDate(<?= (int) $optionId ?>)">
-        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME
-            || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE): ?>
+        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE): ?>
             <?= $customOptionViewModel->getDateDropdownsHtml((int) $optionId, [
                 'day' => ['class="form-select"'],
                 'month' => ['class="form-select"'],
@@ -70,8 +69,7 @@ $htmlInputTypes = [
             ]) ?>
         <?php endif; ?>
 
-        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME
-            || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_TIME): ?>
+        <?php if ($option->getType() == ProductCustomOptionInterface::OPTION_TYPE_DATE_TIME || $option->getType() == ProductCustomOptionInterface::OPTION_TYPE_TIME): ?>
             <?= $customOptionViewModel->getTimeDropdownsHtml((int) $optionId, [
                 'hour' => ['class="form-select"'],
                 'minute' => ['class="form-select"'],
