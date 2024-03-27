@@ -481,15 +481,20 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                                                @change="updateShippingMethod()"/>
                                         <span x-text="rate.method_title"></span>
                                         <div class="flex flex-col justify-end ml-auto">
-                                            <?php if ($totalsOutput->displayCartShippingExclTax()): ?>
-                                                <span x-text="`${hyva.formatPrice(rate.price_excl_tax)}`" class="price-excluding-tax"></span>
-                                            <?php elseif ($totalsOutput->displayCartShippingInclTax()): ?>
-                                                <span x-text="`${hyva.formatPrice(rate.price_incl_tax)}`" class="price-including-tax"></span>
-                                            <?php else: ?>
-                                                <span x-text="`${hyva.formatPrice(rate.price_excl_tax)} <?= $escaper->escapeJs(__('Excl. Tax')) ?>`" class="price-excluding-tax"></span>
-                                                <template x-if="rate.price_excl_tax !== rate.price_incl_tax">
-                                                    <span x-text="`${hyva.formatPrice(rate.price_incl_tax)} <?= $escaper->escapeJs(__('Incl. Tax')) ?>`" class="price-including-tax"></span>
-                                                </template>
+                                            <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
+                                                <span
+                                                    x-text="`${hyva.formatPrice(rate.price_incl_tax)}`"
+                                                    class="price-including-tax text-right"
+                                                    data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
+                                                ></span>
+                                            <?php endif; ?>
+                                            <?php if ($totalsOutput->displayCartShippingExclTax() || $totalsOutput->displayCartShippingBoth()): ?>
+                                                <span
+                                                    x-text="`${hyva.formatPrice(rate.price_excl_tax)}`"
+                                                    <?= $totalsOutput->displayCartShippingBoth() ? 'x-show="rate.price_excl_tax !== rate.price_incl_tax"' : '' ?>
+                                                    class="price-excluding-tax"
+                                                    data-label="<?= $escaper->escapehtmlAttr(__('Excl. Tax')) ?>"
+                                                ></span>
                                             <?php endif; ?>
                                         </div>
                                     </label>
