@@ -31,6 +31,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         >
             <?php foreach ($block->getModes() as $code => $label): ?>
                 <button
+                    type="button"
                     class="modes-mode mode-<?= $escaper->escapeHtmlAttr(strtolower($code)) ?> <?= ($block->isModeActive($code)) ? 'active' : 'opacity-50 hover:opacity-100' ?>"
                     title="<?= $escaper->escapeHtmlAttr($label) ?>"
                     <?php if ($block->isModeActive($code)): ?>
