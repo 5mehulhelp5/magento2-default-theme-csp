@@ -30,7 +30,7 @@ if ($extraActionTitleBlocks = $block->getLayout()->getChildBlocks('order-list-ex
         $extraActions[$alias] = $extraActionTitleBlock->toHtml();
     }
     $extraActions = array_filter($extraActions, function ($output, string $alias) use ($block): bool {
-        return $output && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
+        return trim($output) && $block->getLayout()->getChildBlock('order-list-extra-action-buttons', $alias);
     }, ARRAY_FILTER_USE_BOTH);
 }
 
