@@ -215,7 +215,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     postcode: null
                 }
 
-                if (this.directoryData[countryId].regions) {
+                if (this.directoryData[countryId] && this.directoryData[countryId].regions) {
                     this.cartData.address.regionCode = "";
                     this.cartData.address.regionId = 0;
 
