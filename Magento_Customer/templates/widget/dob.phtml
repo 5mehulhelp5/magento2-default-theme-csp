@@ -164,10 +164,14 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
 
             init() {
                 const today = new Date();
-                this.month = today.getMonth();
-                this.year = today.getFullYear();
                 this.initYearsRange();
                 this.correctWeeks();
+
+                this.$nextTick(() => {
+                    this.month = today.getMonth();
+                    this.year = today.getFullYear();
+                    this.recalcDaysGrid();
+                });
             },
 
             initYearsRange() {
