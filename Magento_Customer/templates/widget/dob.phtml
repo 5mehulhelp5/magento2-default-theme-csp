@@ -47,7 +47,7 @@ $validationClass = $addressViewModel->addressGetAttributeValidationClass('dob');
             :max="getMinMaxDate()"
         >
         <input
-            type="text"
+            type="hidden"
             name="<?= $escaper->escapeHtmlAttr($block->getFieldName('dob')) ?>"
             x-model="value"
             <?php if ($block->isRequired()): ?>
@@ -67,7 +67,7 @@ $validationClass = $addressViewModel->addressGetAttributeValidationClass('dob');
             valuePicker: null,
             locale: '<?= $escaper->escapeJs($date->getLocale()) ?>',
             init() {
-                this.valuePicker = this.dateToInputDate(new Date(this.initValuePicker));
+                this.valuePicker = this.value && this.dateToInputDate(new Date(this.initValuePicker));
                 this.$watch('valuePicker', value => this.value = this.convertDateToLocale(value));
             },
             getMinMaxDate(subtractYears = 0) {
@@ -80,12 +80,15 @@ $validationClass = $addressViewModel->addressGetAttributeValidationClass('dob');
                 return this.dateToInputDate(utcDate);
             },
             dateToInputDate(date) {
-                const year = date.getFullYear();
-                const month = date.getMonth() + 1;
-                const day = date.getDate();
-                return `${year.toString().padStart(4, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const year = date.getFullYear().toString().padStart(4, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
             },
             convertDateToLocale(value) {
+                if (isNaN(new Date(value))) {
+                    return '';
+                }
                 const date = new Date(value);
                 const formattedDate = new Intl.DateTimeFormat(this.locale).format(date);
                 return formattedDate;
