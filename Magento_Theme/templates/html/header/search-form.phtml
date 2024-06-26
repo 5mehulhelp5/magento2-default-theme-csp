@@ -34,12 +34,13 @@ $searchConfig = $viewModels->require(SearchConfig::class);
             suggestionsEnabled: <?= (int) $searchConfig->isSuggestionsAllowed() ?>,
             suggestions: [],
             suggest() {
-                if (!this.suggestionsEnabled) return;
-
                 const search = this.$refs.searchInput;
                 if (search.value.length >= this.minSearchLength) {
                     search.setCustomValidity('');
                     search.reportValidity();
+                    
+                    if (!this.suggestionsEnabled) return;
+                    
                     this.fetchSuggestions(search.value);
                 } else {
                     this.suggestions = [];
