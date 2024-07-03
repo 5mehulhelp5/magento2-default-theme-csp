@@ -60,7 +60,7 @@ $validationClass = $addressViewModel->addressGetAttributeValidationClass('dob');
     function initDatePicker() {
         return {
             value: '<?= $escaper->escapeJs($block->getValue()) ?>',
-            initValuePicker: '<?= $escaper->escapeJs($date->getDateInUtcFormat($block->getValue())) ?>',
+            initValuePicker: '<?= $escaper->escapeJs($date->getDateYMD($block->getValue())) ?>',
             valuePicker: null,
             locale: '<?= $escaper->escapeJs($date->getLocale()) ?>',
             init() {
