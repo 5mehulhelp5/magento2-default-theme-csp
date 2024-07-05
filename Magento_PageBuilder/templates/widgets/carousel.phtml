@@ -127,6 +127,34 @@ $gliderUrl = $block->getViewFileUrl('Magento_PageBuilder::js/glider.min.js');
                         slider.dataset.infiniteLoop
                     );
                 }
+
+                <?php /* Lazy load slider background images when the slider intersects the viewport */ ?>
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const lazyBackgrounds = entry.target.querySelectorAll('[data-background-images][data-background-type="image"]');
+                            lazyBackgrounds.forEach(element => {
+                                const backgroundImages = element.dataset.backgroundImages;
+                                if (backgroundImages && backgroundImages !== "{}") {
+                                    try {
+                                        const parsedImages = JSON.parse(backgroundImages.replaceAll('\\', ''));
+                                        let currentImage = parsedImages.desktop_image_webp || parsedImages.desktop_image;
+                                        if (window.innerWidth <= 768 && (parsedImages.mobile_image_webp || parsedImages.mobile_image)) {
+                                            currentImage = parsedImages.mobile_image_webp || parsedImages.mobile_image;
+                                        }
+                                        if (currentImage) {
+                                            element.style.backgroundImage = `url('${currentImage}')`;
+                                        }
+                                    } catch (error) {
+                                        console.error(error)
+                                    }
+                                }
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {threshold: 0.01});
+                observer.observe(gliderElement);
             };
 
             const gliderAutoplay = (glider, milliseconds, loop) => {
