@@ -18,11 +18,6 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
 
-$storeConfig = $viewModels->require(StoreConfig::class);
-if (! $storeConfig->getStoreConfig('hyva_theme_pagebuilder/background_images/load_on_intersect')) {
-    return '';
-}
-
 /** @var PageBuilder $pageBuilder */
 $pageBuilder = $viewModels->require(PageBuilder::class)
 
@@ -37,38 +32,40 @@ $pageBuilder = $viewModels->require(PageBuilder::class)
         <?php
         /* If the background image styles were not removed by the theme-module plugin, there is no need to add them on intersection */
         ?>
-        const lazyBackgrounds = Array.from(document.querySelectorAll('[data-background-images]'));
+        const lazyBackgrounds = document.querySelectorAll('[data-background-lazy-load=true]');
         if (! lazyBackgrounds.length) {
             return;
         }
 
+        const generateBgImageCss = (element) => {
+            try {
+                const cssClass = Array.from(element.classList).find(cssClass => cssClass.startsWith('background-image-'))
+                const parsedImages = JSON.parse(element.dataset.backgroundImages.replaceAll('\\', ''));
+                const mobile = parsedImages.mobile_image_webp || parsedImages.mobile_image;
+                const desktop = parsedImages.desktop_image_webp || parsedImages.desktop_image;
+                let css = [];
+                if (desktop) {
+                    css.push(`.${cssClass} {background-image: url(${desktop})}`);
+                }
+                if (mobile) {
+                    css.push(`<?= /* @noEscape */ $pageBuilder->getMobileMediaQuery() ?>{.${cssClass} {background-image: url(${mobile})}}`);
+                }
+                return css.join(' ');
+            } catch (error) {
+                console.error(error)
+            }
+        };
+
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const lazyBackgrounds = entry.target.hasAttribute('data-background-images')
+                    const lazyBackgrounds = entry.target.dataset && entry.target.backgroundLazyLoad === 'true'
                         ? [entry.target]
-                        : entry.target.querySelectorAll('[data-background-images]');
+                        : entry.target.querySelectorAll('[data-background-lazy-load=true]');
                     <?php /* Inject css to load all background images of the content element. Could be multiple for sliders or tabs. */ ?>
                     const bgImagesCss = Array.from(lazyBackgrounds)
                         .filter(element => element.dataset.backgroundImages !== "{}")
-                        .map(element => {
-                            try {
-                                const cssClass = Array.from(element.classList).find(cssClass => cssClass.startsWith('background-image-'))
-                                const parsedImages = JSON.parse(element.dataset.backgroundImages.replaceAll('\\', ''));
-                                const mobile = parsedImages.mobile_image_webp || parsedImages.mobile_image;
-                                const desktop = parsedImages.desktop_image_webp || parsedImages.desktop_image;
-                                let css = [];
-                                if (desktop) {
-                                    css.push(`.${cssClass} {background-image: url(${desktop})}`);
-                                }
-                                if (mobile) {
-                                    css.push(`<?= $pageBuilder->getMobileMediaQuery() ?>{.${cssClass} {background-image: url(${mobile})}}`);
-                                }
-                                return css.join(' ');
-                            } catch (error) {
-                                console.error(error)
-                            }
-                        })
+                        .map(generateBgImageCss)
                         .join("\n");
                     const style = document.createElement('style');
                     style.innerHTML = bgImagesCss;
@@ -79,12 +76,24 @@ $pageBuilder = $viewModels->require(PageBuilder::class)
         }, {threshold: 0.01});
 
         lazyBackgrounds.forEach(element => {
-            const contentElement = element.closest('[data-content-type]');
+            let contentElement = element.closest('[data-content-type]');
+
+            <?php /* Map content types to their parents in case the parent should be observed for intersection. */ ?>
+            const contentTypeMap = Object.assign({
+                'slide': '[data-content-type=slider]',
+                'tab-item': '[data-content-type=tabs]',
+                'column': '[data-content-type=column-group]'
+            }, window.pagebuilderBackgroundImageLazyLoadingContentTypeMap || {});
+
+            if (contentTypeMap[contentElement.dataset.contentType]) {
+                contentElement = contentElement.closest(contentTypeMap[contentElement.dataset.contentType])
+            }
 
             <?php /* Ensure every content element is only observed once even if it contains multiple children with background image */ ?>
             if (contentElement.isObserved) {
                 return;
             }
+
             contentElement.isObserved = true;
             observer.observe(contentElement)
         })

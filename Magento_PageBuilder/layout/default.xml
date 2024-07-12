@@ -50,8 +50,8 @@
                         <item name="template" xsi:type="string">Magento_PageBuilder::widgets/tabs.phtml</item>
                     </item>
                     <item name="page_builder.background-images" xsi:type="array">
-                        <item name="regex" xsi:type="string">/data-background-images=/</item>
-                        <item name="template" xsi:type="string">Magento_PageBuilder::widgets/background-image-content.phtml</item>
+                        <item name="regex" xsi:type="string">/data-background-lazy-load="true"/</item>
+                        <item name="template" xsi:type="string">Magento_PageBuilder::widgets/background-image-lazy-load.phtml</item>
                     </item>
                 </argument>
             </arguments>
