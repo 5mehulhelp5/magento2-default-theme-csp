@@ -21,7 +21,6 @@ use Magento\Store\Model\ScopeInterface;
 $storeConfigViewModel = $viewModels->require(StoreConfig::class);
 
 $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
-$totalsItemClass = 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 [&>dd]:justify-self-end';
 ?>
 <script>
     function initCartTotals() {
@@ -31,8 +30,8 @@ $totalsItemClass = 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 [&>dd]:justify-self-
             shippingMethod: window.checkoutConfig.selectedShippingMethod,
             totalsSort: <?= /** @noEscape */ json_encode($totalsSort) ?>,
             isLoading: false,
-            wrapperClass: '<?= $totalsItemClass ?> border-t border-container',
-            wrapperClassTotals: '<?= $totalsItemClass ?> [&>dt]:font-semibold pt-6 text-xl',
+            wrapperClass: 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 border-t border-container',
+            wrapperClassTotals: 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 pt-6 text-xl',
             getSortedSegments() {
                 const segments = this.totalsData.total_segments;
 
