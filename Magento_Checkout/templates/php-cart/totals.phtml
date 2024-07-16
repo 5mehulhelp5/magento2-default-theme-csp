@@ -30,8 +30,8 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
             shippingMethod: window.checkoutConfig.selectedShippingMethod,
             totalsSort: <?= /** @noEscape */ json_encode($totalsSort) ?>,
             isLoading: false,
-            wrapperClass: 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 border-t border-container',
-            wrapperClassTotals: 'grid grid-cols-[1.5fr_1fr] gap-x-1 py-2 pt-6 text-xl',
+            wrapperClass: 'grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 py-2 border-t border-container',
+            wrapperClassTotals: 'grid grid-cols-[1.5fr_1fr] md:grid-cols-2 gap-x-1 py-2 pt-6 text-xl',
             getSortedSegments() {
                 const segments = this.totalsData.total_segments;
 

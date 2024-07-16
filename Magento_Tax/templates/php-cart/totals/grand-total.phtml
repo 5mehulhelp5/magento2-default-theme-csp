@@ -17,7 +17,7 @@
             <dt x-text="`${segment.title} ${includingTaxMessage}`" class="font-semibold"></dt>
             <dd x-text="hyva.formatPrice(segment.value)" class="justify-self-end"></dd>
         </div>
-        <div :class="wrapperClass">
+        <div :class="wrapperClass" class="text-base">
             <dt x-text="`${segment.title} ${excludingTaxMessage}`" class="font-semibold"></dt>
             <dd x-text="hyva.formatPrice(totalsData.grand_total)" class="justify-self-end"></dd>
         </div>
