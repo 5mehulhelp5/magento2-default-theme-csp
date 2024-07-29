@@ -62,7 +62,6 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
                 const browserStorageShowEstimateShipping = hyva.getBrowserStorage().getItem('hyva.showEstimateShipping');
                 this.showEstimateShipping = browserStorageShowEstimateShipping === 'true' ? true : false;
-                console.log(this.showEstimateShipping);
             },
             toggleEstimateShipping() {
                 this.showEstimateShipping = !this.showEstimateShipping;
