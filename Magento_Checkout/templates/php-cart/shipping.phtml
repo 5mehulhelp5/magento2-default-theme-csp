@@ -455,7 +455,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                         <?= $block->getBlockHtml('block-loader') ?>
                         <template x-for="carrier in getEstimatedShippingRateCarriers()" :key="carrier">
                             <div>
-                                <h4 class="font-semibold" x-text="carrier"></h4>
+                                <p><strong class="font-semibold" x-text="carrier"></strong></p>
                                 <template x-for="(rate, index) in getRatesForCarrier(carrier)" :key="index">
                                     <label class="flex items-center px-2 gap-2 cursor-pointer">
                                         <input class="mr-2 cursor-pointer" type="radio"
