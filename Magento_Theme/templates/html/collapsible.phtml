@@ -26,28 +26,23 @@ $blockTitle = $block->getBlockTitle() ?? __('Details');
 $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
 ?>
 
-<div class="block <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?> card filter-option py-4 px-8 mb-6"
+<div class="card py-2 px-8 mb-6 <?= $escaper->escapeHtmlAttr($blockClass) ?>"
      x-data="initAccountNavigation()"
      x-init="checkIsMobileResolution()"
      @resize.window.debounce="checkIsMobileResolution()"
      @visibilitychange.window.debounce="checkIsMobileResolution()"
-
 >
     <button
         type="button"
-        class="
-            title <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>-title
-            flex justify-between
-            items-center hover:text-secondary-darker w-full
-        "
+        class="group py-2 flex justify-between items-center w-full"
         @click="blockOpen = !blockOpen"
         :aria-expanded="blockOpen"
         :aria-disabled="!isMobile"
         :disabled="!isMobile ? '' : null"
     >
 
-        <span class="text-lg title">
             <?= $escaper->escapeHtml(__($block->getData('block_title'))) ?>
+        <span class="text-lg">
         </span>
         <span
             class="px-1 py-1 border rounded border-container md:hidden"
@@ -66,12 +61,12 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
         </span>
     </button>
     <div :class="{ 'hidden': !blockOpen }" class="delimiter border-b border-container w-full mt-4 mb-3 hidden md:block"></div>
-    <div class="content <?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>-content hidden md:block"
          :class="{ 'hidden': !blockOpen }"
          id="<?= $escaper->escapeHtmlAttr($block->getBlockCss()) ?>"
     >
         <?= $block->getChildHtml() ?>
     </div>
+            class="hidden md:block border-t pt-3 my-2 border-container"
 </div>
 <script>
     function initAccountNavigation() {
