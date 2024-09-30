@@ -19,6 +19,8 @@
                 <arguments>
                     <argument name="block_title" xsi:type="string">My Account</argument>
                     <argument name="block_css" xsi:type="string">account-nav</argument>
+                    <argument name="block_id" xsi:type="string">account-nav</argument>
+                    <argument name="is_nav" xsi:type="boolean">true</argument>
                 </arguments>
                 <block class="Magento\Customer\Block\Account\Navigation" name="customer_account_navigation" before="-">
                     <arguments>
