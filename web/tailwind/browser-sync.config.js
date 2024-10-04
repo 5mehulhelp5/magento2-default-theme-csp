@@ -20,8 +20,9 @@ Please ensure you're running this script within a Magento 2 project.
     process.exit(1);
 })();
 
-const hasProxyArg = process.argv.includes("--proxy");
-const proxy = "http://my-magento.test";
+const nodeEnvArg = process.env.PROXY_URL; // Legacy method, use `--proxy` arg instead
+const hasProxyArg = process.argv.includes("--proxy") || !!nodeEnvArg;
+const proxy = nodeEnvArg || "http://my-magento.test";
 
 if (!hasProxyArg && proxy === "http://my-magento.test") {
     console.error(`
