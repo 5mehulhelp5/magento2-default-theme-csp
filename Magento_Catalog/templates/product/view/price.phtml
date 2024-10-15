@@ -62,6 +62,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
     }
 }
 ?>
+<?= $productPriceViewModel->getPricingAdjustmentsHtml('final_price', $product) ?>
 <script>
     function initPrice<?= (int)$product->getId() ?>() {
 
