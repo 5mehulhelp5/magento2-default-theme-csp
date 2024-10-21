@@ -84,8 +84,8 @@ $productName = $block->getProduct()->getName();
                 <img
                     alt="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
                     title="<?= $mainImage ? $escaper->escapeHtmlAttr($mainImage->getData('label')) : '' ?>"
-                    class="object-contain object-center w-full h-auto max-h-screen-75"
-                    :class="'invisible'"
+                    class="object-contain object-center w-full h-auto"
+	                :class="fullscreen ? 'invisible max-h-screen-75' : 'invisible'"
                     src="<?= /* @noEscape */ $mainImageData ?>"
                     width="<?= /* @noEscape */ $mediumWidth ?>"
                     height="<?= /* @noEscape */ $mediumHeight ?>"
@@ -95,7 +95,8 @@ $productName = $block->getProduct()->getName();
                     <img
                         :alt="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
                         :title="image.caption || '<?= $escaper->escapeJs($productName) ?>'"
-                        class="absolute inset-0 object-contain object-center w-full m-auto max-h-screen-75"
+                        class="absolute inset-0 object-contain object-center w-full m-auto"
+                        :class="{ 'max-h-screen-75': fullscreen }"
                         width="<?= /* @noEscape */ $mediumWidth ?>"
                         height="<?= /* @noEscape */ $mediumHeight ?>"
                         :loading="active !== index ? 'lazy' : 'eager'"
