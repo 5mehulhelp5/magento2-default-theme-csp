@@ -24,8 +24,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 /** @var AddressViewModel $addressViewModel */
 $addressViewModel = $viewModels->require(AddressViewModel::class);
 ?>
-<div class="field date <?= $block->isRequired() ? 'required' : '' ?>"
-     x-data="initDatePicker()"
 <div
     class="field date <?= $block->isRequired() ? 'required' : '' ?>"
     x-data="initDatePicker()"
@@ -64,7 +62,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
         <div
             class="absolute left-0 top-full p-3 mt-12 bg-white rounded-lg shadow calendar-window"
             style="width: 21rem"
-            x-cloak=""
+            x-cloak
             x-transition x-show="showDatepicker"
             @click.outside="showDatepicker = false"
             @keydown="onCalendarKeydown($event)"
@@ -168,10 +166,6 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
             dateFormatter: DateFormatter(format),
             calendarWindow: null,
 
-            markCalendarWindow() {
-                this.calendarWindow = this.$root.querySelector('.calendar-window');
-            },
-
             init() {
                 const today = new Date();
                 this.initYearsRange();
@@ -181,7 +175,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                     this.month = today.getMonth();
                     this.year = today.getFullYear();
                     this.recalcDaysGrid();
-                    this.markCalendarWindow();
+                    this.calendarWindow = this.$root.querySelector('.calendar-window');
                 });
             },
 
@@ -220,9 +214,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
 
             setDate(date) {
                 const selectedDate = new Date(this.year, this.month, date);
-                const value = this.dateFormatter.format(selectedDate);
-
-                this.value = value;
+                this.value = this.dateFormatter.format(selectedDate);
                 this.showDatepicker = false;
             },
 
