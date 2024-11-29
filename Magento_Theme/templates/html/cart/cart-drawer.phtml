@@ -54,6 +54,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             deleteItemFromCart(itemId) {
                 this.isLoading = true;
 
+                const itemData = this.cart.items.filter((item) => item['item_id'] === itemId);
                 const formKey = hyva.getFormKey();
                 const postUrl = BASE_URL + 'checkout/sidebar/removeItem/';
 
@@ -83,7 +84,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         text: result.success
                             ? '<?= $escaper->escapeJs(__('You removed the item.')) ?>'
                             : result.error_message
-                    }], result.success ? 5000 : 0)
+                    }], result.success ? 5000 : 0);
+
+                    if (result.success && itemData) {
+                        window.dispatchEvent(new CustomEvent('cart-item-removed', { detail: itemData }));
+                    }
+
                     window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
                 });
             },

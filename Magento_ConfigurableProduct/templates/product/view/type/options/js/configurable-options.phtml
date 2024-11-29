@@ -268,6 +268,9 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 this.findAllowedAttributeOptions();
                 this.updatePrices();
                 this.updateGallery();
+
+                const candidates = this.findProductIdsForPartialSelection(this.selectedValues);
+
                 window.dispatchEvent(
                     new CustomEvent(
                         'configurable-selection-changed',
@@ -278,7 +281,8 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                                 value: value,
                                 productIndex: this.productIndex,
                                 selectedValues: this.selectedValues,
-                                candidates: this.findProductIdsForPartialSelection(this.selectedValues),
+                                candidates: candidates,
+                                skuCandidates: Object.values(candidates).map(id => this.optionConfig.sku[id]),
                             }
                         }
                     )
