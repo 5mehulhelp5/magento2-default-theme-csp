@@ -72,6 +72,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                     <select name="datepicker_month"
                         x-model="month"
                         class="text-sm rounded border-gray-300"
+                        @change="goToMonth(month)"
                     >
                         <template x-for="(monthName, index) in labels.monthNames">
                             <option :value="index" x-text="monthName"></option>
@@ -80,6 +81,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                     <select name="datepicker_year"
                         x-model="year"
                         class="text-sm rounded border-gray-300"
+                        @change="recalcDaysGrid()"
                     >
                         <template x-for="option in yearRange">
                             <option :value="option" x-text="option"></option>
