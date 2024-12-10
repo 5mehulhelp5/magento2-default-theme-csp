@@ -6,11 +6,12 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
+/** @var Magento\Sales\Block\Widget\Guest\Form $block */
 /** @var Escaper $escaper */
-/** @var SecureHtmlRenderer $secureRenderer */
+/** @var InlineScript $inlineScript */
 ?>
 <div class="card">
     <form class="form form-orders-search"
@@ -91,5 +92,5 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
             }
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 </div>

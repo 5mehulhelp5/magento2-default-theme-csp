@@ -8,11 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Paypal\Block\Express\InContext\Minicart\SmartButton;
 
 /** @var SmartButton $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 /*
  * This template renders the PayPal in-context shortcut button for the mini-cart and the cart.
@@ -188,4 +190,4 @@ $renderTargetElementId = sprintf('paypalInContextRenderTarget%d', $isMinicart)
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

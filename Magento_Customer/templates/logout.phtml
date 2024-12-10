@@ -7,8 +7,14 @@
  */
 
 declare(strict_types=1);
-/** @var \Magento\Framework\View\Element\Template $block */
-/** @var \Magento\Framework\Escaper $escaper */
+
+use Hyva\Theme\ViewModel\InlineScript;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 ?>
 <div class="pt-6 pb-12">
@@ -24,5 +30,5 @@ declare(strict_types=1);
         location.href = "<?= $escaper->escapeJs($escaper->escapeUrl($block->getUrl())) ?>"
     }, 5000);
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 

@@ -9,12 +9,13 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Checkout\Block\Cart\Totals;
 use Magento\Framework\Escaper;
-use Magento\Store\Model\ScopeInterface;
 
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var Totals $block */
 /** @var ViewModelRegistry $viewModels */
 
@@ -70,7 +71,7 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div id="cart-totals"
      class="cart-totals relative"
      x-data="initCartTotals()"

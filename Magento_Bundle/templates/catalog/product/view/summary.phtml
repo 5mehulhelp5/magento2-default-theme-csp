@@ -8,11 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Catalog\Block\Product\View as ProductView;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
 /** @var ProductView $block */
+/** @var InlineScript $inlineScript */
 
 $product = $block->getProduct();
 ?>
@@ -87,7 +89,7 @@ $product = $block->getProduct();
                 }
             }
         </script>
-        <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+        <?php $inlineScript->registerWithCsp() ?>
     </div>
 </div>
 <?php endif; ?>

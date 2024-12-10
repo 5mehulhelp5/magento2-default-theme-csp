@@ -7,11 +7,13 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
 
 /** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 /** @var Wishlist $wishlistViewModel */
 $wishlistViewModel = $viewModels->require(Wishlist::class);
@@ -69,5 +71,5 @@ $wishlistViewModel = $viewModels->require(Wishlist::class);
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <?php endif; ?>

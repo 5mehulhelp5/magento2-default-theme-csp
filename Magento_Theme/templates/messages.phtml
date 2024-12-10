@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var HeroiconsOutline $heroicons */
 /** @var StoreConfig $storeConfig */
@@ -78,7 +80,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <section id="messages"
          x-data="initMessages()"
          x-bind="eventListeners"

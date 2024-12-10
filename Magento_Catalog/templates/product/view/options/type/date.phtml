@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CustomOption;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Catalog\Api\Data\ProductCustomOptionInterface;
 use Magento\Catalog\Block\Product\View\Options\Type\Date;
@@ -19,6 +20,7 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 /** @var Date $block */
 /** @var ProductPrice $productPriceViewModel */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 $productPriceViewModel = $viewModels->require(ProductPrice::class);
 $customOptionViewModel = $viewModels->require(CustomOption::class);
@@ -132,6 +134,6 @@ $htmlInputTypes = [
                }
             }
         </script>
-        <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+        <?php $inlineScript->registerWithCsp() ?>
     </div>
 </div>

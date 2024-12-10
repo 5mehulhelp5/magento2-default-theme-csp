@@ -10,11 +10,13 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\TotalsOutput;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Checkout\Block\Cart\Shipping;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
 /** @var Shipping $block */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var TotalsOutput $totalsOutput */
 $totalsOutput = $viewModels->require(TotalsOutput::class);
@@ -341,7 +343,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div id="block-shipping"
      class="flex flex-col pb-2 my-2 border-b-2 border-gray-300 estimate-shipping-form"
      x-data="initShippingEstimation()"

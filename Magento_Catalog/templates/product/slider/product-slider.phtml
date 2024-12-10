@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\Items as CartItems;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Hyva\Theme\ViewModel\ProductList;
 use Hyva\Theme\ViewModel\Slider;
@@ -21,6 +22,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var Slider $sliderViewModel */
 /** @var ProductList $productListViewModel */
@@ -206,5 +208,5 @@ if (empty($sliderHtml)) {
             }
         });
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 </div>

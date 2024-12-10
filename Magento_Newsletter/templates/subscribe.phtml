@@ -8,12 +8,14 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Framework\Escaper;
 use Magento\Newsletter\Block\Subscribe;
 
 /** @var Subscribe $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
@@ -98,5 +100,5 @@ $recaptcha = $block->getData('viewModelRecaptcha');
             }
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 </div>

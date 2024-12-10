@@ -10,17 +10,18 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Bundle\Block\Catalog\Product\View\Type\Bundle;
 use Magento\Bundle\Pricing\Price\FinalPrice;
-use Magento\Catalog\Pricing\Price\BasePrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Framework\Escaper;
 
 /** @var Bundle $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
+/** @var InlineScript $inlineScript */
 
 $product = $block->getProduct();
 $stripSelection = $product->getConfigureMode() ? true : false;
@@ -218,7 +219,7 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                     }
                 }
             </script>
-        <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+        <?php $inlineScript->registerWithCsp() ?>
             <div x-data="initBundleOptions()"
                  x-init="
                     calculateTotalPrice();

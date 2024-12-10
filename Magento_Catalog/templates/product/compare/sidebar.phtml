@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
+/** @var InlineScript $inlineScript */
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
@@ -115,7 +117,7 @@ function initCompareSidebarClear() {
     }
 }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div x-data="initCompareOnCompareSidebar()"
      @private-content-loaded.window="receiveCompareData($event.detail.data)"
      class="compare-widget"

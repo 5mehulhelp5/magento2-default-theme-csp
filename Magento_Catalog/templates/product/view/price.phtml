@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Catalog\Block\Product\AbstractProduct;
@@ -23,6 +24,7 @@ use Magento\Tax\Model\Config;
 
 /** @var AbstractProduct $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var Product $product */
 $product = $block->getProduct();
@@ -242,7 +244,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div x-data="initPrice<?= (int)$product->getId() ?>()"
      x-bind="eventListeners"
      class="price-box price-final_price"

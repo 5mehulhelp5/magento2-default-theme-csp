@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Currency;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\RecentlyViewedProducts;
 use Hyva\Theme\ViewModel\Store;
@@ -19,13 +20,10 @@ use Magento\Catalog\Block\Product\Image;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
-/**
- * These variables are automatically assigned to any template
- *
- * @var Template $block
- * @var Escaper $escaper
- * @var ViewModelRegistry $viewModels
- */
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
+/** @var ViewModelRegistry $viewModels */
 
 /**
  * These variables are assigned in the parent templates: grid.phtml, list.phtml and sidebar.phtml
@@ -293,5 +291,5 @@ $viewModelCurrency = $viewModels->require(Currency::class);
     }
 
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 

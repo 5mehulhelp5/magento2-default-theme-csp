@@ -6,11 +6,13 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 ?>
 <script>
@@ -169,4 +171,4 @@ use Magento\Framework\View\Element\Template;
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

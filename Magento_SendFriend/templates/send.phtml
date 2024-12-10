@@ -10,21 +10,19 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Framework\Escaper;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Magento\SendFriend\Block\Send;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
-/**
- * @var Send $block
- * @var SecureHtmlRenderer $secureRenderer
- * @var Escaper $escaper
- * @var ReCaptcha $recaptcha
- * @var ViewModelRegistry $viewModels
- * @var HeroiconsOutline $icons
- */
+/** @var Send $block */
+/** @var Escaper $escaper */
+/** @var ReCaptcha $recaptcha */
+/** @var InlineScript $inlineScript */
+/** @var ViewModelRegistry $viewModels */
+/** @var HeroiconsOutline $icons */
 
 $icons = $viewModels->require(HeroiconsOutline::class);
 
@@ -245,7 +243,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                     }
                 }
             </script>
-            <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+            <?php $inlineScript->registerWithCsp() ?>
         </form>
     </div>
     <div id="send-friend-product" class="w-full lg:w-1/3">

@@ -8,12 +8,14 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Navigation;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Escaper;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroiconsOutline $heroicons */
@@ -230,4 +232,4 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

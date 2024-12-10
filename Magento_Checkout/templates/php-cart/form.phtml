@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\ItemOutput;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Modal;
 use Magento\Checkout\Block\Cart\Grid;
 use Magento\Checkout\ViewModel\Cart as CartViewModel;
 use Magento\Framework\Escaper;
 
 /** @var Grid $block */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
 
@@ -93,7 +95,7 @@ $cartItemOutputViewModel = $viewModels->require(ItemOutput::class);
                 );
             }
         </script>
-        <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+        <?php $inlineScript->registerWithCsp() ?>
             <div x-data="initClearShoppingCartModal()">
                 <?= /** @noEscape */ ($confirmation = $modalViewModel
                     ->confirm(__('Are you sure?'))

@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Search\Helper\Data as SearchHelper;
@@ -19,6 +20,7 @@ use Magento\Search\ViewModel\ConfigProvider as SearchConfig;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var SearchHelper $helper */
@@ -83,7 +85,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div class="container py-2 mx-auto text-black" x-data="initMiniSearch()">
     <form class="form minisearch" id="search_mini_form" x-ref="form" @submit.prevent="search()"
           action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get" role="search">

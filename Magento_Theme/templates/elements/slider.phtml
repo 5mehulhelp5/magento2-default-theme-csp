@@ -21,6 +21,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\Items;
 use Hyva\Theme\ViewModel\Currency;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\Wishlist;
@@ -29,6 +30,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var Store $viewModelStore */
@@ -300,7 +302,7 @@ $graphqlQuery = $gqlViewModel->query("slider_products_query", $query ?: "
     }
 
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <section class="my-12 text-gray-700 body-font"
          x-data="initSliderComponent<?= /** @noEscape */ $uniqueId?>()"
          x-init="getProducts($nextTick);"

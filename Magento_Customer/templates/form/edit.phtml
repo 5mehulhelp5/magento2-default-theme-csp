@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Customer\Block\Form\Edit as CustomerEdit;
@@ -22,6 +23,7 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 /** @var ReCaptcha|null $recaptcha */
 /** @var HeroiconsSolid $heroicons */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 // Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
@@ -293,5 +295,5 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 

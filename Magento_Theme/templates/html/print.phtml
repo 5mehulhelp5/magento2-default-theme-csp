@@ -8,9 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
+
+/** @var InlineScript $inlineScript */
+
 ?>
 
 <script>
     window.print();
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

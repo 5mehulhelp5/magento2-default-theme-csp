@@ -6,13 +6,16 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Wishlist\Block\Customer\Sharing;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
+/** @var InlineScript $inlineScript */
 /** @var Escaper $escaper */
 /** @var Sharing $block */
+
 ?>
 <script>
     function initShareWishlist() {
@@ -45,7 +48,7 @@ use Magento\Wishlist\Block\Customer\Sharing;
     }
 
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <form class="form wishlist share"
       x-data="initShareWishlist()"
       @submit="validateForm()"

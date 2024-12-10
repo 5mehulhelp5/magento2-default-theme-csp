@@ -8,6 +8,7 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Paypal\Block\PayLater\Banner;
 use Magento\Checkout\Block\Cart;
@@ -15,6 +16,7 @@ use Magento\Checkout\Block\Cart;
 /** @var Escaper $escaper */
 /** @var Banner $block */
 /** @var Cart $cartBlock */
+/** @var InlineScript $inlineScript */
 
 $widgetData = json_decode($block->getJsLayout(), true);
 $widgetConfigJson = json_encode($widgetData['components']['payLater']['config']);
@@ -109,5 +111,5 @@ $widgetConfigJson = json_encode($widgetData['components']['payLater']['config'])
             }
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 <?php endif; ?>

@@ -8,11 +8,13 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Customer;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Sales\Block\Reorder\Sidebar;
 
 /** @var Escaper $escaper */
 /** @var Sidebar $block */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels  */
 /** @var Customer $customer */
 
@@ -90,7 +92,7 @@ if (! $customer->customerLoggedIn()) {
     }
 
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div x-data="initReorderSidebar()"
      @private-content-loaded.window="receiveReorderData($event.detail.data)"
      class="block-reorder mt-8 hidden"

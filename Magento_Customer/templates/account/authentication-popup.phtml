@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
@@ -18,6 +19,7 @@ use Magento\Customer\Block\Account\Customer;
 
 /** @var Escaper $escaper */
 /** @var Customer $block */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var ReCaptcha $recaptcha */
 /** @var HeroiconsOutline $heroicons */
@@ -113,7 +115,7 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <section id="authentication-popup"
          x-data="initAuthentication()"
          @private-content-loaded.window="onPrivateContentLoaded($event.detail.data)"

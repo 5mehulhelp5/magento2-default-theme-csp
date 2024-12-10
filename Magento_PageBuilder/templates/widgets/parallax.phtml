@@ -8,11 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
-/** @var Template $block */
+/** @var InlineScript $inlineScript */
 /** @var Escaper $escaper */
+/** @var Template $block */
 
 $jarallaxUrl = $block->getViewFileUrl('Magento_PageBuilder::js/jarallax.min.js');
 $jarallaxVideoUrl = $block->getViewFileUrl('Magento_PageBuilder::js/jarallax-video.min.js');
@@ -131,4 +133,4 @@ $jarallaxVideoUrl = $block->getViewFileUrl('Magento_PageBuilder::js/jarallax-vid
         });
     })();
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

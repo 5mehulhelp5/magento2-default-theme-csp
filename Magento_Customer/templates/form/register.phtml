@@ -11,6 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Customer\CreateAccountButton;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Customer\Block\Form\Register;
 use Magento\Customer\Block\Widget\Dob;
@@ -28,6 +29,7 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 /** @var ReCaptcha $recaptcha */
 /** @var CreateAccountButton $createAccountButtonViewModel */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var HeroiconsSolid $heroicons */
 
@@ -578,5 +580,5 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
             });
         })
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 </div>

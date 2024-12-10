@@ -8,12 +8,14 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Checkout\Block\Cart\Coupon;
 use Magento\Framework\Escaper;
 
 /** @var Coupon $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ReCaptcha $recaptcha */
 
 // We should use strlen function because coupon code could be "0", converted to bool will lead to false
@@ -51,7 +53,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div class="coupon-form pt-6"
      x-data="initCouponForm()"
 >

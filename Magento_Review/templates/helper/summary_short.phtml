@@ -6,11 +6,13 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Review\Block\Product\ReviewRenderer;
 
 /** @var ReviewRenderer $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 $rating = $block->getRatingSummary();
 $ratingSteps = 5;
@@ -154,5 +156,5 @@ $uniqueId = $productId . uniqid();
             }
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 <?php endif; ?>

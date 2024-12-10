@@ -8,11 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
 /** @var Toolbar $block */
+/** @var InlineScript $inlineScript */
 
 $uniqueId = '_' . uniqid();
 $additionalOptions = ['page' => 'p'];
@@ -81,7 +83,7 @@ $additionalOptions = ['page' => 'p'];
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <?php if ($block->getCollection()->getSize()): ?>
     <div x-data="initToolbar<?= /** @noEscape */ $uniqueId ?>()"
          class="toolbar toolbar-products grid grid-cols-4 sm:grid-cols-8 md:grid-cols-4

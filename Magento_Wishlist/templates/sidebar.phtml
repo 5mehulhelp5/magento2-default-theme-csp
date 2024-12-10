@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
@@ -16,6 +17,7 @@ use Hyva\Theme\ViewModel\HeroiconsOutline;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
 /** @var Template $block */
@@ -100,7 +102,7 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
         }
 
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
     <div x-data="initWishlistOnWishlistSidebar()"
          @private-content-loaded.window="receiveWishlistData($event.detail.data)"
          class="wishlist-widget"

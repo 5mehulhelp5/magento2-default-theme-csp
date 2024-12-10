@@ -11,6 +11,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
 use Hyva\Theme\ViewModel\Customer\ReviewList;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Store;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
@@ -18,6 +19,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroiconsOutline $heroicons */
@@ -245,4 +247,4 @@ $ratingSteps = 5;
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

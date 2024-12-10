@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\Navigation;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Catalog\ViewModel\Product\Breadcrumbs;
@@ -17,6 +18,7 @@ use Magento\CatalogUrlRewrite\Model\ProductUrlPathGenerator;
 use Magento\Framework\Escaper;
 use Magento\Theme\Block\Html\Breadcrumbs as BreadcrumbsBlock;
 
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
 /** @var BreadcrumbsBlock $block */
@@ -143,4 +145,4 @@ $product = $currentProductViewModel->exists() ? $currentProductViewModel->get() 
         return {breadcrumbs};
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

@@ -8,11 +8,13 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Customer\Block\Address\Grid;
 use Magento\Framework\Escaper;
 
 /** @var Grid $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroiconsOutline $heroicons */
@@ -110,7 +112,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 }
             }
         </script>
-        <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+        <?php $inlineScript->registerWithCsp() ?>
     </div>
 </div>
 

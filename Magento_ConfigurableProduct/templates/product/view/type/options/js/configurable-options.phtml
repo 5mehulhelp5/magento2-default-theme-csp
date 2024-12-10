@@ -8,11 +8,13 @@
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 /** @var CurrentProduct $currentProduct */
 $currentProduct = $viewModels->require(CurrentProduct::class);
@@ -368,5 +370,5 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
     }
 
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 

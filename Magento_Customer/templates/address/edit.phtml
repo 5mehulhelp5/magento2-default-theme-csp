@@ -9,6 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Customer\Block\Address\Edit;
 use Magento\Customer\ViewModel\Address as AddressViewModel;
 use Magento\Framework\Escaper;
@@ -16,6 +17,7 @@ use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 /** @var Edit $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var SecureHtmlRenderer $secureRenderer */
 /** @var ViewModelRegistry $viewModels */
 
@@ -411,4 +413,4 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 })
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>

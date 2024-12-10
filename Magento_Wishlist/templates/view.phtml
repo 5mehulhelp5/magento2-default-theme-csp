@@ -6,6 +6,7 @@
  * See https://hyva.io/license
  */
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Wishlist\Block\Customer\Wishlist;
 use Magento\Wishlist\Helper\Data as WishlistHelper;
@@ -14,6 +15,7 @@ use Magento\Wishlist\Helper\Data as WishlistHelper;
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
 
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var Wishlist $block */
 
 $wishlistHelper = $this->helper(WishlistHelper::class);
@@ -86,5 +88,5 @@ $wishlistHelper = $this->helper(WishlistHelper::class);
             }
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
 <?php endif ?>

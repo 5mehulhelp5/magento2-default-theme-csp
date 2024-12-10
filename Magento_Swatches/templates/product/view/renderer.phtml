@@ -7,6 +7,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\SwatchRenderer;
 use Magento\Framework\Escaper;
 use Magento\Swatches\Block\Product\Renderer\Configurable;
@@ -16,6 +17,7 @@ use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableView
 
 /** @var Configurable $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ConfigurableViewModel $configurableViewModel */
@@ -52,7 +54,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
             );
         }
     </script>
-    <?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+    <?php $inlineScript->registerWithCsp() ?>
     <div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>()"
          x-init="initShowSwatchesIntersect();"
          @private-content-loaded.window="onGetCartData($event.detail.data)"

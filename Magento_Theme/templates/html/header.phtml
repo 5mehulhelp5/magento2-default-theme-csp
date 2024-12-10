@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\InlineScript;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Checkout\Block\Cart\Sidebar as SidebarCart;
 use Magento\Framework\Escaper;
@@ -18,6 +19,7 @@ use Magento\Framework\View\Element\Template;
 /** @var Escaper $escaper */
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
+/** @var InlineScript $inlineScript */
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
@@ -69,7 +71,7 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
 <div id="header"
      class="relative z-30 w-full border-b shadow bg-container-lighter border-container-lighter"
      x-data="initHeader()"

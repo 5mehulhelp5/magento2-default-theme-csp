@@ -8,11 +8,13 @@
 
 declare(strict_types=1);
 
+use Hyva\Theme\ViewModel\InlineScript;
 use Magento\Framework\Escaper;
 use Magento\Paypal\Block\Express\InContext\SmartButton;
 
 /** @var SmartButton $block */
 /** @var Escaper $escaper */
+/** @var InlineScript $inlineScript */
 
 /*
  * This template renders the PayPal in-context shortcut button on product detail pages.
@@ -193,4 +195,4 @@ $clientConfig = json_encode($widgetData['Magento_Paypal/js/in-context/product-ex
         }
     }
 </script>
-<?php $viewModels->require(\Hyva\Theme\ViewModel\InlineScript::class)->registerWithCsp() ?>
+<?php $inlineScript->registerWithCsp() ?>
