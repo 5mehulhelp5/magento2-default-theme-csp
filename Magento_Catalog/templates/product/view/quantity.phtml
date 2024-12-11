@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductStockItem;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\Product;
@@ -19,7 +19,7 @@ use Magento\Framework\Escaper;
 
 /** @var View $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var Product $product */
@@ -86,7 +86,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
             };
         }
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
     <div x-data="initQtyField()"
         x-init="$dispatch('update-qty-<?= (int)$product->getId() ?>', qty)"
     >

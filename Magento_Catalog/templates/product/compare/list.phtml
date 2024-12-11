@@ -11,7 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductAttributes;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Hyva\Theme\ViewModel\Wishlist;
@@ -30,7 +30,7 @@ use Magento\Wishlist\Helper\Data as WishlistHelper;
 /** @var ListCompare $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 /** @var Compare $compareHelper */
 $compareHelper = $this->helper(Compare::class);
@@ -123,7 +123,7 @@ function initCompareOnCompareList() {
     };
 }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <section>
     <div class="container">
         <button x-data="initPrint()"

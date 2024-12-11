@@ -7,7 +7,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Magento\Swatches\Block\LayeredNavigation\RenderLayered;
@@ -19,7 +19,7 @@ use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableView
 /** @var RenderLayered $block */
 /** @var SecureHtmlRenderer $secureRenderer */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ConfigurableViewModel $configurableViewModel */
@@ -89,7 +89,7 @@ $swatchData = $block->getSwatchData();
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div class="swatch-attribute swatch-layered <?= $escaper->escapeHtmlAttr($swatchData['attribute_code']) ?>"
      x-data="initLayeredSwatch_<?= $escaper->escapeJs($swatchData['attribute_code']) ?>()"
 >

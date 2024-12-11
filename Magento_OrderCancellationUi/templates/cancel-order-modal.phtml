@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Modal;
 use Hyva\Theme\ViewModel\Store;
 use Magento\Framework\Escaper;
@@ -17,7 +17,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 $modalViewModel = $viewModels->require(Modal::class);
 $storeViewModel = $viewModels->require(Store::class);
@@ -91,7 +91,7 @@ END_OF_CONTENT
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <form
     x-data="Object.assign(hyva.modal(), hyva.formValidation($el), initOrderCancellationModal())"
     @submit.prevent="null"

@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Contact\Block\ContactForm;
 use Magento\Contact\Helper\Data as ContactHelper;
 use Magento\Framework\Escaper;
@@ -19,7 +19,7 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var ContactForm $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ReCaptcha $recaptcha|null */
 
 $formId = 'contact';
@@ -130,7 +130,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
             }
         }
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
     <div class="card lg:w-1/2 md:w-1/3">
         <?= $block->getChildHtml('contact.details') ?>
     </div>

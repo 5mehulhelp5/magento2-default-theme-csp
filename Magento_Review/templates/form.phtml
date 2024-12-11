@@ -11,7 +11,7 @@ use Hyva\GraphqlViewModel\ViewModel\GraphqlViewModel;
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\SvgIcons;
 use Hyva\Theme\ViewModel\Store;
 use Magento\Framework\Escaper;
@@ -22,7 +22,7 @@ use Hyva\Theme\ViewModel\ReCaptcha;
 
 /** @var Escaper $escaper */
 /** @var Form $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroiconsOutline $heroicons */
@@ -365,7 +365,7 @@ mutation createProductReviewMutation(
                     }
                 }
             </script>
-        <?php $inlineScript->registerWithCsp() ?>
+        <?php $hyvaCsp->registerInlineScript() ?>
         <?php else: ?>
             <div
                 id="review-form"

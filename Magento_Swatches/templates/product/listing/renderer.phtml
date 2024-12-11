@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\SwatchRenderer;
 use Magento\Framework\Escaper;
 use Magento\Swatches\Block\Product\Renderer\Listing\Configurable;
@@ -12,7 +12,7 @@ use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableView
 
 /** @var Configurable $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ConfigurableViewModel $configurableViewModel */
@@ -164,7 +164,7 @@ $swatchItemBlock->setData('product_id', $productId);
         }
 
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
 <div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>()"
      x-defer="intersect"
      x-init="findAllowedAttributeOptions(); initShowSwatchesIntersect();"

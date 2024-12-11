@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
 use Magento\GiftMessage\Block\Cart\GiftOptions;
 
 /** @var Escaper $escaper */
 /** @var GiftOptions $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 /** @var HeroiconsOutline $heroicons */
 /** @var StoreConfig $storeConfigViewModel */
@@ -220,7 +220,7 @@ $slideOutDrawer = (bool) $block->getSlideOutDrawer();
         })
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div x-data="{isLoading: false}" x-cloak
      @gift-message-loading-start.window="isLoading = true"
      @gift-message-loading-end.window="isLoading = false"

@@ -6,7 +6,7 @@
  * See https://hyva.io/license
  */
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Customer\Block\Widget\Dob;
 use Magento\Customer\ViewModel\Address as AddressViewModel;
 use Magento\Framework\Escaper;
@@ -17,7 +17,7 @@ use Hyva\Theme\ViewModel\HeroiconsOutline;
 
 /** @var Escaper $escaper */
 /** @var Dob $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroIconsOutline $heroicons */
@@ -370,4 +370,4 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>

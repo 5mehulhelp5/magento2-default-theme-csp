@@ -7,7 +7,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Magento\Framework\Escaper;
@@ -15,7 +15,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 $storeConfig = $viewModels->require(StoreConfig::class);
@@ -50,5 +50,5 @@ $fieldName = $recaptcha->getResultTokenFieldName($formId);
 
     <?php if ($block->getData('render_script_tag')): ?>
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <?php endif; ?>

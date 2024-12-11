@@ -11,7 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -19,7 +19,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var Wishlist $wishlistViewModel */
@@ -135,7 +135,7 @@ $uniqueId = '_' . uniqid();
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <button x-data="initWishlist<?= /** @noEscape */ $uniqueId ?>()"
         x-defer="intersect"
         @click.prevent="addToWishlist(<?= (int)$product->getId() ?>)"

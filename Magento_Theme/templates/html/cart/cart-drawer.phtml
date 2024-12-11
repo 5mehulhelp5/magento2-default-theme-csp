@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\StoreConfig;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Magento\Framework\Escaper;
@@ -17,7 +17,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 $storeConfig = $viewModels->require(StoreConfig::class);
@@ -142,7 +142,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <section x-cloak
          x-show="cart"
          id="cart-drawer"

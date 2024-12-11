@@ -6,14 +6,14 @@
  * See https://hyva.io/license
  */
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Paypal\Block\Express\Shortcut;
 use Magento\Paypal\Block\Express\InContext\Minicart\SmartButton;
 
 /** @var Shortcut|SmartButton $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 ?>
 <?php
@@ -80,4 +80,4 @@ $isInCatalogProduct = (bool) $block->getIsInCatalogProduct();
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductListItem;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\Store;
@@ -22,7 +22,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var Store $viewModelStore */
@@ -139,7 +139,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <section
     class="<?= $escaper->escapeHtmlAttr($sliderSectionClasses) ?>"
     x-data="initSliderComponent()"

@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\GoogleMapsApi;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 $googleMapsApi = $viewModels->require(GoogleMapsApi::class);
@@ -163,4 +163,4 @@ $googleMapsApi = $viewModels->require(GoogleMapsApi::class);
         });
     })();
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>

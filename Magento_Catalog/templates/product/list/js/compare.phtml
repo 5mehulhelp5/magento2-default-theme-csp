@@ -7,13 +7,13 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Magento\Framework\Escaper;
 
 /** @var ViewModelRegistry $viewModels */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 /** @var ProductCompare $compareViewModel */
 $compareViewModel = $viewModels->require(ProductCompare::class);
@@ -50,5 +50,5 @@ $compareViewModel = $viewModels->require(ProductCompare::class);
         };
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <?php endif; ?>

@@ -11,7 +11,7 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\CurrentProduct;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -19,7 +19,7 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ProductCompare $compareViewModel */
@@ -69,7 +69,7 @@ if (!$product->getId() || !$compareViewModel->showOnProductPage()) {
         };
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <button x-data="initCompareOnProductView()"
         @click.prevent="addToCompare(<?= (int)$product->getId() ?>)"
         title="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"

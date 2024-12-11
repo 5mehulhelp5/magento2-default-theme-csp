@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Msrp\Block\Popup;
 use Magento\Framework\Escaper;
 
 /** @var Popup $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var HeroiconsOutline $heroicons */
@@ -126,6 +126,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 }
             }
         </script>
-        <?php $inlineScript->registerWithCsp() ?>
+        <?php $hyvaCsp->registerInlineScript() ?>
     </div>
 <?php endif; ?>

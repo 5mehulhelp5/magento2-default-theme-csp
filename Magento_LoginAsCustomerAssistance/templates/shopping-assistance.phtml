@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use \Magento\LoginAsCustomerAssistance\ViewModel\ShoppingAssistanceViewModel;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 
 /** @var ShoppingAssistanceViewModel $shoppingAssistanceViewModel */
@@ -46,7 +46,7 @@ if (!$shoppingAssistanceViewModel->isLoginAsCustomerEnabled()) {
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div class="field choice"
      x-data="initAllowShippingAssistence()"
 >

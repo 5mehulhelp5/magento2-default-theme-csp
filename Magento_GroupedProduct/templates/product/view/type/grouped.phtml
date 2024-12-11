@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Catalog\Pricing\Price\TierPrice;
 use Magento\Framework\Escaper;
 use Magento\GroupedProduct\Block\Product\View\Type\Grouped;
@@ -17,7 +17,7 @@ use Magento\GroupedProduct\Block\Product\View\Type\Grouped;
 
 /** @var Grouped $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 $block->setPreconfiguredValue();
 $product = $block->getProduct();
@@ -65,7 +65,7 @@ $hasAssociatedProducts = count($associatedProducts) > 0;
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div class="my-12" x-data="initGroupedOptions()">
 <?php if ($hasAssociatedProducts): ?>
     <h2 class="text-gray-900 text-xl title-font font-medium mb-2">

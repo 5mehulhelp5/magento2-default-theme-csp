@@ -9,7 +9,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Bundle\Model\Product\Price as BundlePrice;
@@ -23,7 +23,7 @@ use Magento\Framework\Escaper;
 /** @var View $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var Product $product */
 $product = $block->getProduct();
 
@@ -180,7 +180,7 @@ $displayTax = $productPriceViewModel->displayPriceIncludingTax();
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div x-data="initPrice<?= (int)$product->getId() ?>()"
      x-bind="eventListeners"
      class="price-box price-final_price my-4"

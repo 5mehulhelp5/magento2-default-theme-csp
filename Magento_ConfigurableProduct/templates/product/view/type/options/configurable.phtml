@@ -6,13 +6,13 @@
  * See https://hyva.io/license
  */
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\ConfigurableProduct\Block\Product\View\Type\Configurable;
 use Magento\Framework\Escaper;
 
 /** @var Configurable $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 $product = $block->getProduct();
 $productId = $product->getId();
@@ -28,7 +28,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
             );
         }
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
 
     <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>()"
          @private-content-loaded.window="onGetCartData($event.detail.data)"

@@ -7,7 +7,7 @@
  */
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductPage;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Catalog\Block\Product\View\Options;
@@ -16,7 +16,7 @@ use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
 /** @var Options $block */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 /** @var Option $option */
 
@@ -224,7 +224,7 @@ $options = $block->decorateArray($block->getOptions());
             }
         }
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
     <h2 class="text-gray-900 text-xl title-font font-medium mb-4">
         <?= $escaper->escapeHtml(__('Customizable Options')) ?>:
     </h2>

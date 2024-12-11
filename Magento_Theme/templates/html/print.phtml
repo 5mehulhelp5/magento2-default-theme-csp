@@ -8,13 +8,13 @@
 
 declare(strict_types=1);
 
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 
 ?>
 
 <script>
     window.print();
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>

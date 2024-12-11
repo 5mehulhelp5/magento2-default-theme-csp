@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ProductPrice;
 use Magento\Downloadable\Block\Catalog\Product\Links as DownloadableLinks;
 use Magento\Framework\Escaper;
 
 /** @var DownloadableLinks $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 /** @var ProductPrice $productPriceViewModel */
 /** @var HeroiconsOutline $iconViewModel */
@@ -94,7 +94,7 @@ $configuredLinks          = $configuredValues->getLinks() ?? [];
         };
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <?php endif; ?>
 <legend class="text-gray-900 text-xl title-font font-medium mb-4">
     <span><?= $escaper->escapeHtml($block->getLinksTitle()) ?></span>

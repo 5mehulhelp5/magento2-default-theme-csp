@@ -12,13 +12,13 @@ use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Customer\LoginButton;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\ReCaptcha;
 use Magento\Customer\Block\Form\Login;
 use Magento\Framework\Escaper;
 
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var Login $block */
 /** @var LoginButton $loginButtonViewModel */
 /** @var ViewModelRegistry $viewModels */
@@ -169,5 +169,5 @@ $recaptcha = $block->getData('viewModelRecaptcha');
             }
         }
     </script>
-    <?php $inlineScript->registerWithCsp() ?>
+    <?php $hyvaCsp->registerInlineScript() ?>
 </div>

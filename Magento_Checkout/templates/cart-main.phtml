@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Cart\CheckoutConfig;
-use Hyva\Theme\ViewModel\InlineScript;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Checkout\Block\Cart;
 use Magento\Framework\Escaper;
 
 /** @var Cart $block */
 /** @var Escaper $escaper */
-/** @var InlineScript $inlineScript */
+/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 ?>
 
@@ -31,7 +31,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
     window.customerData = window.checkoutConfig.customerData;
     window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <script>
     'use strict';
     (function( hyva, undefined ) {
@@ -83,7 +83,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }( window.hyva = window.hyva || {} ));
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <script>
 
     function initCartForm(){
@@ -150,7 +150,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }
 </script>
-<?php $inlineScript->registerWithCsp() ?>
+<?php $hyvaCsp->registerInlineScript() ?>
 <div x-data="initCartForm()"
      class="cart-form clearfix"
      @private-content-loaded.window="checkCartShouldUpdate($event.detail.data)"
