@@ -40,10 +40,10 @@ $showMiniCart = $storeConfig->getStoreConfig(SidebarCart::XML_PATH_CHECKOUT_SIDE
             },
             ariaLabel() {
                 return '<?= $escaper->escapeJs($showMiniCart ? __('Toggle minicart') : __('View cart')) ?>, ' +
-                    (this.cartIsEmpty() ? '<?= $escaper->escapeJs(__('Cart is empty')) ?>' : (
+                    (this.isCartEmpty() ? '<?= $escaper->escapeJs(__('Cart is empty')) ?>' : (
                         Math.abs(this.cart.summary_count) > 1 ?
-                            hyva.str('<?= $escaper->escapeJs(__('%1 items')) ?>', cart.summary_count) :
-                            hyva.str('<?= $escaper->escapeJs(__('%1 item')) ?>', cart.summary_count)
+                            hyva.str('<?= $escaper->escapeJs(__('%1 items')) ?>', this.cart.summary_count) :
+                            hyva.str('<?= $escaper->escapeJs(__('%1 item')) ?>', this.cart.summary_count)
                     ))
             },
             isCartEmpty() {

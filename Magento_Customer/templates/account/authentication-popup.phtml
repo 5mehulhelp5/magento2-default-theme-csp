@@ -61,8 +61,8 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
                     this.dispatchLoginRequest($form);
                 }
             },
-            onPrivateContentLoaded: function ($event) {
-                const data = $event.detail.data;
+            onPrivateContentLoaded: function () {
+                const data = this.$event.detail.data;
                 const isLoggedIn = data.customer && data.customer.firstname;
                 if (data.cart && !isLoggedIn) {
                     this.forceAuthentication = !data.cart.isGuestCheckoutAllowed;
