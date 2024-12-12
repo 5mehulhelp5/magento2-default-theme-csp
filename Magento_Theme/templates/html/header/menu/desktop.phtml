@@ -31,12 +31,12 @@ $menuItems = $viewModelNavigation->getNavigation(4);
 $block->setData('cache_tags', $viewModelNavigation->getIdentities());
 
 ?>
-<div x-data="initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>()"
+<div x-data="initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>"
      class="z-20 order-2 sm:order-1 lg:order-2 navigation hidden lg:flex"
 >
     <!-- desktop -->
     <div x-ref="nav-desktop"
-         @load.window="setActiveMenu($root)"
+         @load.window="setActiveMenu"
          class="hidden lg:block lg:px-8">
         <nav
             class="relative"
@@ -45,15 +45,16 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
             <ul class="flex justify-start flex-wrap gap-x-7 py-4">
                 <?php foreach ($menuItems as $index => $menuItem): ?>
                     <li class="relative level-0 border-b-2 border-transparent hover:border-primary data-[active]:border-primary"
-                        @mouseenter="hoverPanelActiveId = '<?= /* @noEscape */ (string) $index ?>'"
-                        @mouseleave="hoverPanelActiveId = 0"
-                        @keyup.escape="hoverPanelActiveId = 0"
+                        data-index="<?= $escaper->escapeHtmlAttr($index) ?>"
+                        @mouseenter="enterHoverPanel"
+                        @mouseleave="leaveHoverPanel"
+                        @keyup.escape="leaveHoverPanel"
                     >
                         <span class="flex items-center text-md">
                             <a class="w-full text-base text-gray-700 level-0 py-2 px-0.5"
                                href="<?= $escaper->escapeUrl($menuItem['url']) ?>"
                                title="<?= $escaper->escapeHtmlAttr($menuItem['name']) ?>"
-                               @focus="hoverPanelActiveId = 0"
+                               @focus="leaveHoverPanel"
                             >
                                 <?= $escaper->escapeHtml($menuItem['name']) ?>
                             </a>
@@ -61,8 +62,9 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 <button
                                     type="button"
                                     data-sr-button-id="<?= $escaper->escapeHtmlAttr($index) ?>"
-                                    :aria-expanded="hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>' ? 'true' : 'false'"
-                                    @click="openMenuOnClick('<?= /* @noEscape */ (string) $index ?>')"
+                                    data-index="<?= $escaper->escapeHtmlAttr($index) ?>"
+                                    :aria-expanded="hoverPanelIsIndex"
+                                    @click="openMenuOnClick"
                                     class="rounded p-1 text-gray-500"
                                 >
                                     <?= $heroiconsSolid->chevronDownHtml("flex self-center h-5 w-5", 25, 25, ['aria-hidden' => 'true']) ?>
@@ -75,17 +77,16 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                         <?php if (!empty($menuItem['childData'])): ?>
                             <ul
                                 class="absolute top-full z-10 hidden px-6 py-4 mt-0.5 -ml-6 shadow-lg bg-container-lighter/95"
-                                :class="{
-                                    'hidden' : hoverPanelActiveId !== '<?= /* @noEscape */ (string) $index ?>',
-                                    'block' : hoverPanelActiveId === '<?= /* @noEscape */ (string) $index ?>'
-                                }"
+                                data-index="<?= $escaper->escapeHtmlAttr($index) ?>"
+                                :class="childMenuClass"
                             >
                                 <?php foreach ($menuItem['childData'] as $subMenuItem): ?>
                                     <li>
                                         <a href="<?= $escaper->escapeUrl($subMenuItem['url']) ?>"
                                            title="<?= $escaper->escapeHtmlAttr($subMenuItem['name']) ?>"
                                            class="block w-full px-3 py-1 my-1 whitespace-nowrap first:mt-0 hover:underline aria-[current=page]:underline"
-                                           @keyup.escape="$nextTick(() => document.querySelector('[data-sr-button-id=<?= $escaper->escapeJs($index) ?>]').focus())"
+                                           data-index="<?= $escaper->escapeHtmlAttr($index) ?>"
+                                           @keyup.escape="childMenuItemKeyUpEscape"
                                         >
                                             <span class="text-base text-gray-700">
                                                 <?= $escaper->escapeHtml($subMenuItem['name']) ?>
@@ -107,22 +108,49 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
     const initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?> = () => {
         return {
             hoverPanelActiveId: null,
-            setActiveMenu(menuNode) {
+
+            hoverPanelIsIndex() {
+                return this.hoverPanelActiveId === this.$el.dataset['index']
+            },
+
+            enterHoverPanel() {
+                this.hoverPanelActiveId = this.$el.dataset['index']
+            },
+            leaveHoverPanel() {
+                this.hoverPanelActiveId = null
+            },
+
+            childMenuItemKeyUpEscape() {
+                this.$nextTick(() => document.querySelector('[data-sr-button-id=' + this.$el.dataset['index'] + ']').focus())
+            },
+
+            childMenuClass() {
+                return {
+                    'hidden' : !this.hoverPanelIsIndex(),
+                    'block' : this.hoverPanelIsIndex()
+                }
+            },
+
+            setActiveMenu() {
+                const menuNode = this.$root
+
                 Array.from(menuNode.querySelectorAll('a')).filter(link => {
-                    return link.href === window.location.href.split('?')[0];
+                    return link.href === window.location.href.split('?')[0]
                 }).map(item => {
                     item.setAttribute('aria-current', 'page');
-                    item.closest('li.level-0').setAttribute('data-active', 'true');
-                });
+                    item.closest('li.level-0').setAttribute('data-active', 'true')
+                })
             },
-            openMenuOnClick(menuNode) {
-                if (menuNode === this.hoverPanelActiveId) {
-                    this.hoverPanelActiveId = 0;
-                } else {
-                    this.hoverPanelActiveId = menuNode
-                }
+            openMenuOnClick() {
+                !this.hoverPanelIsIndex() && this.enterHoverPanel()
+                this.hoverPanelIsIndex() && this.leaveHoverPanel()
             }
         }
     }
+
+    (() => {
+        const initFn = () => Alpine.data('initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>', initMenuDesktop<?= $escaper->escapeHtml($uniqueId) ?>);
+        window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
