@@ -32,12 +32,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
     function initMessages() {
         "use strict";
         return {
-            messages: window.mageMessages || [
-                {
-                    type: 'error',
-                    text: "Hello World!"
-                }
-            ],
+            messages: window.mageMessages || [],
             isEmpty() {
                 return this.messages.reduce(
                     function (isEmpty, message) {
