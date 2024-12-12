@@ -163,7 +163,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                                 class="absolute flex justify-end w-16 self-end mb-1 transition-none"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
                             >
-                                <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : closed, 'block': open }", "aria-hidden" => "true"]) ?>
+                                <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "triggerCloseSvgClass", "aria-hidden" => "true"]) ?>
                             </button>
                         </div>
                     <?php endif; ?>
@@ -176,7 +176,7 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
             aria-label="<?= $escaper->escapeHtmlAttr(__('Close menu')) ?>"
             type="button"
         >
-            <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "{ 'hidden' : closed, 'block': open }", "aria-hidden" => "true"]) ?>
+            <?= $heroicons->xHtml('hidden p-4', 64, 64, [":class" => "triggerCloseSvgClass", "aria-hidden" => "true"]) ?>
         </button>
     </div>
 </nav>
@@ -201,6 +201,12 @@ $block->setData('cache_tags', $viewModelNavigation->getIdentities());
                 return {
                     'hidden' : this.open,
                     'block': !this.open
+                }
+            },
+            triggerCloseSvgClass() {
+                return {
+                    'hidden' : !this.open,
+                    'block': this.open
                 }
             },
             mobileMenuNavLinksClass() {
