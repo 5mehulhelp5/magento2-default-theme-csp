@@ -91,9 +91,10 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
         }
     }
 
-    window.addEventListener('alpine:init', () => {
-        Alpine.data('initMessages', initMessages);
-    })
+    (() => {
+        const initFn = () => Alpine.data('initMessages', initMessages);
+        window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <section id="messages"

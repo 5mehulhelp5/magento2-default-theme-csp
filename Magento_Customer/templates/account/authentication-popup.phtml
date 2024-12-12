@@ -122,9 +122,10 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
         }
     }
 
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('initAuthentication', initAuthentication);
-    });
+    (() => {
+        const initFn = () => Alpine.data('initAuthentication', initAuthentication);
+        window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <section id="authentication-popup"

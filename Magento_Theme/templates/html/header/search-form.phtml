@@ -99,9 +99,10 @@ $searchConfig = $viewModels->require(SearchConfig::class);
         }
     }
 
-    window.addEventListener('alpine:init', () => {
-        Alpine.data('initMiniSearch', initMiniSearch)
-    })
+    (() => {
+        const initFn = () => Alpine.data('initMiniSearch', initMiniSearch);
+        window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <div class="container py-2 mx-auto text-black" x-data="initMiniSearch">
