@@ -293,16 +293,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                         <button type="button"
                                                 class="inline-flex p-2 btn btn-primary"
                                                 @click="deleteItemFromCart"
-<<<<<<< HEAD
-                                                data-aria-label="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
-                                                :aria-label="productAriaLabel"
-||||||| parent of ed43bdfb (Single phrases work as expected with directive)
-                                                data-translate="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
-                                                :aria-label="productAriaLabel"
-=======
                                                 x-phrases:label.item.product_name="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
                                                 :aria-label="phrases.label"
->>>>>>> ed43bdfb (Single phrases work as expected with directive)
                                         >
                                             <?= $heroicons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                         </button>
