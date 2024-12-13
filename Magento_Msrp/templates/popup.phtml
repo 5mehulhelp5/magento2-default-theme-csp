@@ -27,26 +27,26 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
     <div
         class="z-10 fixed bottom-4 inset-x-4 sm:w-96 max-w-prose mx-auto p-4 rounded shadow-2xl bg-container-lighter
             lg:absolute lg:bottom-auto lg:right-auto lg:top-[var(--msrp-block-offset)] lg:left-[var(--msrp-inline-offset)] lg:shadow-lg lg:max-w-xs"
-        :style="setPosition()"
-        x-data="initMsrpPopover()"
+        :style="setPosition"
+        x-data="initMsrpPopover"
         x-cloak
         x-show="open"
         x-transition:enter="transition ease-out duration-300 opacity-0 translate-y-full lg:-translate-y-0"
         x-transition:enter-end="transition ease-out duration-300 opacity-100 translate-y-0"
         x-transition:leave="transition ease-in duration-150 opacity-0 translate-y-full lg:-translate-y-0"
-        @click.outside="closePopover($event)"
-        @msrp-popover.window="showPopover($event.detail)"
-        @resize.window.debounce="closePopover()"
-        @keydown.window.escape="closePopover()"
+        @click.outside="closePopover"
+        @msrp-popover.window="showPopover"
+        @resize.window.debounce="closePopover"
+        @keydown.window.escape="closePopover"
     >
         <div class="flex justify-between gap-2 mb-2">
             <strong id="map-popup-heading-price" class="font-bold" x-text="title"></strong>
-            <button type="button" @click="closePopover()">
+            <button type="button" @click="closePopover">
                 <?= $heroicons->xHtml(); ?>
             </button>
         </div>
 
-        <template x-if="type !== 'help'">
+        <template x-if="isNotHelpPopup">
             <div class="mb-4 text-sm">
                 <dl class="price-box">
                     <div class="flex gap-2">
@@ -102,7 +102,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         this.open = false;
                     },
                     showPopover(event) {
-                        const data = event.msrpData;
+                        const data = $event.detail.msrpData;
                         if (!data) return;
 
                         this.open = true;
@@ -122,9 +122,18 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             this.anchor = event.target;
                             this.$nextTick(() => this.calcPosition());
                         }
+                    },
+                    isNotHelpPopup() {
+                        return this.type !== 'help'
                     }
                 }
             }
+            (() => {
+                const initFn = () => Alpine.data('initMsrpPopover', initMsrpPopover);
+                window.Alpine
+                    ? initFn()
+                    : window.addEventListener('alpine:init', initFn, {once: true})
+            })()
         </script>
         <?php $hyvaCsp->registerInlineScript() ?>
     </div>
