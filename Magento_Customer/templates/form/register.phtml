@@ -54,7 +54,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
     <?= $block->getChildHtml('customer.form.register.extra') ?>
     <form class="form create account form-create-account"
           action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
-          x-data="initForm()"
+          x-data="Object.assign(hyva.formValidation($el), initForm())"
           <?php if ($block->getShowAddressFields()): ?>
           @private-content-loaded.window="onPrivateContentLoaded(event.detail.data)"
           <?php endif; ?>
@@ -449,8 +449,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
 
     <script>
         function initForm() {
-            const $el = this.$el
-            return Object.assign(hyva.formValidation($el), {
+            return {
                 errors: 0,
                 hasCaptchaToken: 0,
                 showPassword: false,
@@ -541,7 +540,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                     return Object.keys(this.availableRegions).length > 0;
                 }
                 <?php endif; ?>
-            })
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
