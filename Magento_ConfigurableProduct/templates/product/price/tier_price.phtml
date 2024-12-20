@@ -56,16 +56,19 @@ $productViewModel = $viewModels->require(ProductPage::class);
                 }
                 return false;
             },
-            getItemHtml(item) {
+            getItemHtml() {
                 const price = <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
-                    `${hyva.formatPrice(item.price)} (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${hyva.formatPrice(item.basePrice)})`;
+                    `${hyva.formatPrice(this.tierPrice.price)} (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${hyva.formatPrice(this.tierPrice.basePrice)})`;
                 <?php else: ?>
-                    hyva.formatPrice(item.price);
+                    hyva.formatPrice(this.tierPrice.price);
                 <?php endif; ?>
                 return '<?= $escaper->escapeHtml(__('Buy %1 for %2 each and', '%1', '%2')) ?>'
-                    .replace('%1', item.qty)
+                    .replace('%1', this.tierPrice.qty)
                     .replace('%2', price)
 
+            },
+            getItemPercentage() {
+                return this.tierPrice.percentage + '%';
             },
             eventListeners: {
                 ['@update-prices-<?= (int) $product->getId() ?>.window'](event) {
@@ -74,20 +77,27 @@ $productViewModel = $viewModels->require(ProductPage::class);
             }
         }
     }
+    (() => {
+        const initFn = () => Alpine.data('initTierPrices<?= (int) $product->getId() ?>', initTierPrices<?= (int) $product->getId() ?>);
+        window.Alpine
+            ? initFn()
+            : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
+
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <div
-     x-data="initTierPrices<?= (int)$product->getId() ?>()"
+     x-data="initTierPrices<?= (int)$product->getId() ?>"
      x-bind="eventListeners"
 >
-    <template x-if="getConfiguredTierPrices()">
+    <template x-if="getConfiguredTierPrices">
         <ul class="prices-tier items mb-4">
-            <template x-for="tierPrice in getConfiguredTierPrices()">
+            <template x-for="tierPrice in getConfiguredTierPrices">
                 <li class="item bg-container-lighter p-2 shadow mb-2 border-l-4 border-green-400 mx-1">
-                    <span x-html="getItemHtml(tierPrice)"></span>
+                    <span x-html="getItemHtml"></span>
                     <strong class="benefit">
                         <?= $escaper->escapeHtml(__('save')) ?>
-                        <span class="percent" x-text="tierPrice.percentage + '%'"></span>
+                        <span class="percent" x-text="getItemPercentage"></span>
                     </strong>
                 </li>
             </template>

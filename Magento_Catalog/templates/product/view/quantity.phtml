@@ -54,6 +54,17 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
     <script>
         function initQtyField() {
 
+            function isNumeric(subject){
+                return ! Array.isArray(subject) && ! isNaN(subject)
+            }
+
+            function safeParseNumber(rawValue) {
+                let number = rawValue ? parseFloat(rawValue) : null
+
+                return isNumeric(number) ? number : rawValue
+            }
+
+
             function findPathParam(key) {
                 // get all path pairs after BASE_URL/front_name/action_path/action
                 const baseUrl = (BASE_URL.substring(0, 2) === '//' ? 'http:' : '') + BASE_URL;
@@ -74,7 +85,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
                 },
                 <?php /* populate the qty when editing a product from the cart */ ?>
-                onGetCartData: function onGetCartData() {
+                onGetCartData() {
                     const data = this.$event.detail.data;
                     const cart = data && data.data && data.data.cart;
                     if (this.itemId && cart && cart.items) {
@@ -88,6 +99,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     }
                 },
                 onInput() {
+                    this.qty = safeParseNumber(this.$event.target.value);
                     this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
                 }
             };
@@ -128,7 +140,6 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     :value="qty"
                     value="<?= $block->getProductDefaultQty() * 1 ?>"
                     class="form-input px-2 py-2 w-20 text-center invalid:ring-2 invalid:ring-red-500"
-                    x-model.number="qty"
                     @input="onInput"
                 />
             </div>

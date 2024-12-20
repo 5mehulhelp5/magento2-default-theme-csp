@@ -71,7 +71,6 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
     <div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>"
          @private-content-loaded.window="onGetCartData"
          class="relative mb-6"
-         x-defer="intersect"
          data-product-id="<?= (int) $productId ?>"
     >
         <h2 class="mb-4 text-xl font-medium text-gray-900 title-font">
