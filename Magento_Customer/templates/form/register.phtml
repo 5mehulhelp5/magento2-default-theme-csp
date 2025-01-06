@@ -123,7 +123,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                             required
                             value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getEmail()) ?>"
                             title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
-                            class="form-input"
+                            class="form-input w-full"
                             @input.debounce="onChange"
                         />
                     </div>
@@ -132,7 +132,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                     <label for="password" class="label">
                         <span><?= $escaper->escapeHtml(__('Password')) ?></span>
                     </label>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="gap-4">
                         <div class="control flex items-center">
                             <?php $minimumPasswordLength = $block->getMinimumPasswordLength() ?>
                             <div class="sr-only" aria-live="polite">
@@ -154,7 +154,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                                 name="password"
                                 title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"
                                 minlength="<?= $escaper->escapeHtmlAttr($minimumPasswordLength) ?>"
-                                class="form-input"
+                                class="form-input w-full"
                                 required
                                 data-validate='{"password-strength": {"minCharacterSets": <?= (int) $passwordMinCharacterSets ?>}}'
                                 @input.debounce="onChange"
@@ -175,18 +175,18 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                                 </template>
                             </button>
                         </div>
-                        <div class="self-center">
-                            <div
-                                id="password-strength-meter-container"
-                                data-role="password-strength-meter"
-                                aria-live="polite"
-                            >
-                                <div id="password-strength-meter" class="password-strength-meter">
-                                    <?= $escaper->escapeHtml(__('Password Strength')) ?>:
-                                    <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                    </div>
+                    <div class="self-center mt-0.5">
+                        <div
+                            id="password-strength-meter-container"
+                            data-role="password-strength-meter"
+                            aria-live="polite"
+                        >
+                            <div id="password-strength-meter" class="password-strength-meter">
+                                <?= $escaper->escapeHtml(__('Password Strength')) ?>:
+                                <span id="password-strength-meter-label" data-role="password-strength-meter-label">
                                         <?= $escaper->escapeHtml(__('No Password')) ?>
                                     </span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,7 +217,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                             data-validate='{"equalTo": "password"}'
                             @input.debounce="onChange"
                             required
-                            class="form-input"
+                            class="form-input w-full"
                             autocomplete="<?= $isAutocompleteEnabled ? 'new-password' : 'off' ?>"
                         >
                         <button
@@ -359,7 +359,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                                x-ref="region"
                                value="<?= $escaper->escapeHtmlAttr($block->getRegion()) ?>"
                                title="<?= /* @noEscape */ $regionLabel ?>"
-                               class="form-input"
+                               class="form-input w-full"
                                :required="isRegionRequired"
                         />
                     </div>
