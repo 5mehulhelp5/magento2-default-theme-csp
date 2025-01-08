@@ -306,7 +306,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                                                 @click="deleteItemFromCart"
                                                 data-aria-label="<?= $escaper->escapeHtmlAttr(__('Remove product "%0" from cart')) ?>"
                                                 :aria-label="productAriaLabel"
-                                                :aria-label="phrases.label"
                                         >
                                             <?= $heroicons->trashHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                                         </button>
