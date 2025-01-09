@@ -147,6 +147,10 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
                 if (event.key === 'private_content_version') {
                     window.dispatchEvent(new CustomEvent("reload-customer-section-data"));
                 }
+            },
+            proceedToCheckout() {
+                this.$dispatch('toggle-authentication',
+                    {url: this.$el.href});
             }
         }
     }
