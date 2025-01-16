@@ -83,7 +83,7 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }( window.hyva = window.hyva || {} ));
 
-    function initCartForm() {
+    function initCartMainForm() {
         return {
             cartIsEmpty: !!window.checkoutConfig,
             checkCartShouldUpdate() {
@@ -151,12 +151,12 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }
     (() => {
-        const initFn = () => Alpine.data('initCartForm', initCartForm);
+        const initFn = () => Alpine.data('initCartMainForm', initCartMainForm);
         window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
     })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<div x-data="initCartForm"
+<div x-data="initCartMainForm"
      class="cart-form clearfix"
      @private-content-loaded.window="checkCartShouldUpdate"
      @storage.window="onStorageChange"
