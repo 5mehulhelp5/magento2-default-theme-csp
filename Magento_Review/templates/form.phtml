@@ -250,6 +250,9 @@ mutation createProductReviewMutation(
                         isLoading: false,
                         displayNickname: false,
                         displaySuccessMessage: false,
+                        dontDisplaySuccessMessage() {
+                            return !this.displaySuccessMessage
+                        },
                         displayErrorMessage: false,
                         errorMessages: [],
                         errors: 0,
@@ -376,6 +379,26 @@ mutation createProductReviewMutation(
                         Alpine.data('initReviewForm', initReviewForm)
                         Alpine.data('initReview', initReview)
                     };
+                    window.Alpine
+                        ? initFn()
+                        : window.addEventListener('alpine:init', initFn, {once: true})
+                })()
+
+                function initReviewFormRatingOptions() {
+                    return  {
+                        clickedRatingId: 0,
+                        updateRatingOption() {
+                            this.clickedRatingId = this.$el.dataset.iterator || 0;
+                        },
+                        classesForRatingOption() {
+                            return this.$el.dataset.iterator <= this.clickedRatingId
+                                ? 'text-yellow-400'
+                                : 'text-gray-400'
+                        }
+                    }
+                }
+                (() => {
+                    const initFn = () => Alpine.data('initReviewFormRatingOptions', initReviewFormRatingOptions);
                     window.Alpine
                         ? initFn()
                         : window.addEventListener('alpine:init', initFn, {once: true})

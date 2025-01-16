@@ -13,8 +13,7 @@ use Magento\Framework\Escaper;
 /** @var Link $block */
 ?>
 <?php if ($block->isPossibleOnepageCheckout()): ?>
-    <a @click.prevent.stop="$dispatch('toggle-authentication',
-        {url: '<?= $escaper->escapeHtmlAttr($escaper->escapeUrl($block->getCheckoutUrl())) ?>'});"
+    <a @click.prevent.stop="proceedToCheckout"
         href="<?= $escaper->escapeHtmlAttr($escaper->escapeUrl($block->getCheckoutUrl())) ?>"
         title="<?= $escaper->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
         class="btn btn-primary rounded text-lg font-medium py-4 px-10 my-4 checkout justify-center text-center"

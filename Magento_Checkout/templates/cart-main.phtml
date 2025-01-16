@@ -143,14 +143,16 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
                 if (this.$event.key === 'private_content_version') {
                     window.dispatchEvent(new CustomEvent("reload-customer-section-data"));
                 }
+            },
+            proceedToCheckout() {
+                this.$dispatch('toggle-authentication',
+                    {url: this.$el.href});
             }
         }
     }
     (() => {
         const initFn = () => Alpine.data('initCartForm', initCartForm);
-        window.Alpine
-            ? initFn()
-            : window.addEventListener('alpine:init', initFn, {once: true})
+        window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
     })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
