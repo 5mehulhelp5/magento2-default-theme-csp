@@ -42,8 +42,8 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         <form class="form form-login"
               action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
               method="post"
-              x-data="initCustomerLoginForm()"
-              @submit.prevent="submitForm()"
+              x-data="initCustomerLoginForm"
+              @submit.prevent="submitForm"
               id="customer-login-form">
             <?= $block->getBlockHtml('formkey') ?>
             <fieldset class="fieldset login">
@@ -79,12 +79,12 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     </label>
                     <div class="control flex items-center">
                         <div class="sr-only" aria-live="polite">
-                            <template x-if="!showPassword">
+                            <template x-if="passwordHidden">
                                 <span>
                                     <?= $escaper->escapeHtml(__('Password hidden')) ?>
                                 </span>
                             </template>
-                            <template x-if="showPassword">
+                            <template x-if="passwordVisible">
                                 <span>
                                     <?= $escaper->escapeHtml(__('Password shown')) ?>
                                 </span>
@@ -93,22 +93,22 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                         <input name="login[password]"
                             class="form-input"
                             required
-                            :type="showPassword ? 'text' : 'password'"
+                            :type="inputTypePasswordOrText"
                             autocomplete="<?= $block->isAutocompleteDisabled() ? 'off' : 'current-password' ?>"
                             id="pass"
                             title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>"
                         />
                         <button
                             type="button"
-                            x-on:click="showPassword = !showPassword"
-                            :aria-pressed="showPassword ? 'true' : 'false'"
+                            x-on:click="togglePasswordVisibility"
+                            :aria-pressed="buttonAriaPressed"
+                            :aria-label="buttonAriaLabel"
                             class="px-4 py-3"
-                            :aria-label="showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'"
                         >
-                            <template x-if="!showPassword">
+                            <template x-if="passwordHidden">
                                 <?= $heroiconssolid->eyeHtml('w-5 h-5'); ?>
                             </template>
-                            <template x-if="showPassword">
+                            <template x-if="passwordVisible">
                                 <?= $heroiconssolid->eyeOffHtml('w-5 h-5'); ?>
                             </template>
                         </button>
@@ -146,28 +146,52 @@ $recaptcha = $block->getData('viewModelRecaptcha');
         <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
     </div>
     <script>
-        function initCustomerLoginForm() {
-            return {
-                errors: 0,
-                hasCaptchaToken: 0,
-                showPassword: false,
-                displayErrorMessage: false,
-                errorMessages: [],
-                setErrorMessages(messages) {
-                    this.errorMessages = [messages]
-                    this.displayErrorMessage = this.errorMessages.length
-                },
-                submitForm() {
-                    // do not rename $form, the variable is the expected name in the recaptcha output
-                    const $form = document.querySelector('#customer-login-form');
-                    <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
+        (() => {
+            function initCustomerLoginForm() {
+                return {
+                    errors: 0,
+                    hasCaptchaToken: 0,
+                    showPassword: false,
+                    displayErrorMessage: false,
+                    errorMessages: [],
+                    setErrorMessages(messages) {
+                        this.errorMessages = [messages]
+                        this.displayErrorMessage = this.errorMessages.length
+                    },
+                    submitForm() {
+                        // do not rename $form, the variable is the expected name in the recaptcha output
+                        const $form = document.querySelector('#customer-login-form');
+                        <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_CUSTOMER_LOGIN) : '' ?>
 
-                    if (this.errors === 0) {
-                        $form.submit();
+                        if (this.errors === 0) {
+                            $form.submit();
+                        }
+                    },
+                    inputTypePasswordOrText() {
+                        return this.showPassword ? 'text' : 'password'
+                    },
+                    togglePasswordVisibility() {
+                        this.showPassword = !this.showPassword
+                    },
+                    buttonAriaPressed() {
+                        return this.showPassword ? 'true' : 'false'
+                    },
+                    buttonAriaLabel() {
+                        return this.showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'
+                    },
+                    get passwordHidden() {
+                        return !this.showPassword
+                    },
+                    get passwordVisible() {
+                        return this.showPassword
                     }
+
                 }
             }
-        }
+
+            const initFn = () => Alpine.data('initCustomerLoginForm', initCustomerLoginForm);
+            window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
+        })()
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 </div>
