@@ -20,6 +20,9 @@ use Hyva\Theme\ViewModel\HyvaCsp;
             isFptSegment() {
                 return this.segment.code === 'weee_tax';
             },
+            formatFptTotal() {
+                return hyva.formatPrice(this.segment.value);
+            }
         };
     }
     (() => {
@@ -37,8 +40,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
              x-html="formatTotalLabel"
         ></div>
         <div class="w-5/12 text-right md:w-auto"
-             :data-amount="segment.value"
-             x-text="formatPrice"
+             x-text="formatFptTotal"
         ></div>
     </div>
 </template>

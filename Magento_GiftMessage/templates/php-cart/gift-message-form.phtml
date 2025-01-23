@@ -25,47 +25,47 @@ use Magento\Framework\View\Element\Template;
         <fieldset class="fieldset">
             <div class="field field-to" x-id="['recipient']">
                 <label
-                    :for="$id('recipient')"
+                    :for="getIdRecipient"
                     class="label"
                 >
                     <span><?= $escaper->escapeHtml(__('To:')) ?></span>
                 </label>
                 <div class="control">
                     <input
-                        :id="$id('recipient')"
+                        :id="getIdRecipient"
                         type="text"
-                        x-model="formMessage.recipient"
+                        @input="onInputRicepient"
                         @keydown.enter.prevent="submitGiftOption()"
                         class="input-text w-full form-input disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
                     >
                 </div>
             </div>
 
-            <div class="field field-from" x-id="['sender']">
+            <div class="field field-from" x-id="getIdPrefixSender">
                 <label
-                    :for="$id('sender')"
+                    :for="getIdSender"
                     class="label"
                 >
                     <span><?= $escaper->escapeHtml(__('From:')) ?></span>
                 </label>
                 <div class="control">
                     <input
-                        :id="$id('sender')"
+                        :id="getIdSender"
                         type="text"
-                        x-model="formMessage.sender"
+                        @input="onInputSender"
                         @keydown.enter.prevent="submitGiftOption()"
                         class="input-text w-full form-input disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
                     >
                 </div>
             </div>
-            <div class="field text" x-id="['message']">
-                <label :for="$id('message')" class="label">
+            <div class="field text" x-id="getIdPrefixMessage">
+                <label :for="getIdMessage" class="label">
                     <span><?= $escaper->escapeHtml(__('Message')) ?></span>
                 </label>
                 <div class="control">
                     <textarea
-                        :id="$id('message')"
-                        x-model="formMessage.message"
+                        :id="getIdMessage"
+                        @input="onInputMessage"
                         class="input-text w-full form-input disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
                         rows="5"
                         cols="10">

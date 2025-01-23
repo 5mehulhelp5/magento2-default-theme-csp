@@ -19,10 +19,13 @@ use Hyva\Theme\ViewModel\HyvaCsp;
         return {
             taxSummaryIsOpen: false,
             isTaxSegmentVisible() {
-                return this.segment.code === 'tax' && (this.segment.value > 0 || checkoutConfig.isZeroTaxDisplayed);
+                return this.segment.code === 'tax' && (this.segment.value > 0 || window.checkoutConfig.isZeroTaxDisplayed);
             },
             isTaxSummaryVisible() {
-                return this.segment.value > 0 && checkoutConfig.isFullTaxSummaryDisplayed;
+                return this.segment.value > 0 && window.checkoutConfig.isFullTaxSummaryDisplayed;
+            },
+            isTaxSummaryHidden() {
+                return ! this.isTaxSegmentVisible()
             },
             toggle() {
                 this.taxSummaryIsOpen = ! this.taxSummaryIsOpen;
@@ -34,6 +37,12 @@ use Hyva\Theme\ViewModel\HyvaCsp;
             },
             formatTaxRateLabel() {
                 return `${this.taxRate.title} (${this.taxRate.percent}%)`;
+            },
+            formatTaxTotal() {
+                return hyva.formatPrice(this.segment.value);
+            },
+            formatTaxDetailAmount() {
+                return hyva.formatPrice(this.taxItem.amount);
             }
         };
     }
@@ -48,14 +57,13 @@ use Hyva\Theme\ViewModel\HyvaCsp;
 <div x-data="initTaxSegment">
 <template x-if="isTaxSegmentVisible">
     <div>
-        <template x-if="!(segment.value > 0 && checkoutConfig.isFullTaxSummaryDisplayed)">
+        <template x-if="isTaxSummaryHidden">
             <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
                 <div class="w-7/12 text-left md:w-auto"
                      x-html="formatTotalLabel"
                 ></div>
                 <div class="w-5/12 text-right md:w-auto"
-                     :data-amount="segment.value"
-                     x-text="formatPrice"
+                     x-text="formatTaxTotal"
                 ></div>
             </div>
         </template>
@@ -68,8 +76,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                 ></div>
                 <div class="w-5/12 text-right justify-end items-center md:w-auto flex">
                     <span
-                        :data-amount="segment.value"
-                        x-text="formatPrice"></span>
+                        x-text="formatTaxTotal"></span>
 
                     <span :class="summaryCssClasses" class="block transform rotate-180">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6" width="25" height="25">
@@ -87,8 +94,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                                 </template>
                             </div>
                             <div class="w-5/12 text-right md:w-auto"
-                                 :data-amount="taxItem.amount"
-                                 x-text="formatPrice"
+                                 x-text="formatTaxDetailAmount"
                             ></div>
                         </div>
                     </template>

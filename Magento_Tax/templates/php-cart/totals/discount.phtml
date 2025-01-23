@@ -20,6 +20,9 @@ use Hyva\Theme\ViewModel\HyvaCsp;
             isDiscountSegment() {
                 return this.segment.code === 'discount';
             },
+            formatDiscountValue() {
+                return hyva.formatPrice(this.segment.value);
+            }
         };
     }
     (() => {
@@ -31,14 +34,13 @@ use Hyva\Theme\ViewModel\HyvaCsp;
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <div x-data="initDiscountTotalSegment">
-<template x-if="isMatchingTotal" data-total-code="discount">
+<template x-if="isDiscountSegment" data-total-code="discount">
     <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
         <div class="w-7/12 text-left md:w-auto"
              x-html="formatTotalLabel"
         ></div>
         <div class="w-5/12 text-right md:w-auto"
-             data-amount="segment.value"
-             x-text="formatPrice"
+             x-text="formatDiscountValue"
         ></div>
     </div>
 </template>

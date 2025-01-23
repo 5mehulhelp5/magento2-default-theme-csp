@@ -54,17 +54,6 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
     <script>
         function initQtyField() {
 
-            function isNumeric(subject){
-                return ! Array.isArray(subject) && ! isNaN(subject)
-            }
-
-            function safeParseNumber(rawValue) {
-                let number = rawValue ? parseFloat(rawValue) : null
-
-                return isNumeric(number) ? number : rawValue
-            }
-
-
             function findPathParam(key) {
                 // get all path pairs after BASE_URL/front_name/action_path/action
                 const baseUrl = (BASE_URL.substring(0, 2) === '//' ? 'http:' : '') + BASE_URL;
@@ -99,7 +88,7 @@ $maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
                     }
                 },
                 onInput() {
-                    this.qty = safeParseNumber(this.$event.target.value);
+                    this.qty = hyva.safeParseNumber(this.$event.target.value);
                     this.$dispatch('update-qty-<?= (int)$product->getId() ?>', this.qty);
                 }
             };

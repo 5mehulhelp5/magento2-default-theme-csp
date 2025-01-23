@@ -18,13 +18,22 @@ use Hyva\Theme\ViewModel\HyvaCsp;
     function initShippingTotalSegment() {
         return {
             isShippingSegmentAndDisplayBoth() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'both' === checkoutConfig.reviewShippingDisplayMode;
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'both' === window.checkoutConfig.reviewShippingDisplayMode;
             },
             isShippingSegmentAndDisplayExcl() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'excluding' === checkoutConfig.reviewShippingDisplayMode;
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'excluding' === window.checkoutConfig.reviewShippingDisplayMode;
             },
             isShippingSegmentAndDisplayIncl() {
-                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'including' === checkoutConfig.reviewShippingDisplayMode;
+                return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod && 'including' === window.checkoutConfig.reviewShippingDisplayMode;
+            },
+            formatShippingTotalValue() {
+                return hyva.formatPrice(this.segment.value);
+            },
+            formatShippingInclTax() {
+                return hyva.formatPrice(this.totalsData.shipping_incl_tax);
+            },
+            formatShippingAmount() {
+                return hyva.formatPrice(this.totalsData.shipping_amount);
             }
         };
     }
@@ -45,8 +54,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                  x-html="formatTotalLabelExclTax"
             ></div>
             <div class="w-5/12 text-right md:w-auto"
-                 :data-amount="totalsData.shipping_amount"
-                 x-text="formatPrice"
+                 :data-amount="formatShippingAmount"
             ></div>
         </div>
 
@@ -55,8 +63,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                  x-html="formatTotalLabelInclTax"
             ></div>
             <div class="w-5/12 text-right md:w-auto"
-                 :data-amount="totalsData.shipping_incl_tax"
-                 x-text="formatPrice"
+                 x-text="formatShippingInclTax"
             ></div>
         </div>
     </div>
@@ -69,8 +76,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
              x-html="formatTotalLabel"
         ></div>
         <div class="w-5/12 text-right md:w-auto"
-             :data-amount="segment.value"
-             x-text="formatPrice"
+             x-text="formatShippingTotalValue"
         ></div>
     </div>
 </template>
@@ -82,8 +88,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
              x-html="formatTotalLabel"
         ></div>
         <div class="w-5/12 text-right md:w-auto"
-             :data-amount="totalsData.shipping_incl_tax"
-             x-text="formatPrice"
+             x-text="formatShippingInclTax"
         ></div>
     </div>
 </template>

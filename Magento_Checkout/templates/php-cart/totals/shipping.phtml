@@ -19,6 +19,9 @@ use Hyva\Theme\ViewModel\HyvaCsp;
         return {
             isShippingTotal() {
                 return this.segment.code === 'shipping' && this.quoteData.is_virtual === 0 && !!this.shippingMethod;
+            },
+            formatShippingTotal() {
+                return hyva.formatPrice(this.segment.value);
             }
         };
     }
@@ -36,8 +39,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
              x-html="formatTotalLabel"
         ></div>
         <div class="w-5/12 text-right md:w-auto"
-             :data-amount="segment.value"
-             x-text=formatPrice"
+             x-text=formatShippingTotal"
         ></div>
     </div>
 </template>

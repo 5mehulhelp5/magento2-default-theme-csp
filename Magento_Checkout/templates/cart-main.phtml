@@ -27,13 +27,8 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
 
 ?>
 <script>
-    window.checkoutConfig = <?= /* @noEscape  */ $serializedCheckoutConfig ?>;
-    window.customerData = window.checkoutConfig.customerData;
-    window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
-</script>
-<?php $hyvaCsp->registerInlineScript() ?>
-<script>
     'use strict';
+
     (function( hyva, undefined ) {
 
         let controller = new AbortController();
@@ -83,22 +78,28 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }( window.hyva = window.hyva || {} ));
 
-    function initCartForm() {
+    function initCartMainForm() {
         return {
-            cartIsEmpty: !!window.checkoutConfig,
+            cartIsEmpty: true,
+            init() {
+                window.checkoutConfig = JSON.parse(this.$root.dataset.checkoutConfig);
+                window.customerData = window.checkoutConfig.customerData;
+                window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+
+                this.cartIsEmpty = !window.checkoutConfig;
+            },
             checkCartShouldUpdate() {
                 const cart = this.$event.detail.data.cart;
-
-                if (this.cartIsEmpty !== !!window.checkoutConfig) {
-                    this.cartIsEmpty = !!window.checkoutConfig;
-                    this.reloadCartContent();
-                    return;
-                }
 
                 if (cart && cart.items) {
                     if (!window.checkoutConfig) {
                         if (cart.items.length) {
-                            this.reloadCartContent();
+                            /**
+                             * We can't update only the cart contents, because scripts have to
+                             * be loaded on the initial page load if CSP is enabled.
+                             */
+                            const isCsp = document.querySelector('script[nonce]');
+                            isCsp && window.location.reload() || window.location.reload();
                         }
                         return;
                     }
@@ -131,7 +132,6 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
 
                 }).then((body) => {
                     hyva.setCookie('mage-cache-sessid', '', -1, true);
-                    window.checkoutConfig = null;
                     hyva.replaceDomElement('#maincontent', body)
 
                 }).catch((error) => {
@@ -151,15 +151,16 @@ $serializedCheckoutConfig =  $block->getItemsCount() ? $checkoutConfigViewModel-
         }
     }
     (() => {
-        const initFn = () => Alpine.data('initCartForm', initCartForm);
+        const initFn = () => Alpine.data('initCartMainForm', initCartMainForm);
         window.Alpine ? initFn() : window.addEventListener('alpine:init', initFn, {once: true})
     })()
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<div x-data="initCartForm"
+<div x-data="initCartMainForm"
      class="cart-form clearfix"
      @private-content-loaded.window="checkCartShouldUpdate"
      @storage.window="onStorageChange"
+     data-checkout-config="<?= $escaper->escapeHtmlAttr($serializedCheckoutConfig) ?>"
 >
     <?php if ($block->getItemsCount()): ?>
         <?= $block->getChildHtml('with-items') ?>

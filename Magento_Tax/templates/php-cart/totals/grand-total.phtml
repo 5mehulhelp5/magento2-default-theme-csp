@@ -18,10 +18,16 @@ use Hyva\Theme\ViewModel\HyvaCsp;
     function initGrandTotalSegment() {
         return {
             isGrandTotalAndIncl() {
-                return this.segment.code === 'grand_total' && checkoutConfig.includeTaxInGrandTotal;
+                return this.segment.code === 'grand_total' && window.checkoutConfig.includeTaxInGrandTotal;
             },
             isGrandTotalAndExcl() {
-                return this.segment.code === 'grand_total' && !checkoutConfig.includeTaxInGrandTotal;
+                return this.segment.code === 'grand_total' && !window.checkoutConfig.includeTaxInGrandTotal;
+            },
+            formatGrandTotal() {
+                return hyva.formatPrice(this.segment.value);
+            },
+            formatGrandTotalExclTax() {
+                return hyva.formatPrice(this.totalsData.grand_total);
             }
         };
     }
@@ -42,8 +48,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                  x-html="formatTotalLabelInclTax"
             ></div>
             <div class="w-5/12 text-right md:w-auto"
-                 :data-amount="segment.value"
-                 x-text=formatPrice"
+                 x-text=formatGrandTotal"
             ></div>
         </div>
 
@@ -52,8 +57,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
                  x-html="formatTotalLabelExclTax"
             ></div>
             <div class="w-5/12 text-right md:w-auto"
-                 :data-amount="totalsData.grand_total"
-                 x-text="formatPrice"
+                 x-text="formatGrandTotalExclTax"
             ></div>
         </div>
     </div>
@@ -68,7 +72,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
         ></div>
         <div class="w-5/12 text-right md:w-auto"
              :data-amount="segment.value"
-             x-text="formatPrice"
+             x-text="formatGrandTotal"
         ></div>
     </div>
 </template>

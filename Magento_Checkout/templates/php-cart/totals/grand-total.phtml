@@ -19,6 +19,9 @@ use Hyva\Theme\ViewModel\HyvaCsp;
         return {
             isGrandTotal() {
                 return this.segment.code === 'grand_total';
+            },
+            formatGrandTotal() {
+                return hyva.formatPrice(this.segment.value);
             }
         };
     }
@@ -37,8 +40,7 @@ use Hyva\Theme\ViewModel\HyvaCsp;
             x-html="formatTotalLabel"
         ></h3>
         <div class="w-5/12 text-right md:w-auto"
-             :data-amount="segment.value"
-             x-text=formatPrice"
+             x-text=formatGrandTotal"
         ></div>
     </div>
 </template>

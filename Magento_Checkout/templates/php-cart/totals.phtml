@@ -26,11 +26,16 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
 <script>
     function initCartTotals() {
         return {
-            totalsData: window.checkoutConfig.totalsData,
-            quoteData: window.checkoutConfig.quoteData,
-            shippingMethod: window.checkoutConfig.selectedShippingMethod,
+            totalsData: null,
+            quoteData: null,
+            shippingMethod: null,
             totalsSort: <?= /** @noEscape */ json_encode($totalsSort) ?>,
             isLoading: false,
+            init() {
+                this.totalsData = window.checkoutConfig.totalsData;
+                this.quoteData = window.checkoutConfig.quoteData;
+                this.shippingMethod = window.checkoutConfig.selectedShippingMethod;
+            },
             getSortedSegments() {
                 const segments = this.totalsData.total_segments;
 
@@ -49,16 +54,16 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
                 this.totalsData = totalsData
             },
             updateShippingMethod(shippingMethod) {
-               this.shippingMethod = shippingMethod;
+                this.shippingMethod = shippingMethod;
             },
             excludingTaxMessage: '<?= $escaper->escapeJs(__('Excl. Tax')) ?>',
             includingTaxMessage: '<?= $escaper->escapeJs(__('Incl. Tax')) ?>',
             eventListeners: {
-                ['@update-totals.window']($event) {
-                    this.updateTotals($event.detail.data)
+                ['@update-totals.window']() {
+                    this.updateTotals(this.$event.detail.data)
                 },
-                ['@update-shipping-method.window']($event) {
-                    this.updateShippingMethod($event.detail.method)
+                ['@update-shipping-method.window']() {
+                    this.updateShippingMethod(this.$event.detail.method);
                 },
                 ['@update-totals-start.window']() {
                     this.isLoading = true;
@@ -66,9 +71,6 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
                 ['@update-totals-end.window']() {
                     this.isLoading = false;
                 }
-            },
-            isMatchingTotal() {
-                return this.$el.dataset.totalCode === this.segment.code;
             },
             formatTotalLabel() {
                 return `${this.segment.title} `;
@@ -78,9 +80,6 @@ $totalsSort = $storeConfigViewModel->getStoreConfig('sales/totals_sort');
             },
             formatTotalLabelExclTax() {
                 return `${this.segment.title} ${this.excludingTaxMessage} `;
-            },
-            formatPrice() {
-                return hyva.formatPrice(this.$el.dataset.amount);
             },
         }
     }
