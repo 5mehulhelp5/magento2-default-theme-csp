@@ -32,7 +32,7 @@ if (!$shoppingAssistanceViewModel->isLoginAsCustomerEnabled()) {
 ?>
 <script>
     (() => {
-        const initFn = () => Alpine.data('initAllowShippingAssistence', () => hyva.createBooleanObject('visible', false, {
+        const initFn = () => Alpine.data('initAllowShippingAssistance', () => hyva.createBooleanObject('visible', false, {
             isAllowed: <?= $shoppingAssistanceViewModel->isAssistanceAllowed() ? 'true' : 'false' ?>,
 
             onChange() {
@@ -50,7 +50,7 @@ if (!$shoppingAssistanceViewModel->isLoginAsCustomerEnabled()) {
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <div class="field choice"
-     x-data="initAllowShippingAssistence"
+     x-data="initAllowShippingAssistance"
 >
     <input type="checkbox"
            @change="onChange"
@@ -76,11 +76,11 @@ if (!$shoppingAssistanceViewModel->isLoginAsCustomerEnabled()) {
     <div class="inline-flex px-4">
         <button
             type="button"
-            @mouseover.prevent.stop="visibleTrue"
-            @mouseleave.prevent.stop="visibleFalse"
-            @focus="visibleTrue"
-            @focusout="visibleFalse"
-            @keydown.escape="visibleFalse"
+            @mouseover.prevent.stop="setVisibleTrue"
+            @mouseleave.prevent.stop="setVisibleFalse"
+            @focus="setVisibleTrue"
+            @focusout="setVisibleFalse"
+            @keydown.escape="setVisibleFalse"
             aria-labelledby="assistance_allowed_checkbox_tooltip"
             aria-disabled="true"
         >
