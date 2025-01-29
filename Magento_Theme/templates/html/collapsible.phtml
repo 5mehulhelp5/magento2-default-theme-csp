@@ -74,11 +74,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             () => hyva.createBooleanObject('visible', false,
                 hyva.createBooleanObject('isMobile', false, {
                     checkIsMobileResolution() {
-                        const mobileElement = this.$refs.AccountNavigationMobileToggleIcon
-                        (mobileElement
-                            ? getComputedStyle(mobileElement).display !== 'none'
-                            : window.matchMedia('(max-width: 767px)').matches) // Fallback to `md` breakpoint
-                            && this.setIsMobileTrue()
+                        const mobileElement = this.$refs.AccountNavigationMobileToggleIcon;
+                        (
+                            mobileElement
+                                ? getComputedStyle(mobileElement).display !== 'none'
+                                : window.matchMedia('(max-width: 767px)').matches // Fallback to `md` breakpoint
+                        ) && this.setIsMobileTrue()
                     },
                     rotateIfVisible() {return {'rotate-180': this.visible()}},
                     hiddenIfOpen() {return {'hidden': this.visible()}}
