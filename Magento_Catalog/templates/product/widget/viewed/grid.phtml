@@ -137,7 +137,8 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                             <?php if ($wishlistViewModel->isEnabled()): ?>
                                                 <button
                                                     aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
-                                                    @click.prevent="addToWishlist(product.id)"
+                                                    @click.prevent="addToWishlist"
+                                                    :data-product-id="product.id"
                                                     class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
                                                     text-gray-500 bg-gray-200 border-0 rounded-full hover:text-red-600"
                                                     data-addto="wishlist"

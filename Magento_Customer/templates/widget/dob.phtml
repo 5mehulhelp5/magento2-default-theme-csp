@@ -28,7 +28,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
 ?>
 <div
     class="field date <?= $block->isRequired() ? 'required' : '' ?>"
-    x-data="initDatePicker()"
+    x-data="initDatePicker"
 >
     <label for="<?= $escaper->escapeHtmlAttr($block->getHtmlId()) ?>" class="label">
         <span><?= $escaper->escapeHtml($block->getStoreLabel('dob')) ?></span>
@@ -48,15 +48,15 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                    required
                <?php endif; ?>
                x-model="value"
-               @click="showDatepicker = !showDatepicker"
-               @keydown="onInputKeydown($event)"
-               @paste="$event.preventDefault()"
+               @click="toggleShowDatepicker"
+               @keydown="onInputKeydown"
+               @paste="$event.preventDefault"
                autocomplete="off"
                class="form-input <?= $validationClass ?: '' ?>"
         >
 
         <div class="absolute top-0 right-0 z-10 py-2 px-3 text-gray-300"
-             @click="showDatepicker = true"
+             @click="setShowDatepickerTrue"
         >
             <?= /** @noEscape */ $heroicons->calendarHtml('w-6 h-6', 25, 25); ?>
         </div>
@@ -66,28 +66,26 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
             style="width: 21rem"
             x-cloak
             x-transition x-show="showDatepicker"
-            @click.outside="showDatepicker = false"
-            @keydown="onCalendarKeydown($event)"
+            @click.outside="setShowDatepickerFalse"
+            @keydown="onCalendarKeydown"
         >
 
             <div class="flex justify-between items-center mb-2">
                 <div>
                     <select name="datepicker_month"
-                        x-model="month"
                         class="text-sm rounded border-gray-300"
-                        @change="goToMonth(month)"
+                        @change="goToMonth"
                     >
                         <template x-for="(monthName, index) in labels.monthNames">
-                            <option :value="index" x-text="monthName"></option>
+                            <option :value="index" x-text="monthName" :selected="isSelectedMonth"></option>
                         </template>
                     </select>
                     <select name="datepicker_year"
-                        x-model="year"
                         class="text-sm rounded border-gray-300"
-                        @change="recalcDaysGrid()"
+                        @change="goToYear"
                     >
                         <template x-for="option in yearRange">
-                            <option :value="option" x-text="option"></option>
+                            <option :value="option" x-text="option" :selected="isSelectedYear"></option>
                         </template>
                     </select>
                 </div>
@@ -95,20 +93,20 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                     <button
                         type="button"
                         class="inline-flex p-1 rounded transition-colors cursor-pointer hover:bg-gray-100"
-                        :class="{'cursor-not-allowed opacity-25': isFirstMonth()}"
-                        :disabled="isFirstMonth()"
+                        :class="prevMonthButtonClasses"
+                        :disabled="isFirstMonth"
                         :title="labels.prevText"
-                        @click="goToMonth(month - 1)">
+                        @click="goToPrevMonth">
                         <?= /** @noEscape */ $heroicons->chevronLeftHtml('w-6 h-6', 25, 25); ?>
                         <span class="sr-only" x-text="labels.prevText"></span>
                     </button>
                     <button
                         type="button"
                         class="inline-flex p-1 rounded transition-colors cursor-pointer hover:bg-gray-100"
-                        :class="{'cursor-not-allowed opacity-25': isLastMonth() }"
-                        :disabled="isLastMonth()"
+                        :class="nextMonthButtonClasses"
+                        :disabled="isLastMonth"
                         :title="labels.nextText"
-                        @click="goToMonth(month + 1)">
+                        @click="goToNextMonth">
                         <?= /** @noEscape */ $heroicons->chevronRightHtml('w-6 h-6', 25, 25); ?>
                         <span class="sr-only" x-text="labels.nextText"></span>
                     </button>
@@ -126,18 +124,14 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 </template>
                 <template x-for="(date, dateIndex) in dayNumbers" :key="dateIndex">
                     <button type="button" class="p-1"
-                        :style="getDayStyle(date)"
-                            @click="if (canSelectDate(date)) { setDate(date) }"
+                        :style="getDayStyle"
+                            @click="selectDateIfPossible"
                     >
                         <div
                             x-text="date"
                             class="text-center text-sm rounded-full transition-colors
                                 flex items-center justify-center h-8"
-                            :class="{
-                                'cursor-pointer hover:bg-gray-100 hover:text-black': canSelectDate(date),
-                                'bg-primary text-white': isToday(date),
-                                'text-gray-500': isInFuture(date)
-                            }"
+                            :class="dayButtonClasses"
                         ></div>
                     </button>
                 </template>
@@ -145,7 +139,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
 
             <button class="p-2 w-full text-sm text-center rounded border border-gray-300 hover:bg-gray-100"
                 x-text="labels.currentText"
-                @click.prevent="goToday()"
+                @click.prevent="goToday"
             ></button>
         </div>
     </div>
@@ -156,8 +150,7 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
         const firstDayOfWeek = '<?= $escaper->escapeHtml($block->getFirstDay()) ?>';
         const labelsConfig = <?= /* @noEscape */ $block->getTranslatedCalendarConfigJson() ?>;
 
-        return {
-            showDatepicker: false,
+        return hyva.createBooleanObject('showDatepicker', false, {
             value: '<?= $escaper->escapeHtml($block->getValue()) ?>',
             month: '',
             year: '',
@@ -231,7 +224,8 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 this.dayNumbers = dayNumbers;
             },
 
-            getDayStyle(day) {
+            getDayStyle() {
+                const day = this.date;
                 const firstDayInWeek = this.correctDayOfWeek(new Date(this.year, this.month).getDay());
 
                 if (day.toString() === "1") {
@@ -239,6 +233,20 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 }
 
                 return '';
+            },
+
+            selectDayIfPossible() {
+                if (this.canSelectDate(this.date)) {
+                    this.setDate(this.date)
+                }
+            },
+
+            dayButtonClasses() {
+                return {
+                    'cursor-pointer hover:bg-gray-100 hover:text-black': this.canSelectDate(this.date),
+                    'bg-primary text-white': this.isToday(this.date),
+                    'text-gray-500': this.isInFuture(this.date)
+                }
             },
 
             correctDayOfWeek(day) {
@@ -252,12 +260,48 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
             },
 
             goToMonth(month) {
+                month = month || this.$el.value;
                 const date = new Date(this.year, this.month);
 
                 date.setMonth(month);
                 this.month = date.getMonth();
                 this.year = date.getFullYear();
                 this.recalcDaysGrid();
+            },
+
+            isSelectedMonth() {
+                return this.month === this.index;
+            },
+
+            goToYear() {
+                const year = this.$el.value;
+                const date = new Date(year, this.month);
+                this.year = date.getFullYear();
+                this.recalcDaysGrid()
+            },
+
+            isSelectedYear() {
+                return this.year === this.option;
+            },
+
+            prevMonthButtonClasses() {
+                return {
+                    'cursor-not-allowed opacity-25': this.isFirstMonth()
+                }
+            },
+
+            goToPrevMonth() {
+                this.goToMonth(this.month - 1);
+            },
+
+            nextMonthButtonClasses() {
+                return {
+                    'cursor-not-allowed opacity-25': this.isLastMonth()
+                }
+            },
+
+            goToNextMonth() {
+                this.goToMonth(this.month + 1);
             },
 
             goToday() {
@@ -287,8 +331,8 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 return !this.isToday(date) && !this.isInFuture(date)
             },
 
-            onInputKeydown(evt) {
-                const keyCode = evt.code;
+            onInputKeydown() {
+                const keyCode = this.$event.code;
 
                 if (keyCode === "Escape") {
                     this.showDatepicker = false;
@@ -299,25 +343,32 @@ $addressViewModel = $viewModels->require(AddressViewModel::class);
                 }
 
                 if (keyCode === "Enter") {
-                    evt.preventDefault();
+                    this.$event.preventDefault();
                     this.showDatepicker = true;
                     hyva.trapFocus(this.calendarWindow);
                 }
 
                 if (keyCode !== "Enter") {
-                    evt.preventDefault();
+                    this.$event.preventDefault();
                 }
             },
-            onCalendarKeydown(evt) {
-                const keyCode = evt.code;
+            onCalendarKeydown() {
+                const keyCode = this.$event.code;
 
                 if (keyCode === "Escape") {
                     hyva.releaseFocus(this.calendarWindow);
                     this.showDatepicker = false;
                 }
             }
-        }
+        })
     }
+
+    (() => {
+        const initFn = () => Alpine.data('initDatePicker', initDatePicker);
+        window.Alpine
+            ? initFn()
+            : window.addEventListener('alpine:init', initFn, {once: true})
+    })()
 
     function DateFormatter(template) {
         return {

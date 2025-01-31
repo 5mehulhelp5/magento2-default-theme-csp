@@ -188,7 +188,8 @@ $viewModelCurrency = $viewModels->require(Currency::class);
                 }
             },
 
-            addToWishlist(productId) {
+            addToWishlist() {
+                const productId = this.$el.dataset.productId;
                 const formKey = hyva.getFormKey();
                 const postUrl = BASE_URL + 'wishlist/index/add/';
 
