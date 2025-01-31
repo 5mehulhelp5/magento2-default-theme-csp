@@ -66,7 +66,9 @@ function initPrint() {
 
 function initCompareOnCompareList() {
     return {
-        removeFromCompare(productId, productName) {
+        removeFromCompare() {
+            const productId = this.$el.dataset.productId;
+            const productName = this.$el.dataset.productName;
             const formKey = hyva.getFormKey();
             const postUrl = BASE_URL + 'catalog/product_compare/remove/';
             const confirmMessage = "<?= $escaper->escapeHtml(
@@ -122,12 +124,24 @@ function initCompareOnCompareList() {
         }
     };
 }
+
+(() => {
+    const initFn = () => {
+        Alpine.data('initCompareOnCompareList', initCompareOnCompareList);
+        Alpine.data('initPrint', initPrint);
+    };
+    window.Alpine
+        ? initFn()
+        : window.addEventListener('alpine:init', initFn, {once: true})
+})()
+
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 <section>
     <div class="container">
-        <button x-data="initPrint()"
-            @click.prevent="print()"
+        <button x-data="initPrint"
+            type="button"
+            @click.prevent="print"
             class="mb-2"
             title="<?= $escaper->escapeHtmlAttr(__('Print This Page')) ?>">
             <?= $heroicons->printerHtml('inline'); ?>
@@ -188,6 +202,7 @@ function initCompareOnCompareList() {
                                     <?php /* The initWishlist() function is rendered as a block JS dependency */ ?>
                                         <button x-data="initWishlist"
                                             x-defer="intersect"
+                                            type="button"
                                             data-product-id="<?= (int) $product->getId() ?>"
                                             @click.prevent="addToWishlist"
                                             aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?> <?= $escaper->escapeHtmlAttr($product->getName()) ?>"
@@ -199,10 +214,10 @@ function initCompareOnCompareList() {
                                             <?= $heroiconsSolid->heartHtml('', 20, 20); ?>
                                         </button>
                                     <?php endif; ?>
-                                    <button x-data="initCompareOnCompareList()"
-                                        @click.prevent="removeFromCompare(<?= (int)$product->getId() ?>, '<?= $escaper
-                                            ->escapeJs($product->getName()) ?>')"
+                                    <button x-data="initCompareOnCompareList"
+                                        @click.prevent="removeFromCompare"
                                         data-product-id="<?= (int) $product->getId() ?>"
+                                        data-product-name="<?= $escaper->escapeHtmlAttr($product->getName()) ?>"
                                         aria-label="<?= $escaper->escapeHtmlAttr(__('Remove Product')) ?> <?= $escaper->escapeHtmlAttr($product->getName()) ?>"
                                         class="rounded-full w-9 h-9 bg-gray-200 p-0 border-0 inline-flex shrink-0
                                         items-center justify-center text-gray-500 hover:text-black ml-2"
