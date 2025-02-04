@@ -9,5 +9,8 @@
                 ifconfig="catalog/frontend/show_sidebar_in_list"
             />
         </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block name="price-box.js" template="Magento_Catalog::product/list/js/price-box.phtml"/>
+        </referenceContainer>
     </body>
 </page>

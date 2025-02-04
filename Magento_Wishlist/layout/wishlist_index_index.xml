@@ -18,11 +18,6 @@
                     <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Info" name="customer.wishlist.item.name" template="Magento_Wishlist::item/column/name.phtml" cacheable="false"/>
                     <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column" name="customer.wishlist.item.review" template="Magento_Wishlist::item/column/review.phtml" cacheable="false"/>
                     <block class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart" name="customer.wishlist.item.price" template="Magento_Wishlist::item/column/price.phtml" cacheable="false">
-                        <arguments>
-                            <argument name="hyva_js_template_dependencies" xsi:type="array">
-                                <item name="Magento_Catalog::product/list/js/price-box.phtml" xsi:type="number">10</item>
-                            </argument>
-                        </arguments>
                         <block class="Magento\Catalog\Pricing\Render" name="product.price.render.wishlist">
                             <arguments>
                                 <argument name="price_render" xsi:type="string">product.price.render.default</argument>

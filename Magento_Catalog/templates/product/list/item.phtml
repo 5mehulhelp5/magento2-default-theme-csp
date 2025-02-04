@@ -11,7 +11,6 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
 use Hyva\Theme\ViewModel\HeroiconsSolid;
-use Hyva\Theme\ViewModel\BlockJsDependencies;
 use Hyva\Theme\ViewModel\ProductCompare;
 use Hyva\Theme\ViewModel\ProductListItem;
 use Hyva\Theme\ViewModel\ProductPage;
@@ -75,9 +74,6 @@ $imageCustomAttributes = $product->getData('image_custom_attributes')
     ?? $block->getData('image_custom_attributes')
     ?? [];
 $productName = $catalogOutputHelper->productAttribute($product, $product->getName(), 'name');
-
-// Ensure the required JS is rendered on the page
-$viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($block, 'Magento_Catalog::product/list/js/price-box.phtml');
 
 ?>
 
@@ -158,11 +154,7 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
             </span>
         <?php endif; ?>
 
-        <div class="pt-1 text-gray-900"
-             x-data="initPriceBox"
-             x-defer="intersect"
-             @update-prices-<?= (int)$productId ?>.window="updatePrice"
-        >
+        <div class="pt-1 text-gray-900">
             <?= /* @noEscape */ $productListItemViewModel->getProductPriceHtml($product) ?>
         </div>
 

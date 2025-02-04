@@ -9,7 +9,6 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\BlockJsDependencies;
 use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Wishlist;
 use Magento\Framework\Escaper;
@@ -26,9 +25,6 @@ use Hyva\Theme\ViewModel\HeroiconsOutline;
 
 $wishlistViewModel = $viewModels->require(Wishlist::class);
 $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
-
-// Ensure the required JS is rendered on the page
-$viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($block, 'Magento_Catalog::product/list/js/price-box.phtml');
 
 ?>
 
@@ -149,7 +145,7 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
                                 <strong class="mr-2 text-sm leading-6 font-normal">
                                     <a :href="product.product_url" :title="product.product_name" x-html="product.product_name"></a>
                                 </strong>
-                                <div class="mr-2 text-sm leading-6 font-bold" x-data="initPriceBox" x-html="product.product_price"></div>
+                                <div class="mr-2 text-sm leading-6 font-bold" x-html="product.product_price"></div>
                                 <template x-if="product.product_is_saleable_and_visible">
                                     <div class="actions-primary my-2">
                                         <template x-if="hasNoRequiredOptions">

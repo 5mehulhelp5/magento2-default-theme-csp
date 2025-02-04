@@ -11,8 +11,14 @@ use Magento\Framework\Escaper;
 
 /** @var Amount $block */
 /** @var Escaper $escaper */
+$product = $block->getPrice()->getProduct();
+$productId = $product ? $product->getId() : null;
+
 ?>
 <span
+    x-data="initPriceBox"
+    x-defer="intersect"
+    <?php if ($productId): ?>@update-prices-<?= (int)$productId ?>.window="updatePrice"<?php endif; ?>
     <?php if ($block->getPriceId()): ?>x-id="htmlPriceIdGroup" data-price-id="<?= $escaper->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif; ?>
     class="price-container <?= $escaper->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>"
         <?= $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer"' : '' ?>
