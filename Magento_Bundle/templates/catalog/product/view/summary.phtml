@@ -42,7 +42,7 @@ $product = $block->getProduct();
             </div>
 
         </div>
-        <div x-data="initBundleSummary()"
+        <div x-data="initBundleSummary"
              x-bind="eventListeners"
              class="bundle-summary"
         >
@@ -88,6 +88,13 @@ $product = $block->getProduct();
                     }
                 }
             }
+            (() => {
+                const initFn = () => Alpine.data('initBundleSummary', initBundleSummary);
+                window.Alpine
+                    ? initFn()
+                    : window.addEventListener('alpine:init', initFn, {once: true})
+            })()
+
         </script>
         <?php $hyvaCsp->registerInlineScript() ?>
     </div>

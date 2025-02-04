@@ -44,13 +44,13 @@ $optionId = $option->getId();
                    name="bundle_option[<?= (int)$optionId ?>][<?= (int)$selectionId ?>]"
                    form="product_addtocart_form"
                    type="checkbox"
-                   <?php if ($block->isSelected($selection)) { echo ' checked'; } ?>
-                   <?php if (!$selection->isSaleable()): ?>
-                       disabled
-                   <?php endif; ?>
+                <?php if ($block->isSelected($selection)) { echo 'checked'; } ?>
+                <?php if (!$selection->isSaleable()): ?>
+                    disabled
+                <?php endif; ?>
                    value="<?= (int)$selectionId ?>"
                    data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                   x-on:change="calculateTotalPrice()"
+                   @change="calculateTotalPrice"
             />
             <label class="label"
                    for="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>">

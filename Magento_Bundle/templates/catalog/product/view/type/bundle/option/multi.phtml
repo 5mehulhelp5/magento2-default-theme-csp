@@ -43,10 +43,10 @@ list($defaultQty, $canChangeQty) = $block->getDefaultValues();
             form="product_addtocart_form"
             class="bundle-option-<?= (int)$optionId ?>
                 form-multiselect max-w-full"
-            <?php if ($option->getRequired()): ?>
-                required
-            <?php endif; ?>
-            x-on:change="calculateTotalPrice()"
+        <?php if ($option->getRequired()): ?>
+            required
+        <?php endif; ?>
+            @change="calculateTotalPrice"
     >
         <?php if (!$option->getRequired()): ?>
             <option value=""><?= $escaper->escapeHtml(__('None')) ?></option>
@@ -56,7 +56,7 @@ list($defaultQty, $canChangeQty) = $block->getDefaultValues();
             <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
             <option value="<?= (int)$selectionId ?>"
                 <?php if ($block->isSelected($selection)): ?>
-                    selected="selected"
+                    selected
                 <?php endif; ?>
                 <?php if (!$selection->isSaleable()): ?>
                     disabled

@@ -52,12 +52,10 @@ $activeSelectOptions = [];
                    name="bundle_option[<?= (int)$optionId ?>]"
                    form="product_addtocart_form"
                    class="radio product bundle option"
-                   <?= ($default && $default->isSalable())?'':' checked ' ?>
+                <?= ($default && $default->isSalable()) ? '' : 'checked' ?>
                    value=""
-                   x-on:change="
-                        activeSelectOptions['<?= (int)$optionId ?>'] = [$event.target.value];
-                        $nextTick(() => {calculateTotalPrice()});
-                   "
+                   @change="onChangeSelection"
+                   data-option-to-set="<?= (int)$optionId ?>"
             />
             <label
                 class="label text-sm"
@@ -75,24 +73,22 @@ $activeSelectOptions = [];
             <?php $optionSelectionId = $optionId . '-' . $selectionId ?>
             <div class="field choice mt-1 flex items-center gap-x-2">
                 <input type="radio"
-                    id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                    name="bundle_option[<?= (int)$optionId ?>]"
-                    form="product_addtocart_form"
-                    class="radio product bundle option change-container-classname"
+                       id="bundle-option-<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                       name="bundle_option[<?= (int)$optionId ?>]"
+                       form="product_addtocart_form"
+                       class="radio product bundle option change-container-classname"
                     <?= $option->getRequired() ? 'required' : '' ?>
                     <?php if ($block->isSelected($selection)) {
-                            array_push($activeSelectOptions, $selectionId);
-                            echo 'checked = "checked"';
+                        array_push($activeSelectOptions, $selectionId);
+                        echo 'checked';
                     } ?>
                     <?php if (!$selection->isSaleable()): ?>
-                            disabled
+                        disabled
                     <?php endif; ?>
-                    value="<?= (int)$selectionId ?>"
-                    data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
-                    x-on:change="
-                            activeSelectOptions['<?= (int)$optionId ?>'] = [$event.target.value];
-                            $nextTick(() => {calculateTotalPrice()});
-                    "
+                       value="<?= (int)$selectionId ?>"
+                       data-option-id="<?= $escaper->escapeHtmlAttr($optionSelectionId) ?>"
+                       data-option-to-set="<?= (int)$optionId ?>"
+                       @change="onChangeSelection"
                 />
                 <label
                     class="label text-sm"
@@ -123,12 +119,10 @@ $activeSelectOptions = [];
         type="number"
         min="0"
         value="<?= $escaper->escapeHtmlAttr($defaultQty) ?>"
-            :value="getQtyValue(<?= (int)$optionId ?>)"
-        x-on:change="
-            setQtyValue(<?= (int)$optionId ?>, $event.target.value);
-            calculateTotalPrice($dispatch)"
+        :value="getQtyValue"
+        @change="setQtyValue"
         <?php if (!$canChangeQty): ?> disabled <?php endif; ?>
-        :disabled="getQtyDisabled(<?= (int)$optionId ?>)"
+        :disabled="getQtyDisabled"
     />
 </div>
 
@@ -139,6 +133,9 @@ $activeSelectOptions = [];
  * the cart (through checkout/cart/configure) in the main Alpine component
  */
 ?>
-<div @set-selected-options.window="activeSelectOptions['<?= (int)$optionId ?>'] =
-        <?= $escaper->escapeHtmlAttr(json_encode($activeSelectOptions)) ?>">
+
+<div
+    data-selected-options="<?= $escaper->escapeHtmlAttr(json_encode($activeSelectOptions)) ?>"
+    @set-selected-options.window="onSetSelectedOptions"
+>
 </div>

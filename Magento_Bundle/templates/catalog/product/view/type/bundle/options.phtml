@@ -57,6 +57,14 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                         productFinalPrice: false,
                         activeSelectOptions: {},
                         selectedOptions: [],
+                        init() {
+                            this.calculateTotalPrice();
+                            this.$nextTick(() => {
+                                this.dispatchFinalPrice();
+                                this.dispatchOptionSelection();
+                                this.$dispatch('set-selected-options');
+                            })
+                        },
                         getMultiOptionQty(option, optionSelection) {
                             if (option.isMulti) {
                                 return optionSelection.qty;
@@ -71,7 +79,6 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                                 const qtyElement = document.getElementById('bundle-option-' + optionId + '-qty-input');
 
                                 let selectedOption = selectedProductsPerOption[optionId] || [];
-
                                 if (optionElement) {
                                     if (optionElement.checked || optionElement.selected) {
                                         const optionSelection = option.selections[optionElement.dataset.selectionId];
@@ -178,7 +185,8 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                         dispatchOptionSelection() {
                             window.dispatchEvent(new CustomEvent("update-bundle-option-selection", {detail: this.selectedOptions}));
                         },
-                        getQtyValue(optionId) {
+                        getQtyValue() {
+                            const optionId = this.$el.closest('[data-bundle-option-id]').dataset.bundleOptionId;
                             const selectionConfig = this.getSelectionOptionConfig(optionId);
 
                             return selectionConfig ? selectionConfig.qty : "0";
@@ -201,7 +209,8 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                                 .options[optionId]
                                 .selections[activeSelectOptionValue];
                         },
-                        getQtyDisabled(optionId) {
+                        getQtyDisabled() {
+                            const optionId = this.$el.closest('[data-bundle-option-id]').dataset.bundleOptionId;
                             const selectionConfig = this.getSelectionOptionConfig(optionId);
 
                             if (!selectionConfig) {
@@ -210,24 +219,45 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
 
                             return !selectionConfig || selectionConfig.customQty === "0";
                         },
-                        setQtyValue(optionId, value) {
+                        setQtyValue() {
+                            const optionId = this.$el.closest('[data-bundle-option-id]').dataset.bundleOptionId;
                             const selectionConfig = this.getSelectionOptionConfig(optionId);
                             if (selectionConfig) {
-                                selectionConfig.qty = value;
+                                selectionConfig.qty = this.$event.target.value;
+                                this.calculateTotalPrice();
                             }
                         },
+                        onSetSelectedOptions() {
+                            const optionId = this.$el.closest('[data-bundle-option-id]').dataset.bundleOptionId;
+                            if (! optionId) {
+                                this.activeSelectOptions = {};
+                                return;
+                            }
+                            const selectedOptions = this.$el.dataset.selectedOptions;
+                            this.activeSelectOptions[optionId] = selectedOptions ? JSON.parse(selectedOptions) : [];
+                        },
+                        onChangeSelection() {
+                            const optionToSet = this.$el.dataset.optionToSet;
+                            this.activeSelectOptions[optionToSet] = [this.$event.target.value];
+                            this.$nextTick(() => {this.calculateTotalPrice()});
+                        },
+                        isOptionSelected() {
+                            const optionId = this.$el.closest('[data-bundle-option-id]').dataset.bundleOptionId;
+                            const selectionId = this.$el.dataset.selectedOptionId;
+                            return this.activeSelectOptions[optionId] && this.activeSelectOptions[optionId].includes(selectionId);
+                        }
                     }
                 }
+                (() => {
+                    const initFn = () => Alpine.data('initBundleOptions', initBundleOptions);
+                    window.Alpine
+                        ? initFn()
+                        : window.addEventListener('alpine:init', initFn, {once: true})
+                })()
+
             </script>
         <?php $hyvaCsp->registerInlineScript() ?>
-            <div x-data="initBundleOptions()"
-                 x-init="
-                    calculateTotalPrice();
-                    $nextTick(() => {
-                        dispatchFinalPrice();
-                        dispatchOptionSelection();
-                        $dispatch('set-selected-options', {});
-                    })"
+            <div x-data="initBundleOptions"
                  x-defer="intersect"
                  class="w-full">
 
@@ -251,7 +281,7 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                                 <?= $escaper->escapeHtml($option->getTitle()) ?>
                             </label>
                             <div class="control mt-2">
-                                <div class="nested options-list">
+                                <div class="nested options-list" data-bundle-option-id="<?= (int) $option->getId() ?>">
                                     <?= $block->getOptionHtml($option); ?>
                                 </div>
                             </div>
