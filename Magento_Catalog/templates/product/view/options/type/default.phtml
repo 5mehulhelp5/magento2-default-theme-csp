@@ -15,7 +15,7 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 ?>
 <?php $option = $block->getOption() ?>
-<div class="field">
+<div class="field" data-option-id="<?= $escaper->escapeHtmlAttr($option->getId()) ?>">
     <label class="label"><span><?= $escaper->escapeHtml($option->getTitle()) ?></span></label>
     <?php if ($option->getIsRequire()): ?>
         <span class="sup text-sm">*</span>

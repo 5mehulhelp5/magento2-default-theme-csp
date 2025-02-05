@@ -16,12 +16,10 @@ use Magento\Catalog\Pricing\Price\CustomOptionPrice;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
-/**
- * @var Checkable $block
- * @var Escaper $escaper
- * @var ViewModelRegistry $viewModels
- * @var SecureHtmlRenderer $secureRenderer
- */
+/** @var Checkable $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var SecureHtmlRenderer $secureRenderer */
 
 $product = $block->getProduct();
 
@@ -47,9 +45,7 @@ if ($option): ?>
                name="options[<?= $escaper->escapeHtmlAttr($option->getId()) ?>]"
                value=""
                checked
-               x-on:change="updateCustomOptionValue(
-                $dispatch, '<?= $escaper->escapeHtmlAttr($option->getId()) ?>', $event.target
-               )"
+               @change="updateCustomOptionValue"
         />
         <label class="label text-left"
                for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>">
@@ -95,10 +91,9 @@ if ($option): ?>
                    <?php if ($option->getIsRequire()): ?>
                        required
                        data-required
-                       oninvalid="this.setCustomValidity(this.dataset.validationMessage)"
-                       oninput="this.setCustomValidity('')"
-                       data-validation-message="<?= $escaper
-                           ->escapeHtmlAttr(__("Please select one of the options.")) ?>"
+                       @invalid="showFieldValidationMessage"
+                       @input="hideFieldValidationMessage"
+                       data-validation-message="<?= $escaper->escapeHtmlAttr(__("Please select one of the options.")) ?>"
                     <?php endif; ?>
                    data-price-amount="<?= $escaper->escapeHtmlAttr($valuePrice) ?>"
                    <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
@@ -107,13 +102,11 @@ if ($option): ?>
                    data-price-type="<?= $escaper->escapeHtmlAttr($value->getPriceType()) ?>"
                    data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
                    x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
-                   x-on:change="updateCustomOptionValue(
-                    $dispatch, '<?= $escaper->escapeHtmlAttr($optionId) ?>', $event.target
-                   )"
+                   @change="updateCustomOptionValue"
             />
             <label class="label text-left"
                    for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
-                   x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
+                   x-html="updateOptionPrice"
             >
                 <span><?= $escaper->escapeHtml($value->getTitle()) ?></span>
                 <span><?= /* @noEscape */ $block->formatPrice($value) ?></span>

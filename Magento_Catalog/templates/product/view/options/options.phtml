@@ -46,7 +46,12 @@ $options = $block->decorateArray($block->getOptions());
                 productBasePrice: false,
                 customOptionBasePrices: {},
                 <?php endif; ?>
-                refs: [],
+                init() {
+                    this.$nextTick(() => {
+                        this.calculateOptionPrices();
+                        this.initSelectedOptions();
+                    })
+                },
                 getFormattedOptionPrice(optionId) {
                     if (this.customOptionPrices[optionId]) {
                         const showSign = true;
@@ -63,9 +68,22 @@ $options = $block->decorateArray($block->getOptions());
                     return false;
                 },
                 <?php endif; ?>
-                updateOptionPrice(optionId, optionPriceEl) {
+                getSelectOptionLabel() {
+                    const optionId = this.$el.closest('[data-option-id]').dataset.optionId;
+                    let label = `${this.$el.dataset.selectOptionTitle} ${this.getFormattedOptionPrice(optionId) || ''}`;
+                    <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                    const valueBasePrice = this.$el.dataset.valueBasePrice;
+                    if (valueBasePrice > 0) {
+                        label += ` (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${this.getFormattedOptionBasePrice(optionId) || ''}`;
+                    }
+                    <?php endif; ?>
+
+                    return label;
+                },
+                updateOptionPrice() {
+                    const optionId = this.$el.closest('[data-option-id]').dataset.optionId;
                     const container = document.createElement('div');
-                    container.innerHTML = optionPriceEl.innerHTML;
+                    container.innerHTML = this.$el.innerHTML;
 
                     const price = this.customOptionPrices[optionId],
                         priceEl = container.querySelector('.price-wrapper');
@@ -108,7 +126,7 @@ $options = $block->decorateArray($block->getOptions());
                 calculateOptionPrice(customOption, customOptionId, childCustomOptionId) {
                     const customOptionCode = customOptionId + (childCustomOptionId ? '-' + childCustomOptionId : '') ;
 
-                    const optionElement = this.refs && this.refs['option-'+customOptionCode];
+                    const optionElement = this.$refs['option-'+customOptionCode];
 
                     let price = customOption.prices[this.finalPriceKey].amount;
 
@@ -128,7 +146,7 @@ $options = $block->decorateArray($block->getOptions());
                 calculateOptionBasePrice(customOption, customOptionId, childCustomOptionId) {
                     const customOptionCode = customOptionId + (childCustomOptionId ? '-' + childCustomOptionId : '') ;
 
-                    const optionElement = this.refs && this.refs['option-'+customOptionCode];
+                    const optionElement = this.$refs['option-'+customOptionCode];
 
                     let basePrice = customOption.prices['basePrice'].amount;
 
@@ -145,7 +163,10 @@ $options = $block->decorateArray($block->getOptions());
                     return basePrice;
                 },
                 <?php endif; ?>
-                updateCustomOptionValue($dispatch, customOptionId, target) {
+                updateCustomOptionValue() {
+                    const targetProp = this.$el.dataset.eventTargetProperty || 'target'
+                    const target =  this.$event[targetProp];
+                    const customOptionId = target.closest('[data-option-id]').dataset.optionId;
                     let active;
                     switch (target.type) {
                         case 'text':
@@ -164,9 +185,9 @@ $options = $block->decorateArray($block->getOptions());
                         case 'select-one':
                         case 'select-multiple':
                             Array.from(target.options).forEach(option => {
-                                customOptionId = option.dataset.optionId;
+                                const selectOptionId = option.dataset.selectOptionId;
                                 active = option.selected;
-                                $dispatch('update-custom-option-active', { customOptionId, active });
+                                this.$dispatch('update-custom-option-active', { customOptionId: selectOptionId, active });
                             });
                             return;
                         break;
@@ -176,12 +197,10 @@ $options = $block->decorateArray($block->getOptions());
                                     // unset sibling radio buttons
                                     input.dataset &&
                                     input.dataset.optionId &&
-                                    input !== target && $dispatch('update-custom-option-active',
-                                        {
-                                            customOptionId: input.dataset.optionId,
-                                            active: false
-                                        }
-                                    );
+                                    input !== target && this.$dispatch('update-custom-option-active', {
+                                        customOptionId: input.dataset.optionId,
+                                        active: false
+                                    });
                                 });
                         // DO NOT BREAK
                         // Checkbox case should also run for Radio
@@ -203,11 +222,13 @@ $options = $block->decorateArray($block->getOptions());
                             active = target.checked;
                         break;
                     }
-                    $dispatch('update-custom-option-active', { customOptionId, active });
+                    this.$dispatch('update-custom-option-active', { customOptionId, active });
                 },
-                initSelectedOptions($dispatch) {
+                initSelectedOptions() {
                     Array.from(document.querySelectorAll('.product-custom-option')).forEach(customOption => {
-                        this.updateCustomOptionValue($dispatch, customOption.dataset.optionId, customOption);
+                        this.$el = customOption;
+                        this.$event = { target: customOption };
+                        this.updateCustomOptionValue();
                     })
                 },
                 eventListeners: {
@@ -220,19 +241,28 @@ $options = $block->decorateArray($block->getOptions());
                         this.productBasePrice = event.detail;
                         this.calculateOptionPrices();
                     }<?php endif; ?>
+                },
+                showFieldValidationMessage() {
+                    this.$el.setCustomValidity(this.$el.dataset.validationMessage);
+                },
+                hideFieldValidationMessage() {
+                    this.$el.setCustomValidity('');
                 }
             }
         }
+        (() => {
+            const initFn = () => Alpine.data('initOptions', initOptions);
+            window.Alpine
+                ? initFn()
+                : window.addEventListener('alpine:init', initFn, {once: true})
+        })()
+
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
     <h2 class="text-gray-900 text-xl title-font font-medium mb-4">
         <?= $escaper->escapeHtml(__('Customizable Options')) ?>:
     </h2>
-    <div x-data="initOptions()"
-         x-init="
-            refs = $refs;
-            $nextTick(() => { calculateOptionPrices(); initSelectedOptions($dispatch); })
-         "
+    <div x-data="initOptions"
          x-bind="eventListeners"
          class="mb-6">
     <?php foreach ($options as $option):?>

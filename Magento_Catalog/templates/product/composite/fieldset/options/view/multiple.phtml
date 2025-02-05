@@ -16,12 +16,10 @@ use Magento\Catalog\Pricing\Price\CustomOptionPrice;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
-/**
- * @var Checkable $block
- * @var Escaper $escaper
- * @var ViewModelRegistry $viewModels
- * @var SecureHtmlRenderer $secureRenderer
- */
+/** @var Checkable $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var SecureHtmlRenderer $secureRenderer */
 
 $product = $block->getProduct();
 
@@ -33,7 +31,7 @@ if ($option): ?>
     <?php
     $configValue = $block->getPreconfiguredValue($option);
     if (!is_array($configValue)) {
-            $configValue = (array)$configValue;
+        $configValue = (array)$configValue;
     }
     $optionType = $option->getType();
     $optionId = $option->getId();
@@ -51,20 +49,18 @@ if ($option): ?>
                        : 'form-select' ?>
                        product-custom-option max-w-full"
         <?php if ($optionType === Option::OPTION_TYPE_MULTIPLE): ?>
-            multiple="multiple"
+            multiple
         <?php endif; ?>
         <?php if ($option->getIsRequire()): ?>
             required
             data-required
-            oninvalid="this.setCustomValidity(this.dataset.validationMessage)"
-            oninput="this.setCustomValidity('')"
-            data-validation-message="<?= $escaper
-                ->escapeHtmlAttr(__("Please select one of the options.")) ?>"
+            @invalid="showFieldValidationMessage"
+            @input="hideFieldValidationMessage"
+            data-validation-message="<?= $escaper->escapeHtmlAttr(__("Please select one of the options.")) ?>"
         <?php endif; ?>
         x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
-        x-on:change="updateCustomOptionValue(
-            $dispatch, '<?= $escaper->escapeHtmlAttr($optionId) ?>', $event.currentTarget
-        )"
+        data-event-target-property="currentTarget"
+        @change="updateCustomOptionValue"
     >
     <?php if ($option->getType() === Option::OPTION_TYPE_DROP_DOWN): ?>
         <option value=""><?= $escaper->escapeHtml(__('-- Please Select --')) ?></option>
@@ -84,7 +80,7 @@ if ($option): ?>
             $dataSelector .= '[' . $value->getOptionTypeId() . ']';
         }
 
-        $optionId = $option->getId() . '_' . $value->getOptionTypeId();
+        $selectOptionId = $option->getId() . '_' . $value->getOptionTypeId();
 
         $isPercentage = $value->getPriceType() === 'percent';
 
@@ -95,23 +91,18 @@ if ($option): ?>
         ?>
 
             <option type="<?= $escaper->escapeHtmlAttr($optionType) ?>"
-
-                   value="<?= $escaper->escapeHtmlAttr($value->getOptionTypeId()) ?>"
-                   <?= $escaper->escapeHtml($checked) ?>
-                   x-ref="option-<?= $escaper->escapeHtmlAttr($option->getId() . '-' . $value->getOptionTypeId()) ?>"
-                   data-price-amount="<?= $escaper->escapeHtmlAttr($valuePrice) ?>"
-                   data-price-type="<?= $escaper->escapeHtmlAttr($value->getPriceType()) ?>"
-                   data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                    value="<?= $escaper->escapeHtmlAttr($value->getOptionTypeId()) ?>"
+                    <?= $escaper->escapeHtml($checked) ?>
+                    x-ref="option-<?= $escaper->escapeHtmlAttr($option->getId() . '-' . $value->getOptionTypeId()) ?>"
+                    data-price-amount="<?= $escaper->escapeHtmlAttr($valuePrice) ?>"
+                    data-price-type="<?= $escaper->escapeHtmlAttr($value->getPriceType()) ?>"
+                    data-select-option-id="<?= $escaper->escapeHtmlAttr($selectOptionId) ?>"
                 <?php if (in_array($value->getOptionTypeId(), $configValue)): ?>
-                   selected="selected"
+                   selected
                 <?php endif; ?>
-                x-html="'<?= $escaper->escapeJs($escaper->escapeHtml($value->getTitle())) ?> '
-                    + (getFormattedOptionPrice('<?= $escaper->escapeJs($optionId) ?>') || '')
-                    <?php if ($productPriceViewModel->displayPriceInclAndExclTax() && $valueBasePrice > 0): ?>
-                    + ' (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: '
-                    + (getFormattedOptionBasePrice('<?= $escaper->escapeJs($optionId) ?>') || '') + ')'
-                    <?php endif; ?>
-                "
+                data-select-option-title="<?= $escaper->escapeHtmlAttr($value->getTitle()) ?>"
+                data-value-base-price="<?= $productPriceViewModel->displayPriceInclAndExclTax() ? $escaper->escapeHtmlAttr($valueBasePrice) : '' ?>"
+                x-html="getSelectOptionLabel"
             >
                 <?= $escaper->escapeHtml($value->getTitle()) ?>
                 <?= /* @noEscape */ $block->formatPrice($value) ?>
