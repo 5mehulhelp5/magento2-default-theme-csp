@@ -47,13 +47,14 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
 
 ?>
 <section class="my-12 text-gray-700 body-font"
-         x-data="initRecentlyViewedProductsComponent<?= /** @noEscape */ $uniqueId?>({isSlider: true})"
+         x-data="initRecentlyViewedProductsComponent<?= /** @noEscape */ $uniqueId?>"
          x-defer="intersect"
-         x-init="getProducts();"
-         :style="minHeight()"
+         x-init="getProducts"
+         :style="minHeight"
+         data-options="<?= $escaper->escapeHtmlAttr(json_encode(["isSlider" => true])) ?>"
          @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
 >
-    <template x-if="products && products.length">
+    <template x-if="hasProducts">
         <div class="relative">
             <div class="container flex flex-col items-center pt-6 pb-3 mx-auto mb-6 border-b-2
                         border-gray-300 md:flex-row">
@@ -69,8 +70,7 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                         <div class="flex-none w-full py-1 js_slide md:w-1/2 lg:w-1/3 xl:w-1/4">
                             <div class="mx-1 card card-interactive">
                                 <?php if (in_array("image", $widgetAttributesToShow)): ?>
-                                    <a :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
-                                            product.url_key + (product.url_suffix || '')"
+                                    <a :href="getProductUrl"
                                        class="relative flex items-center bg-white product photo product-item-photo"
                                        style="padding-top:100%"
                                        tabindex="-1">
@@ -88,10 +88,7 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                 <?php endif; ?>
                                 <?php if (in_array("name", $widgetAttributesToShow)): ?>
                                     <p class="flex items-center justify-center px-1 pt-3 text-primary">
-                                        <a class="truncate product-item-link"
-                                           :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
-                                                    product.url_key + (product.url_suffix || '')"
-                                        >
+                                        <a class="truncate product-item-link" :href="getProductUrl">
                                             <span x-html="product.name"></span>
                                         </a>
                                     </p>
@@ -100,7 +97,7 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                     <div class="price-container flex flex-col justify-center items-center">
                                         <div class="final-price">
                                         <span class="price-wrapper title-font font-medium text-2xl text-gray-900">
-                                            <span class="price" x-html="hyva.formatPrice(product.price_range.minimum_price.final_price.value)"></span>
+                                            <span class="price" x-html="getProductPrice"></span>
                                         </span>
                                         </div>
                                         <?php if ($productPrice->displayPriceInclAndExclTax()): ?>
@@ -108,7 +105,7 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                                 <div class="final-price-excl-tax">
                                         <span class="font-regular text-gray-900">
                                             <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
-                                            <span class="price" x-html="hyva.formatPrice(product.price_range.minimum_price.base_price.value)"></span>
+                                            <span class="price" x-html="getProductBasePrice"></span>
                                         </span>
                                                 </div>
                                             </template>
@@ -118,15 +115,14 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                 <p class="flex flex-wrap gap-2 inline p-3">
                                     <?php if (in_array("learn_more", $widgetAttributesToShow)): ?>
                                         <a class="justify-center w-auto mr-auto btn btn-primary"
-                                           :href="'<?= $escaper->escapeJs($escaper->escapeUrl($block->getBaseUrl())) ?>' +
-                                                        product.url_key + (product.url_suffix || '')">
+                                           :href="getProductUrl">
                                             <span class="inline"><?= $escaper->escapeHtml(__('View Product')) ?></span>
                                         </a>
                                     <?php endif; ?>
                                     <span class="inline-flex gap-2">
                                                 <?php if (in_array("add_to_compare", $widgetButtonsToShow)): ?>
                                                     <?php if ($compareViewModel->showInProductList()): ?>
-                                                        <button @click.prevent="addToCompare(product.id)"
+                                                        <button @click.prevent="addToCompare"
                                                                 aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare')) ?>"
                                                                 class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0
                                                                 inline-flex items-center justify-center text-gray-500
@@ -142,7 +138,6 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                                                 <button
                                                     aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Wish List')) ?>"
                                                     @click.prevent="addToWishlist"
-                                                    :data-product-id="product.id"
                                                     class="inline-flex items-center justify-center w-10 h-10 p-0 ml-auto
                                                         text-gray-500 bg-gray-200 border-0 rounded-full
                                                         hover:text-red-600"
@@ -157,47 +152,31 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
                             </div>
                         </div>
                     </template>
-                    <div :class="{
-                            'js_dummy_slide w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex-none py-1' : pageFillers > 0
-                            }"></div>
-                    <div :class="{
-                            'js_dummy_slide w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex-none py-1' : pageFillers > 1
-                            }"></div>
-                    <div :class="{
-                            'js_dummy_slide w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex-none py-1' : pageFillers > 2
-                            }"></div>
+                    <div :class="dummySliderClasses" data-slide-number="1"></div>
+                    <div :class="dummySliderClasses" data-slide-number="2"></div>
+                    <div :class="dummySliderClasses" data-slide-number="3"></div>
                 </div>
             </div>
-            <template x-if="products.length && products.length > pageSize">
+            <template x-if="hasMultiplePages">
                 <div class="flex items-center justify-center flex-1 p-4" x-cloak>
                     <button
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Previous')) ?>"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
-                        :class="{ 'invisible' : active === 0 }"
-                        @click="getSlider().scrollLeft =
-                                (getSlider().scrollWidth / (products.length + pageFillers)) * (active - pageSize);
-                                active -= pageSize;">
+                        :class="prevButtonClasses"
+                        @click="goPrevSlide">
                         <?= $heroicons->chevronLeftHtml("w-5 h-5", 25, 25) ?>
                     </button>
                     <template x-for="(product, index) in products" :key="index">
                             <span class="shrink-0 block w-3 h-3 mx-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
-                                  :class="{
-                                        'bg-opacity-100': active === index,
-                                        'bg-opacity-25': active !== index,
-                                        'hidden': (pageSize !== 1 && !!(index % pageSize))
-                                        }"
-                                  @click="getSlider().scrollLeft =
-                                          (getSlider().scrollWidth / (products.length + pageFillers)) * index;
-                                          active = index;">
+                                  :class="getBulletClasses"
+                                  @click="goToSlide">
                             </span>
                     </template>
                     <button
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Next')) ?>"
                         class="w-8 h-8 mx-4 text-black rounded-full outline-none focus:outline-none"
-                        :class="{ 'invisible' : active >= products.length-pageSize }"
-                        @click="getSlider().scrollLeft =
-                                (getSlider().scrollWidth / (products.length + pageFillers)) * (active + pageSize);
-                                active += pageSize">
+                        :class="nextButtonClasses"
+                        @click="goNextSlide">
                         <?= $heroicons->chevronRightHtml("w-5 h-5", 25, 25) ?>
                     </button>
                 </div>
