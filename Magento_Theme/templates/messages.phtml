@@ -43,6 +43,9 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
             hasMessages() {
                 return !this.isEmpty();
             },
+            hasMessage() {
+                return !!this.message;
+            },
             removeMessage() {
                 this.messages[this.index] = undefined;
             },
@@ -103,7 +106,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
             <div class="messages container mx-auto py-3">
                 <template x-for="(message, index) in messages" :key="index">
                     <div>
-                        <template x-if="message">
+                        <template x-if="hasMessage">
                             <div class="message"
                                  :class="message.type"
                                  :ui-id="getMessageUiId"
