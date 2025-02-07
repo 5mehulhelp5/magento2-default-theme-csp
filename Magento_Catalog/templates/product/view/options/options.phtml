@@ -166,7 +166,7 @@ $options = $block->decorateArray($block->getOptions());
                 updateCustomOptionValue() {
                     const targetProp = this.$el.dataset.eventTargetProperty || 'target'
                     const target =  this.$event[targetProp];
-                    const customOptionId = target.closest('[data-option-id]').dataset.optionId;
+                    const customOptionId = (target.closest('[data-option-id]') || this.$el.closest('[data-option-id]')).dataset.optionId;
                     let active;
                     switch (target.type) {
                         case 'text':

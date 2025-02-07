@@ -115,14 +115,18 @@ $htmlInputTypes = [
                         parts.forEach(part => {
                             const select = document.getElementById(`${baseId}_${part}`);
                             if (select) {
-                                select.setAttribute('x-on:change', `onChange`)
+                                select.setAttribute('x-on:change', 'onChange');
+                                select.setAttribute('data-event-target-property', 'customTarget')
                             }
                         })
                     },
                     onChange() {
                         this.validateDays()
                             .then(() => this.collectDateValueAndUpdatePrice())
-                            .then(transport => this.updateCustomOptionValue(this.$dispatch, optionId, transport))
+                            .then(transport => {
+                                this.$event.customTarget = transport;
+                                this.updateCustomOptionValue();
+                            })
                     },
                     async collectDateValueAndUpdatePrice() {
                         const input = document.createElement('input');

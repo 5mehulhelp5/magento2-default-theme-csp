@@ -95,7 +95,7 @@ $htmlInputTypes = [
         <span><?= /* @noEscape */ $block->getFormattedPrice() ?></span>
     </label>
 
-    <div class="flex flex-wrap gap-y-2 sm:ml-2 text-gray-900 text-left w-full sm:w-1/2">
+    <div class="product-custom-option flex flex-wrap gap-y-2 sm:ml-2 text-gray-900 text-left w-full sm:w-1/2">
         <input type="<?= /* @noEscape */ $htmlInputTypes[$option->getType()] ?>"
                id="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
                x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
