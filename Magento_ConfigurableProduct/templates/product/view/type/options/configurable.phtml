@@ -36,7 +36,7 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 
-    <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>()"
+    <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>"
          @private-content-loaded.window="onGetCartData"
          class="mb-6"
     >
@@ -73,9 +73,9 @@ $attributes = $block->decorateArray($block->getAllowAttributes());
                         <template x-if="optionIsEnabled">
                         <option
                             :value="item.id"
-                            x-html="getAttributeOptionLabel(item)"
-                            :disabled="!optionIsActive()"
-                            :selected="selectedValues[<?= $escaper->escapeHtmlAttr($attributeId) ?>] === item.id">
+                            x-html="getAttributeOptionLabel"
+                            :disabled="!optionIsActive"
+                            :selected="isSelected">
                         </option>
                         </template>
                     </template>

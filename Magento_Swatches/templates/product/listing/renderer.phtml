@@ -94,7 +94,7 @@ $swatchItemBlock->setData('product_id', $productId);
                             }
                         ).then(data => {
                             if (data.errors) {
-                                // non critical failure only console logged
+                                // non-critical failure only console logged
                                 console.warn(data.errors);
                             } else {
                                 const image = data && data.medium;
@@ -205,9 +205,7 @@ $swatchItemBlock->setData('product_id', $productId);
                         x-bind="scrollEvents"
                         aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
                     >
-                        <template x-for="(item, index) in getAllAttributeOptions"
-                                  :key="item.id"
-                        >
+                        <template x-for="(item, index) in getAllAttributeOptions" :key="item.id">
                             <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
                         </template>
                     </div>

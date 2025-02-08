@@ -62,6 +62,9 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                     option => option.id === this.item.id
                 )
             },
+            ['!optionIsActive']() {
+                return ! this.optionIsActive();
+            },
             optionIsEnabled() {
                 <?php /* return true if a product with the option id === this.item.id is enabled */ ?>
                 const attributeId = this.getDataAttributeId(this.$el);
@@ -73,6 +76,7 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 }
                 return false;
             },
+
             isOptionEnabledAndInStock() {
                 return this.optionIsEnabled() && this.optionIsActive();
             },
@@ -238,7 +242,8 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 // if there is no complete selection, use the cheapest product for the option
                 return matchingSimpleIndex || this.findCheapestProductForPartialSelection(optionSelection);
             },
-            getAttributeOptionLabel(option) {
+            getAttributeOptionLabel() {
+                const option = this.item;
                 const optionProduct = this.findProductIdToUseForOptionPrice(option);
 
                 if ((! optionProduct) || (optionProduct === this.productIndexForPrice)) {
@@ -397,13 +402,6 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
             }
         }
     }
-    (() => {
-        const initFn = () => Alpine.data('initConfigurableOptions', initConfigurableOptions);
-        window.Alpine
-            ? initFn()
-            : window.addEventListener('alpine:init', initFn, {once: true})
-    })()
-
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
 
