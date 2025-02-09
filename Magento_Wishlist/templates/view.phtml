@@ -87,6 +87,9 @@ $wishlistHelper = $this->helper(WishlistHelper::class);
                             separator = '&';
                         });
                         hyva.postForm(urlParams);
+                    },
+                    removeItem() {
+                        hyva.postForm(JSON.parse(this.$el.dataset.removeItemParams));
                     }
                 }
             });

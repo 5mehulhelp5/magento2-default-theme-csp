@@ -26,7 +26,8 @@ $product = $item->getProduct();
 
 <a href="#"
    data-role="remove"
-   @click.prevent='hyva.postForm(<?= /* @noEscape */ $block->getItemRemoveParams($block->getItem()) ?>)'
+   data-remove-item-params="<?= $escaper->escapeHtmlAttr($block->getItemRemoveParams($block->getItem())) ?>"
+   @click.prevent="removeItem"
    title="<?= $escaper->escapeHtmlAttr(__('Remove Item')) ?>"
    class="btn-remove action delete btn btn-secondary inline-flex p-2">
     <?= $heroicons->trashHtml('', 20, 20); ?>
