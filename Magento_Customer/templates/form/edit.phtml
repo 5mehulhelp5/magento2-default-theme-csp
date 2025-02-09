@@ -257,7 +257,7 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
             }),
             hyva.createBooleanObject('showPasswordNew', false, {
                 showPasswordNewAriaLabel() {
-                    return this.getTogglePasswordVisibilityAriaLabel(this.showPassword())
+                    return this.getTogglePasswordVisibilityAriaLabel(this.showPasswordNew())
                 },
                 showPasswordNewFieldType() {
                     return this.getPasswordFieldType(this.showPasswordNew())
