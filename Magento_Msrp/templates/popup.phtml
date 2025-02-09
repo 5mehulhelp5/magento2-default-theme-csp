@@ -102,7 +102,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                         this.open = false;
                     },
                     showPopover(event) {
-                        const data = $event.detail.msrpData;
+                        const data = event.detail.msrpData;
                         if (!data) return;
 
                         this.open = true;
@@ -128,8 +128,19 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                     }
                 }
             }
+            function initMsrpPrice() {
+                return {
+                    onClick() {
+                        const msrpData = JSON.parse(this.$el.dataset.msrpData);
+                        this.$dispatch('msrp-popover', {msrpData , target: this.$el});
+                    }
+                };
+            }
             (() => {
-                const initFn = () => Alpine.data('initMsrpPopover', initMsrpPopover);
+                const initFn = () => {
+                    Alpine.data('initMsrpPopover', initMsrpPopover)
+                    Alpine.data('initMsrpPrice', initMsrpPrice)
+                };
                 window.Alpine
                     ? initFn()
                     : window.addEventListener('alpine:init', initFn, {once: true})
