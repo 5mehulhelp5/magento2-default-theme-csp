@@ -18,7 +18,7 @@ use Magento\Framework\Escaper;
           id="oar-widget-orders-and-returns-form"
           action="<?= $escaper->escapeUrl($block->getActionUrl()) ?>"
           method="post" name="guest_post"
-          x-data="initForm()">
+          x-data="initForm">
         <fieldset class="fieldset">
             <?= $block->getBlockHtml('formkey') ?>
             <legend class="legend"><span><?= $escaper->escapeHtml(__('Order Information')) ?></span></legend>
@@ -38,7 +38,7 @@ use Magento\Framework\Escaper;
                     </label>
                     <div class="control">
                         <select name="oar_type" id="quick-search-type-id" class="select"
-                                @change="authenticateBy = event.target.value">
+                                @change="setAuthenticationType">
                             <option value="email"><?= $escaper->escapeHtml(__('Email')) ?></option>
                             <option value="zip"><?= $escaper->escapeHtml(__('ZIP Code')) ?></option>
                         </select>
@@ -54,23 +54,23 @@ use Magento\Framework\Escaper;
                                required/>
                     </div>
                 </div>
-                <div class="field" x-show="authenticateBy !== 'zip'">
+                <div class="field" x-show="isAuthenticateByEmail">
                     <label class="label" for="oar_email"><span><?= $escaper->escapeHtml(
                         __('Email')
                     ) ?></span></label>
                     <div class="control">
                         <input type="email" class="form-input w-full"
-                               id="oar_email" name="oar_email" :required="authenticateBy !== 'zip'"
+                               id="oar_email" name="oar_email" :required="isAuthenticateByEmail"
                         />
                     </div>
                 </div>
-                <div class="field" x-show="authenticateBy === 'zip'">
+                <div class="field" x-show="isAuthenticateByZip">
                     <label class="label" for="oar_zip"><span><?= $escaper->escapeHtml(
                         __('Billing ZIP Code')
                     ) ?></span></label>
                     <div class="control">
                         <input type="text" class="form-input w-full"
-                               id="oar_zip" name="oar_zip" :required="authenticateBy === 'zip'"
+                               id="oar_zip" name="oar_zip" :required="isAuthenticateByZip"
                         />
                     </div>
                 </div>
@@ -88,9 +88,25 @@ use Magento\Framework\Escaper;
     <script>
         function initForm() {
             return {
-                authenticateBy: 'email'
+                authenticateBy: 'email',
+                setAuthenticationType(event) {
+                    this.authenticateBy = event.target.value;
+                },
+                isAuthenticateByEmail() {
+                    return this.authenticateBy !== 'zip'
+                },
+                isAuthenticateByZip() {
+                    return this.authenticateBy === 'zip'
+                }
             }
         }
+        (() => {
+            const initFn = () => Alpine.data('initForm', initForm);
+            window.Alpine
+                ? initFn()
+                : window.addEventListener('alpine:init', initFn, {once: true})
+        })()
+
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 </div>
