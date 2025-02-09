@@ -39,8 +39,8 @@ $recipients = $formData->getRecipientData() ?? '[]';
               method="post"
               id="product-sendtofriend-form"
               class="form send friend"
-              x-data="initSendFriendForm()"
-              @submit.prevent="submitForm()"
+              x-data="initSendFriendForm"
+              @submit.prevent="submitForm"
         >
             <?= $block->getBlockHtml('formkey') ?>
             <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_SEND_FRIEND) : '' ?>
@@ -92,11 +92,11 @@ $recipients = $formData->getRecipientData() ?? '[]';
                 </div>
             </fieldset>
 
-            <div x-data="rowHandler()">
-                <input name="recipient_data" :value="JSON.stringify(fields)" type="hidden"/>
+            <div x-data="rowHandler">
+                <input name="recipient_data" :value="getRecipientsAsJson" type="hidden"/>
                 <fieldset class="fieldset recipients">
                     <legend class="legend">
-                    <span x-text="fields.length > 1 ? plural : single">
+                    <span x-text="getRecipientsLabel">
                         <?= $escaper->escapeHtml(__('Invitee')) ?>
                     </span>
                     </legend>
@@ -107,33 +107,35 @@ $recipients = $formData->getRecipientData() ?? '[]';
                                 <div class="flex flex-row flex-wrap items-end justify-between gap-x-4 border-t border-container mb-2">
                                     <div class="flex flex-row flex-wrap gap-x-4">
                                     <div class="field name required inline-block">
-                                        <label :for="`recipients-name${index}`" class="label">
+                                        <label :for="getRecipientFieldId" class="label">
                                             <span><?= $escaper->escapeHtml(__('Name')) ?></span>
                                         </label>
                                         <div class="control">
                                             <input type="text"
                                                    title="<?= $escaper->escapeHtmlAttr(__('Name')) ?>"
                                                    class="form-input input-text"
-                                                   :id="`recipients-name${index}`"
-                                                   :name="`recipients[name][${index}]`"
+                                                   :id="getRecipientFieldId"
+                                                   :name="getRecipientFieldName"
                                                    required
-                                                   x-model="field.name"
+                                                   :value="field.name"
+                                                   @change="setName"
                                             />
                                         </div>
                                     </div>
                                     <div class="field email required inline-block">
-                                        <label :for="`recipients-email${index}`" class="label">
+                                        <label :for="getRecipientEmailFieldId" class="label">
                                             <span><?= $escaper->escapeHtml(__('Email')) ?></span>
                                         </label>
                                         <div class="control">
                                             <input title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
-                                                   :id="`recipients-email${index}`"
-                                                   :name="`recipients[email][${index}]`"
+                                                   :id="getRecipientEmailFieldId"
+                                                   :name="getRecipientFieldEmail"
                                                    type="email"
                                                    class="form-input input-text"
                                                    required
+                                                   :value="field.email"
+                                                   @change="setEmail"
                                                    validate
-                                                   x-model="field.email"
                                             />
                                         </div>
                                     </div>
@@ -141,9 +143,9 @@ $recipients = $formData->getRecipientData() ?? '[]';
                                     <div class="field">
                                         <button type="button"
                                                 class="btn btn-secondary"
-                                                @click="removeField(index)"
-                                                :disabled="fields.length <= 1"
-                                                :class="{'opacity-25': fields.length <= 1}"
+                                                @click="removeField"
+                                                :disabled="isRemoveFieldButtonDisabled"
+                                                :class="getRemoveFieldButtonClasses"
                                         >
                                             <?= $icons->trashHtml('h-6 w-6') ?>
                                         </button>
@@ -151,12 +153,12 @@ $recipients = $formData->getRecipientData() ?? '[]';
                                 </div>
                             </template>
                         </fieldset>
-                        <div x-show="fields.length < <?= (int)$block->getMaxRecipients(); ?>"
+                        <div x-show="showAddNewFieldButton"
                              class="border-t border-container"
                         >
                             <button type="button"
                                     class="mt-4 btn btn-secondary"
-                                    @click="addNewField()"
+                                    @click="addNewField"
                             >
                                 + <?= $escaper->escapeHtml(__('Add Invitee')) ?>
                             </button>
@@ -184,7 +186,7 @@ $recipients = $formData->getRecipientData() ?? '[]';
                     </button>
                 </div>
                 <div class="secondary">
-                    <a class="action back" href="#" onclick="history.back(); return false;" role="link"><span>
+                    <a class="action back" href="#" @click.prevent="historyBack" role="link"><span>
                             <?= $escaper->escapeHtml(__('Back')) ?>
                         </span>
                     </a>
@@ -198,14 +200,47 @@ $recipients = $formData->getRecipientData() ?? '[]';
                         fields: recipients.length === 0 ? [{name: '', email: ''}] : recipients,
                         plural: '<?= $escaper->escapeJs(__('Invitees')) ?>',
                         single: '<?= $escaper->escapeJs(__('Invitee')) ?>',
+                        showAddNewFieldButton() {
+                            return this.fields.length < <?= (int)$block->getMaxRecipients(); ?>;
+                        },
                         addNewField() {
                             this.fields.push({
                                 name: '',
                                 email: ''
                             });
                         },
-                        removeField(index) {
-                            this.fields.splice(index, 1);
+                        removeField() {
+                            this.fields.splice(this.index, 1);
+                        },
+                        getRecipientsAsJson() {
+                            return JSON.stringify(this.fields);
+                        },
+                        getRecipientsLabel() {
+                            return this.fields.length > 1 ? this.plural : this.single
+                        },
+                        getRecipientFieldId() {
+                            return `recipients-name${this.index}`;
+                        },
+                        getRecipientFieldName() {
+                            return `recipients[name][${this.index}]`;
+                        },
+                        setName() {
+                            this.field.name = this.$event.target.value;
+                        },
+                        getRecipientEmailFieldId() {
+                            return `recipients-email${this.index}`
+                        },
+                        getRecipientFieldEmail() {
+                            return `recipients[email][${this.index}]`;
+                        },
+                        setEmail() {
+                            this.field.email = this.$event.target.value;
+                        },
+                        isRemoveFieldButtonDisabled() {
+                            return this.fields.length <= 1;
+                        },
+                        getRemoveFieldButtonClasses() {
+                            return {'opacity-25': this.isRemoveFieldButtonDisabled()}
                         },
                     }
                 }
@@ -239,9 +274,23 @@ $recipients = $formData->getRecipientData() ?? '[]';
                             if (this.errors === 0) {
                                 $form.submit();
                             }
+                        },
+                        historyBack() {
+                            history.back();
                         }
                     }
                 }
+
+                (() => {
+                    const initFn = () => {
+                        Alpine.data('initSendFriendForm', initSendFriendForm)
+                        Alpine.data('rowHandler', rowHandler)
+                    };
+                    window.Alpine
+                        ? initFn()
+                        : window.addEventListener('alpine:init', initFn, {once: true})
+                })()
+
             </script>
             <?php $hyvaCsp->registerInlineScript() ?>
         </form>
