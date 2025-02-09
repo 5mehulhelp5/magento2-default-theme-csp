@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Downloadable\Block\Catalog\Product\Samples;
 use Magento\Framework\Escaper;
 
 /** @var Samples $block */
 /** @var Escaper $escaper */
 /** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
@@ -32,7 +34,6 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             <div class="block w-full text-left text-gray-700 mb-2">
                 <a href="<?= $escaper->escapeHtml($block->getSampleUrl($sample)) ?>"
                    download
-                   <?= $block->getIsOpenInNewWindow() ? 'onclick="this.target=\'_blank\'"' : '' ?>
                    class="item-link samples-item-link">
                     <?= $heroicons->documentDownloadHtml(); ?>
                     <?= $escaper->escapeHtml($sample->getTitle()) ?>
@@ -41,4 +42,12 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         <?php endforeach; ?>
         </div>
     </div>
-<?php endif; ?>
+<?php if ($block->getIsOpenInNewWindow()): ?>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a.samples-item-link[download]').forEach(link => link.target = '_blank');
+    });
+</script>
+<?php $hyvaCsp->registerInlineScript();
+endif;
+endif;
