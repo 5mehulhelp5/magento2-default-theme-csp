@@ -15,5 +15,12 @@
         <referenceContainer name="content">
             <block class="Magento\Search\Block\Term" name="seo.searchterm" template="Magento_Search::term.phtml" cacheable="false"/>
         </referenceContainer>
+        <referenceBlock name="topmenu_generic">
+            <!-- Disable block_html caching on the un-cached pages, because the top menu is shared with cached pages. -->
+            <!-- Otherwise the script tags will be used on FPC pages with (wrong) nonce attribute values, while they should be enabled through SHAs there. -->
+            <arguments>
+                <argument name="cache_lifetime" xsi:type="boolean">false</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>

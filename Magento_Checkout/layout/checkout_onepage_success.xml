@@ -27,5 +27,12 @@
         <!-- Bypass waiting for user interaction to load external scripts on the order success page -->
         <!-- For example, for running analytics/conversion scripts -->
         <referenceBlock name="init.external.scripts" template="Hyva_Theme::page/js/init-external-scripts-user-interaction-bypass.phtml"/>
+        <referenceBlock name="topmenu_generic">
+            <!-- Disable block_html caching on the un-cached pages, because the top menu is shared with cached pages. -->
+            <!-- Otherwise the script tags will be used on FPC pages with (wrong) nonce attribute values, while they should be enabled through SHAs there. -->
+            <arguments>
+                <argument name="cache_lifetime" xsi:type="boolean">false</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
