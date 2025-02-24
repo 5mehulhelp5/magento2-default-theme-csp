@@ -73,7 +73,7 @@ $block->getParentBlock()->setData('cards_row_number', $i);
     function initVaultCCToken() {
         return Object.assign(hyva.modal.call(this), {
             confirmAndSubmit() {
-                <?= /** @noEscape */ $confirmation->getShowJs() ?>.then(ok => ok && this.$refs.form.submit());
+                this.<?= /** @noEscape */ $confirmation->getShowJs() ?>.then(ok => ok && this.$refs.form.submit());
             }
         });
     }

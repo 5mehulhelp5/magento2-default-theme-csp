@@ -114,7 +114,7 @@ $mergedCells = ($cartItemOutputViewModel->isItemPriceDisplayBoth() ? 2 : 1)
                         hyva.modal.call(this),
                         {
                             showDialog() {
-                                <?= /** @noEscape */ $confirmation->getShowJs() ?>.then(result => result && hyva.postForm(this.postData))
+                                this.<?= /** @noEscape */ $confirmation->getShowJs() ?>.then(result => result && hyva.postForm(this.postData))
                             },
                             postData: {
                                 action: '<?= $escaper->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>',

@@ -10,14 +10,17 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Hyva\Theme\ViewModel\Sales\OrderCancellation;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\OrderCancellationUi\ViewModel\Config as OrderCancellationUiConfig;
+use Magento\Sales\Api\Data\OrderInterface;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
 /** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
 
 /** @var HeroiconsOutline $heroicons */
 $heroicons = $viewModels->require(HeroiconsOutline::class);
@@ -28,22 +31,36 @@ $orderCancellation = $viewModels->require(OrderCancellation::class);
 /** @var OrderCancellationUiConfig $orderCancellationUiConfig */
 $orderCancellationUiConfig = $viewModels->require(OrderCancellationUiConfig::class);
 
+/** @var OrderInterface $order */
 $order = $block->getData('order');
 $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getId())
 ?>
-
 <?php if ($orderCancellation->canCancel($order->getEntityId())): ?>
+    <script>
+        function initCancelOrderButton() {
+            return {
+                dispatchConfirmCancelOrder() {
+                    this.$dispatch('confirm-cancel-order', {
+                        order_id: this.$el.dataset.orderId,
+                        increment_id: this.$el.dataset.incrementId,
+                        reasons: JSON.parse(this.$el.dataset.reasons),
+                    })
+                }
+            };
+        }
+        window.addEventListener('alpine:init', () => Alpine.data('initCancelOrderButton', initCancelOrderButton), {once: true})
+    </script>
+    <?php $hyvaCsp->registerInlineScript(); ?>
     <button
         type="button"
         class="inline-block text-sm text-secondary-darker"
         title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
-        x-data
-        @click="$dispatch('confirm-cancel-order', {
-            order_id: <?= (int) $order->getId() ?>,
-            increment_id: '<?= $escaper->escapeJs($order->getRealOrderId()) ?>',
-            reasons: <?= $escaper->escapeHtmlAttr(json_encode(array_values($reasons))) ?>,
-        })"
+        x-data="initCancelOrderButton"
+        data-order-id="<?= (int) $order->getId() ?>"
+        data-increment-id="<?= $escaper->escapeHtmlAttr($order->getRealOrderId()) ?>"
+        data-reasons="<?= $escaper->escapeHtmlAttr(json_encode(array_values($reasons))) ?>"
+        @click="dispatchConfirmCancelOrder"
     >
         <?= $heroicons->xCircleHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
     </button>

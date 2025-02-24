@@ -94,7 +94,7 @@ END_OF_CONTENT
                 },
                 confirmCancelOrder() {
                     this.setOrder(this.$event);
-                    <?= /** @noEscape */ $modal->getShowJs() ?>.then(result => result && this.cancelOrder(this.order_id, this.$refs.reason.value));
+                    this.<?= /** @noEscape */ $modal->getShowJs() ?>.then(result => result && this.cancelOrder(this.order_id, this.$refs.reason.value));
                 },
                 cancelOrderModalTitle() {
                     return `<?= $escaper->escapeJs(__('Cancel order')) ?> ${this.increment_id}`
