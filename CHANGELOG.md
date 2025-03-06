@@ -9,98 +9,98 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.11...main
 
-## [1.3.11] - 2025-03-05
+## [1.3.11] - 2025-03-06
 
 [1.3.11]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.10...1.3.11
 
 ### Added
 
-- **Loader for Cart Page for qty updates**  
-  For more information, please refer to [issue #992](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/992).
+- **Add loader for Cart Page for qty updates**  
+    For more information, please refer to [issue #992](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/992).
 
 ### Changed
 
 - **Cleanup loader styles**
-  For more information, please refer to [issue #987](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/987).
+    For more information, please refer to [issue #987](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/987).
 
 - **Use proper section tag and replace float layout for flex layout**  
-  For more information, please refer to [merge request #1174](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1174).
+    For more information, please refer to [merge request #1174](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1174).
 
 - **Improve styling consistency to making customization easier**  
-  This includes a collection of smaller changes to make sure the styling used trough Hyvä is consistend.
+    This includes a collection of smaller changes to make sure the styling used trough Hyvä is consistent.
 
-  For more information, please refer to [merge request #1184](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1184).
+    For more information, please refer to [merge request #1184](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1184).
 
 - **Improve CSS Component - Button**  
-  This includes multiple changes to the buttons to improve consistency in size and style and fixes the missing default disabled styles.
+    Improve consistency in size and style and fixes the missing default disabled styles for buttons.
 
-  For more information, please refer to [merge request #1206](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1206).
+    For more information, please refer to [merge request #1206](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1206).
 
 - **Use https for all schema.org meta data**  
-  For more information, please refer to [issue #1101](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1101).
+    For more information, please refer to [issue #1101](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1101).
 
-- **Update `@hyva-themes/hyva-modules` from 1.0.9 to 1.0.11**  
-  For more information, please refer to [merge request #1269](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1269).
+- **Update `@hyva-themes/hyva-modules` node package dependency from 1.0.9 to 1.0.11**  
+    For more information, please refer to [merge request #1269](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1269).
 
-### Fixed
+- **Fix Extra Dropdown Arrow in Store, Language and Currency Switcher**  
+    For more information, please refer to [merge request #1111](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1111).
 
-- **Extra Dropdown Arrow in Store, Language and Currency Switcher**  
-  For more information, please refer to [merge request #1111](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1111).
+- **Fix PageBuilder Image block alignment**  
+    For more information, please refer to [merge request #1113](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1223).
 
-- **PageBuilder Image block alignment**  
-  For more information, please refer to [merge request #1113](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1223).
+- **Fix A11Y issues and improve UX for search in the page-header**  
+    This fixes the hidden button in the tabindex and adds a small change in the search form with the search button now being visible for A11Y.
 
-- **A11Y issues and improve UX for search in the page-header**  
-  This fixes the hidden button in the tabindex and adds a small change in the search form with the search button now being visible for A11Y.
+    For more information, please refer to [merge request #1138](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1138).
 
-  For more information, please refer to [merge request #1138](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1138).
+- **Fix overflow on product list view if there are large amount swatches**  
+    For more information, please refer to [issue #1028](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1028).
 
-- **Overflow on product list view if there are large amount swatches**  
-  For more information, please refer to [issue #1028](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1028).
+- **Fix autocomplete value missing or incorrect on some forms**  
+    For more information, please refer to [issue #1035](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1035).
 
-- **Autocomplete value missing for some forms or is incorrect**  
-  For more information, please refer to [issue #1035](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1035).
+- **Fix untranslated Icons for A11Y**  
+    For more information, please refer to [issue #1052](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1052).
 
-- **Untranslated Icons for A11Y**  
-  For more information, please refer to [issue #1052](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1052).
+    Many thanks to Lars de Weert (Made by Mouses) for the contribution!
 
-  Many thanks to Lars de Weert (Made by Mouses) for the contribution!
+- **Fix CSS transforms and prefix the browserslist config**
+    The original config had two rules that did not share there values with each other and so included older prefixes for browsers we don't support,
+    with this change the CSS file also becomes a smaller, as added bonus.
 
-- **CSS transforms and prefixing with browserslist config**
-  The original config has two rules that did not share there values with each other and so included older prefixes for browsers we don't support,
-  with this change the CSS file also becomes a smaller, as added bonus.
+    For more information, please refer to [issue #1083](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1083).
 
-  For more information, please refer to [issue #1083](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1083).
+    Many thanks to Irena Smidt (Customgento) for the suggestion!
 
-- **Small font size in review form for A11Y**  
-  For more information, please refer to [issue #1095](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1095).
+- **Fix small font size in review form for A11Y**  
+    For more information, please refer to [issue #1095](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1095).
 
-- **Missing `required` attribute to Fax field**  
-  For more information, please refer to [issue #1107](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1107).
+- **Fix missing `required` attribute on Fax field**  
+    For more information, please refer to [issue #1107](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1107).
 
-- **Slider Items Cropping**  
-  For more information, please refer to [issue #1116](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1116).
+- **Fix slider Items Cropping**  
+    For more information, please refer to [issue #1116](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1116).
 
-  Many thanks to Yevhen Hlinskyi (Vendic) for the contribution!
+    Many thanks to Yevhen Hlinskyi (Vendic) for the contribution!
 
-- **Invalid aria tags on Slider**  
-  For more information, please refer to [issue #1137](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1137).
+- **Fix invalid aria tags on Slider**  
+    For more information, please refer to [issue #1137](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1137).
 
-- **Missing translation parameter in list item configure product button title**  
-  For more information, please refer to [issue #1165](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1165).
+- **Add missing translation parameter in list item configure product button title**  
+    For more information, please refer to [issue #1165](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1165).
 
-- **HTML errors by removing the extra quote in Category image**  
-  For more information, please refer to [issue #1153](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1153).
+- **Fix HTML errors by removing the extra quote in Category image**  
+    For more information, please refer to [issue #1153](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1153).
 
 ### Removed
 
-- **CSS classes that are double**  
-  For more information, please refer to
-  [merge request #1128](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1128) and
-  [merge request #1221](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1221).
+- **Duplicate CSS classes**  
+    For more information, please refer to
+    [merge request #1128](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1128) and
+    [merge request #1221](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1221).
 
-- **Negative margin in demo content hero that is larger then the container padding**  
-  For more information, please refer to [issue #997](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/997).
+- **Negative margin in demo content hero larger then the container padding**  
+    For more information, please refer to [issue #997](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/997).
 
 ## [1.3.10] - 2024-12-06
 
