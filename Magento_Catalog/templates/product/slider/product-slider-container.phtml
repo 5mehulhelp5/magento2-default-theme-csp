@@ -155,10 +155,6 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
             isItemCountGtPageSize() {
                 return this.itemCount > this.pageSize;
             },
-            sliderItemAriaHidden() {
-                const sliderIndex = this.$el.dataset.sliderIndex;
-                return sliderIndex > this.active && sliderIndex <= (this.active + this.pageSize) ? 'false' : 'true';
-            },
             sliderItemAriaDescribedById() {
                 const productId = this.$el.dataset.productId;
                 return `slide-desc-${productId}-${this.$id('slider-id')}`
@@ -264,7 +260,6 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                              data-slider-index="<?= (int) $sliderIndex ?>"
                              data-product-id="<?= $escaper->escapeHtmlAttr($product->getId()) ?>"
                              role="group"
-                             :inert="sliderItemAriaHidden"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Item %1', $sliderIndex++)) ?>"
                              :aria-describedby="sliderItemAriaDescribedById"
                         >
