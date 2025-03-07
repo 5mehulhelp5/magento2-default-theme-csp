@@ -28,7 +28,8 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         <?php if ($additionalAddresses = $block->getAdditionalAddresses()): ?>
             <div class="card grid grid-cols-3 lg:grid-cols-6 my-6">
                 <div class="text-sm text-secondary p-2">
-                    <?= $escaper->escapeHtml(__('Company')) ?></div>
+                    <?= $escaper->escapeHtml(__('Company')) ?>
+                </div>
                 <div class="hidden lg:block text-sm text-secondary p-2">
                     <?= $escaper->escapeHtml(__('Name')) ?>
                 </div>
