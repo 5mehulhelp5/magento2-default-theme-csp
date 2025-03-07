@@ -248,7 +248,7 @@ if ($productPriceViewModel->displayPriceInclAndExclTax()) {
                         }
                     }
                 }
-                window.addEventListener('alpine:init', () => Alpine.data('initBundleOptions', initBundleOptions), {once: true}):
+                window.addEventListener('alpine:init', () => Alpine.data('initBundleOptions', initBundleOptions), {once: true});
             </script>
             <?php $hyvaCsp->registerInlineScript() ?>
             <div x-data="initBundleOptions"
