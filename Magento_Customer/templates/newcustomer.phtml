@@ -21,10 +21,8 @@ use Magento\Framework\Escaper;
                 aria-level="2"><?= $escaper->escapeHtml(__('New Customers')) ?></h2>
         </div>
         <div class="block-content" aria-labelledby="block-new-customer-heading">
-            <p>
-                <?= $escaper->escapeHtml( // phpcs:disable Generic.Files.LineLength.TooLong
-                    __('Creating an account has many benefits: check out faster, keep more than one address, track orders and more.')
-                ) // phpcs:enable ?>
+            <p class="text-secondary-darker">
+                <?= $escaper->escapeHtml(__('Creating an account has many benefits: check out faster, keep more than one address, track orders and more.')) ?>
             </p>
         </div>
         <div class="actions-toolbar pt-6 pb-2 flex self-end">
