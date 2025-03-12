@@ -7,7 +7,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.11...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.11...main
+
+## [1.3.11 CSP] - 2025-03-12
+
+[1.3.11 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/5384f969030b1fbdd355a79e8872440b0af22f9c...1.3.11
+
+### Added
+
+- Nothing added
+
+### Changed
+
+- **Implement Alpine CSP compatibility**
+    The changes are too many to list individually. Please refer to the [Hyvä developer CSP documentation](https://docs.hyva.io/hyva-themes/writing-code/csp/index.html) for details.
+
+- **Make theme work without `unsafe-inline` content security policy**
+    The changes are too many to list individually. Please refer to the [Hyvä developer CSP documentation](https://docs.hyva.io/hyva-themes/writing-code/csp/index.html) for details.
+
+### Removed
+
+- Nothing removed
 
 ## [1.3.11] - 2025-03-06
 

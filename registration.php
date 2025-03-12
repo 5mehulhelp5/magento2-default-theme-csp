@@ -8,4 +8,4 @@
 
 use \Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(ComponentRegistrar::THEME, 'frontend/Hyva/default', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::THEME, 'frontend/Hyva/default-csp', __DIR__);

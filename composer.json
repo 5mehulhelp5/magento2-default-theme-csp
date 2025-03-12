@@ -1,6 +1,6 @@
 {
-    "name": "hyva-themes/magento2-default-theme",
-    "description": "Default Hyvä Theme",
+    "name": "hyva-themes/magento2-default-theme-csp",
+    "description": "Default Hyvä Theme (CSP compatible)",
     "config": {
         "sort-packages": true
     },
