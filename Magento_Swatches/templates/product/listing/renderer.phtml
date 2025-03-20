@@ -33,7 +33,7 @@ $swatchItemBlock->setData('product_id', $productId);
 <?php if ($product->isSaleable() && count($attributes)): ?>
 
     <script>
-        function initConfigurableSwatchOptions() {
+        function initListingConfigurableSwatchOptions() {
             const dataset = this.$el.dataset,
                 productId = dataset.productId,
                 optionConfig = JSON.parse(dataset.config),
@@ -175,14 +175,14 @@ $swatchItemBlock->setData('product_id', $productId);
                 }
             );
         }
-        window.addEventListener('alpine:init', () => Alpine.data('initConfigurableSwatchOptions', initConfigurableSwatchOptions), {once: true})
+        window.addEventListener('alpine:init', () => Alpine.data('initListingConfigurableSwatchOptions', initListingConfigurableSwatchOptions), {once: true})
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
-<div x-data="initConfigurableSwatchOptions"
+<div x-data="initListingConfigurableSwatchOptions"
      data-product-id="<?= (int) $productId ?>"
      data-config="<?= $escaper->escapeHtmlAttr($block->getJsonConfig()) ?>"
      data-swatch-options="<?= $escaper->escapeHtmlAttr($block->getJsonSwatchConfig()) ?>"
-     data-media-callback="<?= $escaper->escapeHtmlAttr($escaper->escapeUrl($block->getMediaCallback())) ?>"
+     data-media-callback="<?= $escaper->escapeUrl($block->getMediaCallback()) ?>"
      x-defer="intersect"
      @private-content-loaded.window="onGetCartData"
      @resize.window="resizeEvent"

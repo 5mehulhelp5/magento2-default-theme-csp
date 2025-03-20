@@ -39,7 +39,7 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
 ?>
 <?php if ($product->isSaleable() && count($attributes)): ?>
     <script>
-        function initConfigurableSwatchOptions() {
+        function initViewConfigurableSwatchOptions() {
             const dataset = this.$el.dataset,
                 productId = dataset.productId,
                 optionConfig = JSON.parse(dataset.config),
@@ -65,10 +65,10 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                 }
             );
         }
-        window.addEventListener('alpine:init', () => Alpine.data('initConfigurableSwatchOptions', initConfigurableSwatchOptions), {once: true})
+        window.addEventListener('alpine:init', () => Alpine.data('initViewConfigurableSwatchOptions', initViewConfigurableSwatchOptions), {once: true})
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
-    <div x-data="initConfigurableSwatchOptions"
+    <div x-data="initViewConfigurableSwatchOptions"
          data-product-id="<?= (int) $productId ?>"
          data-config="<?= $escaper->escapeHtmlAttr($block->getJsonConfig()) ?>"
          data-swatch-options="<?= $escaper->escapeHtmlAttr($block->getJsonSwatchConfig()) ?>"
