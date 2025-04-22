@@ -125,7 +125,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
     }
     window.addEventListener('alpine:init', () => Alpine.data('initSliderComponent', initSliderComponent), {once: true})
 </script>
-<?php $hyvaCsp->registerInlineScript() ?>
+<?php $hyvaCsp->registerInlineScript(); ?>
 <section class="<?= $escaper->escapeHtmlAttr($sliderSectionClasses) ?>"
          x-data="initSliderComponent"
          x-defer="intersect"

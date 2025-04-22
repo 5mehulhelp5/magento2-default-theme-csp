@@ -33,12 +33,18 @@ $swatchItemBlock->setData('product_id', $productId);
 <?php if ($product->isSaleable() && count($attributes)): ?>
 
     <script>
-        function initConfigurableSwatchOptions_<?= (int) $productId ?>() {
+        function initListingConfigurableSwatchOptions() {
+            const dataset = this.$el.dataset,
+                productId = dataset.productId,
+                optionConfig = JSON.parse(dataset.config),
+                swatchOptions = JSON.parse(dataset.swatchOptions),
+                mediaCallback = dataset.mediaCallback;
+
             const configurableOptionsComponent = initConfigurableOptions(
-                '<?= (int) $productId ?>',
-                <?= /* @noEscape */ $block->getJsonConfig() ?>
-            );
-            const swatchOptionsComponent = initSwatchOptions(<?= /* @noEscape */ $block->getJsonSwatchConfig() ?>);
+                    productId,
+                    optionConfig
+                );
+            const swatchOptionsComponent = initSwatchOptions(swatchOptions);
 
             const configurableOptionsComponentInit = configurableOptionsComponent.init;
 
@@ -46,7 +52,7 @@ $swatchItemBlock->setData('product_id', $productId);
                 configurableOptionsComponent,
                 swatchOptionsComponent,
                 {
-                    mediaCallback: "<?= $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
+                    mediaCallback: mediaCallback,
                     init() {
                         configurableOptionsComponentInit.call(this);
                         this.findAllowedAttributeOptions();
@@ -101,7 +107,7 @@ $swatchItemBlock->setData('product_id', $productId);
 
                                 image && window.dispatchEvent(
                                     new CustomEvent(
-                                        "update-gallery-<?= (int)$productId ?>",
+                                        "update-gallery-" + productId,
                                         {detail: image}
                                     )
                                 );
@@ -169,10 +175,14 @@ $swatchItemBlock->setData('product_id', $productId);
                 }
             );
         }
-        window.addEventListener('alpine:init', () => Alpine.data('initConfigurableSwatchOptions_<?= (int) $productId ?>', initConfigurableSwatchOptions_<?= (int) $productId ?>), {once: true})
+        window.addEventListener('alpine:init', () => Alpine.data('initListingConfigurableSwatchOptions', initListingConfigurableSwatchOptions), {once: true})
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
-<div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>"
+<div x-data="initListingConfigurableSwatchOptions"
+     data-product-id="<?= (int) $productId ?>"
+     data-config="<?= $escaper->escapeHtmlAttr($block->getJsonConfig()) ?>"
+     data-swatch-options="<?= $escaper->escapeHtmlAttr($block->getJsonSwatchConfig()) ?>"
+     data-media-callback="<?= $escaper->escapeUrl($block->getMediaCallback()) ?>"
      x-defer="intersect"
      @private-content-loaded.window="onGetCartData"
      @resize.window="resizeEvent"
