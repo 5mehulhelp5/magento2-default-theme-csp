@@ -37,7 +37,7 @@ use Magento\Framework\Escaper;
                         <span><?= $escaper->escapeHtml(__('Find Order By')) ?></span>
                     </label>
                     <div class="control">
-                        <select name="oar_type" id="quick-search-type-id" class="select"
+                        <select name="oar_type" id="quick-search-type-id" class="form-select w-full"
                                 @change="setAuthenticationType">
                             <option value="email"><?= $escaper->escapeHtml(__('Email')) ?></option>
                             <option value="zip"><?= $escaper->escapeHtml(__('ZIP Code')) ?></option>
