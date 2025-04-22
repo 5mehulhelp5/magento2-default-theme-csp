@@ -91,6 +91,7 @@ if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
             <button
                 @click="hideCookieBanner"
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Close panel')) ?>"
+                title="<?= $escaper->escapeHtmlAttr(__('Close panel')) ?>"
                 class="absolute right-0 top-0 p-4"
             >
                 <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => true]); ?>

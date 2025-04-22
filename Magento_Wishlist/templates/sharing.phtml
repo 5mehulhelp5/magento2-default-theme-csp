@@ -73,7 +73,7 @@ use Magento\Wishlist\Block\Customer\Sharing;
             </label>
             <div class="control max-w-xl">
                 <textarea name="emails"
-                          class="w-full"
+                          class="form-input w-full"
                           :class="emailsContainsErrors"
                           rows="5"
                           id="email_address"
@@ -87,7 +87,7 @@ use Magento\Wishlist\Block\Customer\Sharing;
         <div class="field text">
             <label class="label" for="message"><span><?= $escaper->escapeHtml(__('Message')) ?></span></label>
             <div class="control max-w-xl">
-                <textarea id="message" name="message" class="w-full" rows="5" maxlength="<?= (int) $block->getTextSharingLimit() ?>"><?= /* @noEscape */ $block->getEnteredData('message') ?></textarea>
+                <textarea id="message" name="message" class="form-input w-full" rows="5" maxlength="<?= (int) $block->getTextSharingLimit() ?>"><?= /* @noEscape */ $block->getEnteredData('message') ?></textarea>
             </div>
         </div>
     </fieldset>
