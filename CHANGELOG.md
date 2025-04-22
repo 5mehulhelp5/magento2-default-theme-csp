@@ -9,9 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.13...main
 
-## [1.3.13] - 2025-04-22
+## [1.3.13 CSP] - 2025-04-22
 
-[1.3.13]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.12...1.3.13
+[1.3.13 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.12...1.3.13
 
 ### Added
 
@@ -50,6 +50,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - **Fix missing list semantics**
     For more information, please refer to [issue #1085](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1085).
+
+- **Fix missing refactoring for CSP compatibility**
+    For more information, please refer to [issue #10](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/issues/10).
+
+- **Move generic inline scripts to global sections to reduce the number of scripts on one page**
+    With CSP on one page where these are loaded more then once this will add up to the sha256 headers while not adding anything anymore because they're generic now.
+    For more information, please refer to [issue #5](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/issues/5).
 
 ### Removed
 
