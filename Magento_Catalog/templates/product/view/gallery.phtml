@@ -166,9 +166,7 @@ $productName = $block->getProduct()->getName();
                     class="p-2.5 flex items-center justify-center self-stretch text-black outline-none focus:outline-none flex-none"
                     :class="prevButtonClasses"
                     @click="scrollPrevious"
-                >
-                    <?= $heroicons->chevronLeftHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                </button>
+                ><?= $heroicons->chevronLeftHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
                 <div class="js_thumbs_slides thumbs-wrapper relative flex flex-nowrap w-full overflow-auto js_slides snap"
                      x-ref="jsThumbSlides"
                      @scroll.debounce="onScroll"
@@ -210,9 +208,7 @@ $productName = $block->getProduct()->getName();
                     class="p-2.5 flex items-center justify-center self-stretch text-black outline-none focus:outline-none flex-none"
                     :class="nextButtonClasses"
                     @click="scrollNext"
-                >
-                    <?= $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
-                </button>
+                ><?= $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
             </div>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">

@@ -30,6 +30,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
 
 /** @var ViewModelRegistry $viewModels */
 
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
 /** @var SearchHelper $helper */
 $helper = $this->helper(SearchHelper::class);
 
@@ -150,25 +153,25 @@ $searchConfig = $viewModels->require(SearchConfig::class);
         </form>
     </search>
     <?php if ($searchConfig->isSuggestionsAllowed()): ?>
-    <template x-if="suggestions.length">
-        <nav
-            aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
-            class="flex flex-col mt-1 text-grey-800 gap-1"
-        >
-            <template x-for="suggestion in suggestions">
-                <button
-                    type="button"
-                    class="flex justify-between p-2 bg-container-lighter even:bg-container border border-container hover:bg-container-darker"
-                    @click="searchSuggestion"
-                    @keydown.enter="searchSuggestion"
-                    @keydown.arrow-up.prevent="focusArrowUp"
-                    @keydown.arrow-down.prevent="focusArrowDown"
-                >
-                    <span x-text="suggestion.title"></span>
-                    <span x-text="suggestion.num_results"></span>
-                </button>
-            </template>
-        </nav>
-    </template>
+        <template x-if="suggestions.length">
+            <nav
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
+                class="flex flex-col mt-1 text-grey-800 gap-1"
+            >
+                <template x-for="suggestion in suggestions">
+                    <button
+                        type="button"
+                        class="flex justify-between p-2 bg-container-lighter even:bg-container border border-container hover:bg-container-darker"
+                        @click="searchSuggestion"
+                        @keydown.enter="searchSuggestion"
+                        @keydown.arrow-up.prevent="focusArrowUp"
+                        @keydown.arrow-down.prevent="focusArrowDown"
+                    >
+                        <span x-text="suggestion.title"></span>
+                        <span x-text="suggestion.num_results"></span>
+                    </button>
+                </template>
+            </nav>
+        </template>
     <?php endif ?>
 </div>

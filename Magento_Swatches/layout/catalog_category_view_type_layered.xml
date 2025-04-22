@@ -6,12 +6,14 @@
  * This product is licensed per Magento install
  * See https://hyva.io/license
  */
- -->
-<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="product.info.additional.actions">
-            <block name="product.info.emailtofriend" template="Magento_SendFriend::product/view/emailtofriend.phtml"/>
+        <referenceContainer name="before.body.end">
+            <block name="product.info.options.swatch.layered"
+                   template="Magento_Swatches::product/js/layered-swatch.phtml"
+            />
         </referenceContainer>
     </body>
 </page>

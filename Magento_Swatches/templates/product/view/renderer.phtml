@@ -39,13 +39,18 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
 ?>
 <?php if ($product->isSaleable() && count($attributes)): ?>
     <script>
-        function initConfigurableSwatchOptions_<?= (int) $productId ?>() {
+        function initViewConfigurableSwatchOptions() {
+            const dataset = this.$el.dataset,
+                productId = dataset.productId,
+                optionConfig = JSON.parse(dataset.config),
+                swatchOptions = JSON.parse(dataset.swatchOptions);
+
             const configurableOptionsComponent = initConfigurableOptions(
-                '<?= (int) $productId ?>',
-                <?= /* @noEscape */ $block->getJsonConfig() ?>
+                productId,
+                optionConfig
             );
             const swatchOptionsComponent = initSwatchOptions(
-                <?= /* @noEscape */ $block->getJsonSwatchConfig() ?>
+                swatchOptions
             );
             const configurableOptionsComponentInit = configurableOptionsComponent.init;
 
@@ -60,10 +65,13 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                 }
             );
         }
-        window.addEventListener('alpine:init', () => Alpine.data('initConfigurableSwatchOptions_<?= (int) $productId ?>', initConfigurableSwatchOptions_<?= (int) $productId ?>), {once: true})
+        window.addEventListener('alpine:init', () => Alpine.data('initViewConfigurableSwatchOptions', initViewConfigurableSwatchOptions), {once: true})
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
-    <div x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>"
+    <div x-data="initViewConfigurableSwatchOptions"
+         data-product-id="<?= (int) $productId ?>"
+         data-config="<?= $escaper->escapeHtmlAttr($block->getJsonConfig()) ?>"
+         data-swatch-options="<?= $escaper->escapeHtmlAttr($block->getJsonSwatchConfig()) ?>"
          @private-content-loaded.window="onGetCartData"
          class="relative mb-6"
          data-product-id="<?= (int) $productId ?>"
