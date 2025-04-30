@@ -39,6 +39,15 @@ $swatchData = $block->getSwatchData();
                         return "text"
                 }
             },
+            getSwatchBackgroundStyle(type, value, image) {
+                if (this.getSwatchType(type) === "color") {
+                    return 'background-color:' + value;
+                } else if (this.getSwatchType(type) === "image") {
+                    return "background: #ffffff url('" + image + "') no-repeat center";
+                } else {
+                    return '';
+                }
+            },
             activeTooltipItem: false,
             tooltipPositionElement: false,
             isTooltipVisible() {
