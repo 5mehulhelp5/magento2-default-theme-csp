@@ -27,6 +27,7 @@ $uniqueId = $productId . uniqid();
 <?php if ($block->isReviewEnabled()): ?>
     <div
         x-data="initRating<?= /* @noEscape */ $uniqueId ?>()"
+        x-defer="intersect"
         @keyup.enter="scrollToRatings()"
         @click="scrollToRatings()"
         class="rating-summary flex"
@@ -37,7 +38,7 @@ $uniqueId = $productId . uniqid();
         <?php if ($reviewCount): ?>
             itemprop="aggregateRating"
             itemscope
-            itemtype="http://schema.org/AggregateRating"
+            itemtype="https://schema.org/AggregateRating"
         <?php endif; ?>
         :tabindex="reviewsSection ? '0' : '-1'"
         :aria-label="reviewsSection

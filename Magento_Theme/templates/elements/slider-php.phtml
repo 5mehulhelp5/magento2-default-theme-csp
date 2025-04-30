@@ -95,8 +95,14 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
 </script>
 <section class="<?= $escaper->escapeHtmlAttr($sliderSectionClasses) ?>"
          x-data="initSliderComponent()"
+         x-defer="intersect"
          x-init="calcPageSize();"
          @resize.window.debounce="calcPageSize(); $nextTick( function() { calcActive() })"
+         role="group"
+         aria-roledescription="<?= $escaper->escapeHtmlAttr(__('Carousel')) ?>"
+         <?php if ($title): ?>
+         aria-label="<?= $escaper->escapeHtmlAttr(__('Carousel %1', $title)) ?>"
+         <?php endif; ?>
 >
     <?php if ($items): ?>
         <div class="relative">
@@ -113,8 +119,8 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                      @scroll.debounce="calcActive"
                 >
                     <?php foreach ($items as $item): ?>
-                        <div class="js_slide flex shrink-0 <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>">
-                            <div class="mx-1 card w-full card-interactive">
+                        <div class="js_slide flex flex-col shrink-0 <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>">
+                            <div class="mx-1 grow card w-full card-interactive">
                                  <?= $sliderItemRenderer->setItem($item)->toHtml() ?>
                             </div>
                         </div>
@@ -126,7 +132,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                     <?php endfor; ?>
                 </div>
             </div>
-            <div style="min-height: 65px">
+            <div style="min-height: 76px">
             <template x-if="itemCount > pageSize">
                 <div class="flex items-center justify-center py-4">
                     <button

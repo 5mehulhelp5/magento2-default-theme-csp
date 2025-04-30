@@ -48,7 +48,7 @@ $productType = $product->getTypeId();
         <?php foreach ($block->getAttributes() as $attributeConfig):
             $attribute = $attributesViewModel->getAttributeFromLayoutConfig($attributeConfig); ?>
             <?php if ($value = $attribute['value'] ?? null): ?>
-                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b <?=/* @noEscape */ $attribute['value'] ?: "" ?>">
+                <div class="flex border-t border-gray-300 py-2 last:mb-6 last:border-b attribute-<?=/* @noEscape */ $attribute['code'] ?: "" ?>">
                     <dt class="w-1/2 text-left text-gray-700 product-detail-label">
                         <?= $escaper->escapeHtml($attribute['label']) ?>
                     </dt>
@@ -83,18 +83,17 @@ $productType = $product->getTypeId();
 
     </div>
 
-    <?php if ($product->isSaleable()): ?>
+    <?php if ($product->isSaleable() && $block->getChildHtml('addtocart.shortcut.buttons')): ?>
         <div class="flex mt-4 justify-end">
             <?= $block->getChildHtml('addtocart.shortcut.buttons') ?>
         </div>
     <?php endif; ?>
 
-    <div class="flex mt-4 justify-end">
-        <?= $block->getChildHtml('product.info.addtowishlist'); ?>
-        <?= $block->getChildHtml('product.info.addtocompare'); ?>
-        <?= $block->getChildHtml('product.info.emailtofriend'); ?>
-        <?= $block->getChildHtml('product.info.additional.actions'); ?>
-    </div>
+    <?php if ($additionalActions = $block->getChildHtml('product.info.additional.actions')): ?>
+        <div class="flex mt-4 justify-end">
+            <?= /** @noEscape */ $additionalActions; ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($tierPriceBlock = $block->getChildHtml("product.price.tier")): ?>
         <div class="py-4 my-2 tier-price-container">
