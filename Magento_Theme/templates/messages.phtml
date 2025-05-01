@@ -47,7 +47,7 @@ $defaultSuccessMessageTimeout = $storeConfig->getStoreConfig('hyva_theme_general
                 return !!this.message;
             },
             removeMessage(index) {
-                this.messages[index] = undefined;
+                this.messages[Number.isInteger(index) ? index : this.index] = undefined;
             },
             addMessages(messages, hideAfter) {
                 messages.map((message) => {
