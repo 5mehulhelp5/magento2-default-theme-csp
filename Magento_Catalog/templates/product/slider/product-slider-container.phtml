@@ -76,7 +76,7 @@ if ($isSharedItemRenderer && $block->getChildBlock('slider.item.template')) {
 $maxVisibleSlides = $block->getData('max_visible') ?? 4;
 
 // Breakpoints for 1 visible slider items on mobile, 2 visible on md, 3 on lg and 4 on xl (see $sliderPageSize).
-$defaultSliderItemClasses = 'mr-2 py-1 md:w-1/2 lg:w-1/3 xl:w-1/4';
+$defaultSliderItemClasses = 'md:w-1/2 lg:w-1/3 xl:w-1/4';
 
 $sliderSectionClasses = $block->getData('maybe_purged_tailwind_section_classes') ?? 'my-12 text-gray-700 body-font';
 $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') ?? $defaultSliderItemClasses;
@@ -152,7 +152,7 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
     <?php if ($items): ?>
         <div class="relative">
             <?php if ($title): ?>
-                <div class="container flex flex-col items-center pt-6 pb-3 mx-auto mb-6 border-b-2
+                <div class="flex flex-col items-center pt-6 pb-3 px-6 mx-auto mb-6 border-b-2
                     border-gray-300 md:flex-row">
                     <<?= /* @noEscape */ $headingTag ?> class="text-2xl font-medium text-gray-900 title-font">
                         <?= $escaper->escapeHtml($title); ?>
@@ -186,9 +186,8 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                      @scroll.debounce="calcActive"
                 >
                     <?php foreach ($items as $product): ?>
-                        <div class="js_slide flex flex-col shrink-0 w-full <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
+                        <div class="js_slide flex shrink-0 w-full p-1 <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
                              role="group"
-                             :aria-hidden="<?= (int) $sliderIndex ?> > active && <?= (int) $sliderIndex ?> <= (active + pageSize) ? 'false' : 'true'"
                              aria-label="<?= $escaper->escapeHtmlAttr(__('Item %1', $sliderIndex++)) ?>"
                              :aria-describedby="`slide-desc-<?= $escaper->escapeHtmlAttr($product->getId()) ?>-${$id('slider-id')}`"
                         >
