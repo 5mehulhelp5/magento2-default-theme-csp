@@ -192,16 +192,20 @@ $swatchItemNumber = $block->getNumberSwatchesPerProduct();
                         x-bind="scrollEvents"
                         aria-label="<?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>"
                     >
-                        <template x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
-                                  :key="item.id">
+                        <template
+                            x-for="(item, index) in optionConfig.attributes[<?= (int) $attributeId ?>].options"
+                            :key="item.id"
+                        >
                             <div x-show="showMore || index < swatchLimit">
                                 <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
                             </div>
                         </template>
 
-                        <button class="inline-block my-0.5 ml-1.5 p-0.5 text-sm hover:underline"
-                                x-show="!showMore && optionConfig.attributes[<?= (int) $attributeId ?>].options.length > swatchLimit"
-                                @click.prevent="showMore = true">
+                        <button
+                            class="inline-block my-0.5 ml-1.5 p-0.5 text-sm hover:underline"
+                            x-show="!showMore && optionConfig.attributes[<?= (int) $attributeId ?>].options.length > swatchLimit"
+                            @click.prevent="showMore = true"
+                        >
                             <?= $escaper->escapeHtml(__('More')) ?>
                         </button>
                     </div>
