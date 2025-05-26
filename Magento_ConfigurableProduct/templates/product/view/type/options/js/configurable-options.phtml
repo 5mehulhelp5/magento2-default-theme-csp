@@ -63,7 +63,7 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 )
             },
             ['!optionIsActive']() {
-                <?php /* @deprecated in favor of notOptionIsActive due to incompatibility with regular Alpine */ `>
+                <?php /* @deprecated in favor of notOptionIsActive due to incompatibility with regular Alpine */ ?>
                 return ! this.optionIsActive();
             },
             ['notOptionIsActive']() {
