@@ -7,7 +7,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.13...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.14...main
+
+## [1.3.14 CSP] - 2025-05-26
+
+### Added
+
+- Nothing added
+
+### Changed
+
+- **Replace property reference with function in Gift Message**
+    For more information, please refer to [merge request #20](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/merge_requests/20).
+
+- **In the module hyva.createBooleanObject() the name is no longer a method**
+    For more information, please refer to [issue #9](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/issues/9).
+
+### Removed
+
+- Nothign removed
 
 ## [1.3.14] - 2025-05-26
 
