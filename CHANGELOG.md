@@ -25,9 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Fix missing type button to calendar button to stop preventing form submit on enter**
   For more information, please refer to [issue #1179](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1179)
 
-- **Fix missing title and change icon to be aria-hidden**
-  For more information, please refer to [issue #1197](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1197)
-
 - **Set message index to remove from the value passed through setHideTimeOut in messages.phtml**
   For more information, please refer to [issue #1195](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1195)
 
