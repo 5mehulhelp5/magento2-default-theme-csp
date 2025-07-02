@@ -181,8 +181,8 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
             >
                 <?= $escaper->escapeHtml(__('Press to go to carousel navigation')) ?>
             </button>
-            <div class="flex-none relative w-full overflow-x-hidden">
-                <div class="relative flex flex-nowrap w-full overflow-auto js_slides snap md:px-1 xl:px-2"
+            <div class="flex-none relative w-full">
+                <div class="relative flex flex-nowrap -mx-1 overflow-auto js_slides snap"
                      @scroll.debounce="calcActive"
                 >
                     <?php foreach ($items as $product): ?>
