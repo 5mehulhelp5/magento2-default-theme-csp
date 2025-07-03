@@ -201,6 +201,7 @@ $viewModels->require(BlockJsDependencies::class)->setBlockTemplateDependency($bl
                 <?php if ($showAddToCompare): ?>
                 <button x-data="initCompareOnProductList"
                         x-defer="intersect"
+                        data-product-id="<?= (int) $productId ?>"
                         @click.prevent="addToCompare"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Add to Compare') . ' ' . $productName) ?>"
                         type="button"
