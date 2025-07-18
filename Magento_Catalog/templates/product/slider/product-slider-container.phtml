@@ -200,7 +200,11 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                 return {
                     'opacity-25 pointer-events-none': this.isNextSlideButtonDisabled()
                 }
-            }
+            },
+            showDummySlide()
+            {
+                return this.pageFillers > this.$el.dataset.dummySlideNumber;
+            },
         }
     }
 
@@ -270,7 +274,8 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                         <div
                             class="js_dummy_slide w-full shrink-0 <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
                             aria-hidden="true"
-                            x-show="pageFillers > <?= (int) $i ?>"
+                            data-dummy-slide-number="<?= (int)$i; ?>"
+                            x-show="showDummySlide"
                             x-cloak
                         ></div>
                     <?php endfor; ?>
