@@ -103,7 +103,9 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                 return this.itemCount > this.pageSize;
             },
             bulletClasses() {
-                const index = this.$el.dataset.index;
+                const dataIndex = this.$el.closest('[data-index]').dataset.index;
+                const index = dataIndex ? parseInt(dataIndex) : 0;
+
                 return {
                     'bg-opacity-100': this.active === index,
                     'bg-opacity-25': this.active !== index,
@@ -192,11 +194,20 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                     </button>
                     <div class="flex flex-wrap w-full md:w-auto justify-center">
                     <?php for ($i=0; $i < $itemCount; $i++): ?>
-                        <span class="shrink-0 block w-3 h-3 m-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
-                              data-index="<?= (int) $i ?>"
-                              :class="bulletClasses"
-                              @click="scrollTo">
-                        </span>
+                        <button
+                            type="button"
+                            data-index="<?= (int) $i ?>"
+                            :class="scrollToSlideButtonClasses"
+                            :aria-current="scrollToSlideButtonAriaCurrent"
+                            :aria-label="scrollToSlideButtonAriaLabel"
+                            @click="scrollTo"
+                        >
+                            <span
+                                class="shrink-0 block w-3 h-3 m-4 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
+                                :class="bulletClasses"
+                                @click="scrollTo"
+                            ></span>
+                        </button>
                     <?php endfor; ?>
                     </div>
                     <button
