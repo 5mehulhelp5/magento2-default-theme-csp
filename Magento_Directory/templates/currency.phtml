@@ -46,7 +46,7 @@ $currencyViewModel = $viewModels->require(Currency::class);
                         @click.outside="setOpenFalse"
                         @keydown.window.escape="setOpenFalse"
                         type="button"
-                        class="inline-flex justify-center w-full form-select px-4 py-2 bg-white focus:outline-none"
+                        class="form-select w-full pl-4"
                         aria-haspopup="true"
                         :aria-expanded="ariaExpanded"
                 >
@@ -54,7 +54,6 @@ $currencyViewModel = $viewModels->require(Currency::class);
                     <?php if ($currencies[$currentCurrencyCode]): ?>
                         - <?= $escaper->escapeHtml($currencies[$currentCurrencyCode]) ?>
                     <?php endif; ?>
-                    <?= $heroiconsSolid->chevronDownHtml("flex self-center -mr-1 ml-2", 20, 20, ['aria-hidden' => 'true']) ?>
                 </button>
             </div>
             <nav x-cloak
