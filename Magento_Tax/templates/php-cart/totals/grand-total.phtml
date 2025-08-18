@@ -33,7 +33,8 @@ $magento = $viewModels->require(MagentoMetadata::class);
                  x-html="`${segment.title} ${excludingTaxMessage}` "
             ></div>
             <div class="w-5/12 text-right md:w-auto"
-                 <?php if ($magento->versionCompare('<', '2.4.6')): ?>
+                 <?php /* All Mage-OS releases with a version < 2.4.6 match Magento code >= 2.4.6 */ ?>
+                 <?php if ($magento->versionCompare('<', '2.4.6') && $magento->getDistributionName() === 'Magento'): ?>
                  x-text="hyva.formatPrice(totalsData.grand_total)"
                  <?php else: ?>
                  x-text="hyva.formatPrice(totalsData.grand_total - totalsData.tax_amount)"
