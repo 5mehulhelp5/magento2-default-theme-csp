@@ -25,7 +25,7 @@ use Magento\Framework\View\Element\Template;
                 transform -translate-x-1/2 -translate-y-full bg-white rounded-lg shadow-lg text-center"
                 :class="getTooltipWrapperClasses"
         >
-        <template x-if="isVisualSwatch(activeTooltipItem.attribute, activeTooltipItem.item)">
+        <template x-if="isVisualSwatch">
             <div class="inline-block border shadow-sm border-container"
                     :style="getTooltipImageStyle"
             ></div>

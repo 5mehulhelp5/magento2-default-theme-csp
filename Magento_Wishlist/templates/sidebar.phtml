@@ -105,7 +105,11 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
                 },
                 hasNoRequiredOptions() {
                     return !this.product.product_has_required_options;
-                }
+                },
+                hasItems()
+                {
+                    return this.itemCount > 0;
+                },
             }
         }
 
@@ -116,7 +120,7 @@ $heroiconsOutline = $viewModels->require(HeroiconsOutline::class);
          @private-content-loaded.window="receiveWishlistData"
          class="wishlist-widget"
     >
-        <template x-if="itemCount">
+        <template x-if="hasItems">
             <div class="mt-8">
                 <h2 class="border-t border-container mb-6 pt-5" id="wishlist-sidebar">
                     <strong class="title font-semibold text-lg"><?= $escaper->escapeHtml($block->getTitle()) ?></strong>
