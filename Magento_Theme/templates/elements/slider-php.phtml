@@ -49,8 +49,6 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
 
 ?>
 <script>
-    'use strict';
-
     function initSliderComponent() {
         return {
             active: 0,
@@ -99,28 +97,38 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                 this.calcPageSize();
                 this.$nextTick(() => this.calcActive())
             },
-            sliderItemClasses() {
-                const index = this.$el.dataset.index;
-                return {
-                    'js_dummy_slide flex-none w-full <?= $escaper->escapeJs($slideItemClasses) ?>' : pageFillers > index
-                }
-            },
             isItemCountGtPageSize() {
                 return this.itemCount > this.pageSize;
             },
-            buttonClasses() {
-                return {
-                    'opacity-25 pointer-events-none' : active === 0
-                };
-            },
             bulletClasses() {
-                const index = this.$el.dataset.index;
+                const dataIndex = this.$el.closest('[data-index]').dataset.index;
+                const index = dataIndex ? parseInt(dataIndex) : 0;
+
                 return {
                     'bg-opacity-100': this.active === index,
                     'bg-opacity-25': this.active !== index,
                     'hidden': (this.pageSize !== 1 && !!(index % this.pageSize))
                 };
-            }
+            },
+            isPreviousSlideButtonDisabled() {
+                return this.active === 0;
+            },
+            previousSlideButtonClasses() {
+                return {
+                    'opacity-25 pointer-events-none': this.isPreviousSlideButtonDisabled()
+                }
+            },
+            isNextSlideButtonDisabled() {
+                return this.active >= this.itemCount - this.pageSize;
+            },
+            nextSlideButtonClasses() {
+                return {
+                    'opacity-25 pointer-events-none': this.isNextSlideButtonDisabled()
+                }
+            },
+            showDummySlide() {
+                return this.pageFillers > this.$el.dataset.dummySlideNumber;
+            },
         }
     }
     window.addEventListener('alpine:init', () => Alpine.data('initSliderComponent', initSliderComponent), {once: true})
@@ -159,36 +167,54 @@ $slideItemClasses = $block->getData('maybe_purged_tailwind_slide_item_classes') 
                         </div>
                     <?php endforeach; ?>
                     <?php for ($i = 0; $i < $maxVisibleSlides; $i++): /* Add empty filler slides in case the number of items is not dividable by the pagesize */ ?>
-                    <div :class="sliderItemClasses" data-index="<?= (int) $i ?>"></div>
+                        <div
+                            class="js_dummy_slide w-full shrink-0 <?= $escaper->escapeHtmlAttr($slideItemClasses) ?>"
+                            aria-hidden="true"
+                            data-dummy-slide-number="<?= (int)$i; ?>"
+                            x-show="showDummySlide"
+                            x-cloak
+                        ></div>
                     <?php endfor; ?>
                 </div>
             </div>
             <div style="min-height: 76px">
             <template x-if="isItemCountGtPageSize">
                 <div class="flex items-center justify-center py-4">
-                    <button
-                        aria-label="<?= $escaper->escapeHtml(__('Previous')) ?>"
-                        tabindex="-1"
-                        class="mr-4 text-black rounded-full outline-none focus:outline-none flex-none"
-                        :class="buttonClasses"
-                        @click="scrollPrevious">
+                                        <button
+                        type="button"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Previous slide')) ?>"
+                        :disabled="isPreviousSlideButtonDisabled"
+                        class="text-black flex-none p-3"
+                        :class="previousSlideButtonClasses"
+                        @click="scrollPrevious"
+                    >
                         <?= $heroicons->chevronLeftHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
                     </button>
                     <div class="flex flex-wrap w-full md:w-auto justify-center">
                     <?php for ($i=0; $i < $itemCount; $i++): ?>
-                        <span class="shrink-0 block w-3 h-3 m-1 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
-                              data-index="<?= (int) $i ?>"
-                              :class="bulletClasses"
-                              @click="scrollTo">
-                        </span>
+                        <button
+                            type="button"
+                            data-index="<?= (int) $i ?>"
+                            :class="scrollToSlideButtonClasses"
+                            :aria-current="scrollToSlideButtonAriaCurrent"
+                            :aria-label="scrollToSlideButtonAriaLabel"
+                            @click="scrollTo"
+                        >
+                            <span
+                                class="shrink-0 block w-3 h-3 m-4 bg-black bg-opacity-25 rounded-full shadow cursor-pointer"
+                                :class="bulletClasses"
+                                @click="scrollTo"
+                            ></span>
+                        </button>
                     <?php endfor; ?>
                     </div>
                     <button
-                        aria-label="<?= $escaper->escapeHtml(__('Next')) ?>"
-                        tabindex="-1"
-                        class="ml-4 text-black rounded-full outline-none focus:outline-none flex-none"
-                        :class="{ 'opacity-25 pointer-events-none' : active >= itemCount-pageSize }"
-                        @click="scrollNext">
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Next slide')) ?>"
+                        :disabled="isNextSlideButtonDisabled"
+                        class="text-black flex-none p-3"
+                        :class="nextSlideButtonClasses"
+                        @click="scrollNext"
+                    >
                         <?= $heroicons->chevronRightHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
                     </button>
                 </div>

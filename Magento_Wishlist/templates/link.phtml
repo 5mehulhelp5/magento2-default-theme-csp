@@ -29,7 +29,7 @@ $urlPath = $block->getData('path') ?? 'wishlist';
     @private-content-loaded.window="updateItemCount"
 >
     <?= $escaper->escapeHtml($label) ?>
-    <template x-if="itemCount">
+    <template x-if="hasItems">
         <span class="tabular-nums" x-text="itemCountText"></span>
     </template>
 </a>
@@ -44,7 +44,11 @@ $urlPath = $block->getData('path') ?? 'wishlist';
             },
             itemCountText() {
                 return `(${this.itemCount})`
-            }
+            },
+            hasItems()
+            {
+                return this.itemCount > 0;
+            },
         }
     }
 

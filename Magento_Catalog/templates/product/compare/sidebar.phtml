@@ -94,7 +94,10 @@ function initCompareOnCompareSidebar() {
         },
         productAriaLabel() {
             return hyva.str(this.$el.dataset.ariaLabel, this.product.name)
-        }
+        },
+        hasItems() {
+            return this.itemCount > 0;
+        },
     }
 }
 
@@ -130,7 +133,7 @@ window.addEventListener('alpine:init', () => {
      @private-content-loaded.window="receiveCompareData"
      class="compare-widget"
 >
-    <template x-if="itemCount">
+    <template x-if="hasItems">
         <div class="mt-8">
             <h2 class="border-t border-container mb-6 pt-5 font-semibold text-lg"
                 id="compare-sidebar"
@@ -178,7 +181,7 @@ window.addEventListener('alpine:init', () => {
                     @click.prevent="clearCompare"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Remove all Products')) ?>"
                     class="btn text-sm shadow-none bg-transparent text-inherit">
-                    <span><?= $escaper->escapeHtml(__('Clear all')); ?></span>
+                    <span><?= $escaper->escapeHtml(__('Remove All')); ?></span>
                 </button>
             </div>
         </div>
