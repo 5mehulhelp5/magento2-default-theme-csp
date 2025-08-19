@@ -102,7 +102,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                             class="px-4 py-3"
                         >
                             <?= $heroiconssolid->eyeHtml('w-5 h-5', 20, 20, ['x-show' => 'notVisible', 'aria-hidden' => 'true']); ?>
-                            <template x-if="visible()">
+                            <template x-if="visible">
                                 <?= $heroiconssolid->eyeOffHtml('w-5 h-5', 20, 20, ['aria-hidden' => 'true']); ?>
                             </template>
                         </button>
