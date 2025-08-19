@@ -41,7 +41,8 @@ use Magento\Customer\Block\Account\AuthorizationLink;
             window.addEventListener('alpine:init', () => {
                 Alpine.data('initAccountLogoutHandler', initAccountLogoutHandler);
             }, { once: true } );
-        </script><?php $hyvaCsp->registerInlineScript(); ?>
+        </script>
+        <?php $hyvaCsp->registerInlineScript(); ?>
     </li>
 <?php else: ?>
     <li class="nav item">
