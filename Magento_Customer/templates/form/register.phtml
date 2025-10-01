@@ -53,9 +53,9 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
     <form class="form create account form-create-account"
           action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
           x-data="Object.assign(hyva.formValidation($el), initForm())"
-        <?php if ($block->getShowAddressFields()): ?>
-            @private-content-loaded.window="onPrivateContentLoaded(event.detail.data)"
-        <?php endif; ?>
+          <?php if ($block->getShowAddressFields()): ?>
+          @private-content-loaded.window="onPrivateContentLoaded(event.detail.data)"
+          <?php endif; ?>
           id="<?= $escaper->escapeHtmlAttr($formId) ?>"
           @submit.prevent="submitForm()"
           method="post" id="form-validate" enctype="multipart/form-data" autocomplete="off"
@@ -76,9 +76,9 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                         <input type="checkbox" name="is_subscribed"
                                title="<?= $escaper->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1"
                                id="is_subscribed"
-                            <?php if ($block->getFormData()->getIsSubscribed()): ?>
-                                checked
-                            <?php endif; ?>
+                                <?php if ($block->getFormData()->getIsSubscribed()): ?>
+                                    checked
+                                <?php endif; ?>
                                class="checkbox">
                         <label for="is_subscribed" class="label">
                             <span>
@@ -430,8 +430,8 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
             <div class="primary">
                 <button type="submit" class="action submit primary btn btn-primary disabled:opacity-75"
                         title="<?= $escaper->escapeHtmlAttr(__('Create an Account')) ?>"
-                    <?php if ($createAccountButtonViewModel->disabled()): ?> disabled data-recaptcha-btn<?php endif; ?>>
-                    <span><?= $escaper->escapeHtml(__('Create an Account')) ?></span>
+                        <?php if ($createAccountButtonViewModel->disabled()): ?> disabled data-recaptcha-btn<?php endif; ?>>
+                        <span><?= $escaper->escapeHtml(__('Create an Account')) ?></span>
                 </button>
             </div>
             <div class="secondary ml-4 self-center">
@@ -472,7 +472,7 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                 <?php if ($block->getShowAddressFields()): ?>
                 directoryData: {},
                 availableRegions: {},
-                <?php /* $block->getRegion() returns an ID or a region name. The selectedRegion is used only for selects, so it must be an int. String names result in 0 when cast to int. */ ?>
+                    <?php /* $block->getRegion() returns an ID or a region name. The selectedRegion is used only for selects, so it must be an int. String names result in 0 when cast to int. */ ?>
                 selectedRegion: <?= (int) $block->getRegion() ?>,
                 isZipRequired: true,
                 isRegionRequired: true,
