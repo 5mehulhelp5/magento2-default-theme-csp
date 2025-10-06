@@ -1,7 +1,7 @@
 @layer components {
     .snap-slider {
         --snap-cols: 1;
-        --snap-gap: theme("gap.4");
+        --snap-gap: theme(spacing.4);
         --snap-size: calc(
             (100% - var(--snap-gap) * (var(--snap-cols) - 1)) / var(--snap-cols)
         );
@@ -9,7 +9,7 @@
         grid-auto-flow: column;
         grid-auto-columns: var(--snap-size);
         gap: var(--snap-gap);
-        padding-block: theme("spacing.6");
+        padding-block: theme(spacing.6);
         overflow-x: auto;
         overscroll-behavior-x: contain;
         scroll-snap-type: x mandatory;
@@ -25,15 +25,34 @@
     }
 
     .snap-pager {
-        @apply flex flex-wrap justify-center gap-2 py-2 min-h-11;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: theme(spacing.3);
+        min-block-size: theme(spacing.11);
+        padding-block: theme(spacing.2);
     }
 
     .snap-marker {
-        @apply shrink-0 w-3 h-3 m-2 rounded-full bg-slate-400 cursor-pointer;
-        transition: width 150ms, background-color 150ms;
+        flex-shrink: 0;
+        block-size: theme(spacing.4);
+        inline-size: theme(spacing.4);
+        border-width: 1px;
+        border-color: theme(colors.slate.600);
+        border-radius: theme(borderRadius.lg);
+        transition-duration: 300ms;
+        transition-property: border-color, background-color;
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition-property: inline-size, border-color, background-color;
+            will-change: inline-size;
+        }
 
         &[aria-current="true"] {
-            @apply w-6 bg-slate-700;
+            inline-size: theme(spacing.7);
+            border-color: #0000;
+            background-color: theme(colors.primary.DEFAULT);
         }
     }
 }
