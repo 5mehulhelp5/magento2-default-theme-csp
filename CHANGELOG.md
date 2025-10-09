@@ -41,6 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Fixed Bad A11Y link in empty cart**  
   For more information, please refer to [issue #911](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/911)
 
+- **Respect show out of stock setting for dropdown options**  
+  For more information, please refer to [issue #1224](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1224)
+
+  Many thanks to Simon Sprankel (Customgento) for the contribution!
+
 ### Removed
 
 - **Removed the scroll to review function summary short**  
