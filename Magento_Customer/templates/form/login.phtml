@@ -75,11 +75,9 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                     </label>
                     <div class="control flex items-center">
                         <div class="sr-only" aria-live="polite">
-                            <template x-if="!showPassword">
-                                <span>
-                                    <?= $escaper->escapeHtml(__('Password hidden')) ?>
-                                </span>
-                            </template>
+                            <span x-show="!showPassword">
+                                <?= $escaper->escapeHtml(__('Password hidden')) ?>
+                            </span>
                             <template x-if="showPassword">
                                 <span>
                                     <?= $escaper->escapeHtml(__('Password shown')) ?>
@@ -101,9 +99,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                             class="px-4 py-3"
                             :aria-label="showPassword ? '<?= $escaper->escapeJs(__('Hide Password')) ?>' : '<?= $escaper->escapeJs(__('Show Password')) ?>'"
                         >
-                            <template x-if="!showPassword">
-                                <?= $heroiconssolid->eyeHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
-                            </template>
+                            <?= $heroiconssolid->eyeHtml('', 20, 20, ['x-show' => '!showPassword', 'aria-hidden' => 'true']); ?>
                             <template x-if="showPassword">
                                 <?= $heroiconssolid->eyeOffHtml('', 20, 20, ['aria-hidden' => 'true']); ?>
                             </template>
