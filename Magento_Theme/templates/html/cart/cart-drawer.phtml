@@ -157,13 +157,13 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 ['@keydown.escape']() {
                     this.closeCartDrawer();
                 },
-				['@pageshow.window'](event) {
+                ['@pageshow.window'](event) {
                     if (event.persisted) {
                         this.closeCartDrawer();
                         this.reloadData();
                     };
-				}
-		  	}
+                }
+            }
         }
     }
 </script>
