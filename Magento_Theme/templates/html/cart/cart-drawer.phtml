@@ -32,6 +32,9 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             cart: {},
             maxItemsToDisplay: <?= (int) $maxItemsToDisplay ?>,
             itemsCount: 0,
+            reloadData() {
+                window.dispatchEvent(new CustomEvent('reload-customer-section-data'));
+            },
             getData(data) {
                 if (data.cart) {
                     this.cart = data.cart;
@@ -136,17 +139,32 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                 hyva.activateScripts(contentNode);
 
                 return contentNode.innerHTML;
-            }
+            },
+            eventListeners: {
+                ['@private-content-loaded.window']() {
+                    this.getData(this.$event.detail.data);
+                },
+                ['@toggle-cart.window']() {
+                    this.toggleCartDrawer(this.$event);
+                },
+                ['@keydown.escape']() {
+                    this.closeCartDrawer();
+                },
+				['@pageshow.window'](event) {
+                    if (!event.persisted) return;
+                    this.closeCartDrawer();
+                    this.reloadData();
+				}
+		  	}
         }
     }
 </script>
-<section x-cloak
-         x-show="cart"
-         id="cart-drawer"
-         x-data="initCartDrawer()"
-         @private-content-loaded.window="getData($event.detail.data)"
-         @toggle-cart.window="toggleCartDrawer($event)"
-         @keydown.escape="closeCartDrawer"
+<section
+    id="cart-drawer"
+    x-data="initCartDrawer()"
+    x-bind="eventListeners"
+    x-show="cart"
+    x-cloak
 >
     <div role="dialog"
          aria-labelledby="cart-drawer-title"

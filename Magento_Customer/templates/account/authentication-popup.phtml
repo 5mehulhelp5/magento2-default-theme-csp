@@ -121,6 +121,21 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
                         window.location.href = this.checkoutUrl;
                     }
                 });
+            },
+            eventListeners: {
+                ['@private-content-loaded.window']() {
+                    this.onPrivateContentLoaded();
+                },
+                ['@toggle-authentication.window']() {
+                    this.redirectIfAuthenticated();
+                },
+                ['@keydown.window.escape']() {
+                    this.close();
+                },
+                ['@pageshow.window'](event) {
+                    if (!event.persisted && !this.open) return;
+                    this.close();
+				}
             }
         }
     }
@@ -128,11 +143,10 @@ $isAutocompleteEnabled = $storeConfig->getStoreConfig('customer/password/autocom
     window.addEventListener('alpine:init', () => Alpine.data('initAuthentication', initAuthentication), {once: true})
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<section id="authentication-popup"
-         x-data="initAuthentication"
-         @private-content-loaded.window="onPrivateContentLoaded"
-         @toggle-authentication.window="redirectIfAuthenticated"
-         @keydown.window.escape="close"
+<section
+    id="authentication-popup"
+    x-data="initAuthentication"
+    x-bind="eventListeners"
 >
     <div
         class="backdrop"
