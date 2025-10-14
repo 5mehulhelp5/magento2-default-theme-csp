@@ -24,11 +24,31 @@ $item = $block->getItem();
 $product = $item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 
+/** @var ProductStockItem $stockItemViewModel */
 $stockItemViewModel = $viewModels->require(ProductStockItem::class);
+
+$minSalesQty = $stockItemViewModel->getMinSaleQty($product);
+$maxSalesQty = $stockItemViewModel->getMaxSaleQty($product);
 $qty = $stockItemViewModel->isQtyDecimal($product)
     ? $block->getQty()
     : (int) $block->getQty();
 
+$step = $stockItemViewModel->getQtyIncrements($product)
+    ? $stockItemViewModel->getQtyIncrements($product)
+    : null;
+
+/**
+ * sets minimum and maximum values taking into account the values set in the admin,
+ * but taking into account the value of Qty Increments
+ */
+if ($step) {
+    $minSalesQty = ceil($minSalesQty / $step) * $step;
+    $maxSalesQty = floor($maxSalesQty / $step) * $step;
+    $qty = ceil($qty / $step) * $step;
+}
+
+$maxSalesQtyLength = ($maxSalesQty ? strlen((string) $maxSalesQty) : 4)
+    + (/* add one if decimal for separator */ (int) $stockItemViewModel->isQtyDecimal($product));
 
 ?>
 <tbody class="cart item bg-white even:bg-container-darker"
@@ -108,19 +128,28 @@ $qty = $stockItemViewModel->isQtyDecimal($product)
             </span>
             <div class="field qty">
                 <div class="control qty">
-                    <label for="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty">
-                        <span class="label sr-only"><?= $escaper->escapeHtml(__('Qty')) ?></span>
-                        <input id="cart-<?= $escaper->escapeHtmlAttr($item->getId()) ?>-qty"
-                               name="cart[<?= $escaper->escapeHtmlAttr($item->getId()) ?>][qty]"
-                               value="<?= $escaper->escapeHtmlAttr($qty) ?>"
-                               type="number"
-                               size="4"
-                               step="any"
-                               title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
-                               class="qty form-input px-2 py-2 w-20 text-center"
-                               required
-                               min="0"
-                               data-role="cart-item-qty">
+                    <label>
+                        <span class="sr-only"><?= $escaper->escapeHtml(__('Qty')) ?></span>
+                        <input
+                            name="cart[<?= $escaper->escapeHtmlAttr($item->getId()) ?>][qty]"
+                            value="<?= $escaper->escapeHtmlAttr($qty) ?>"
+                            title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
+                            class="qty form-input px-2 py-2 w-20 text-center"
+                            required
+                            <?php if ($stockItemViewModel->isQtyDecimal($product)): ?>
+                            type="text"
+                            pattern="[0-9]+(\.[0-9]{1,<?= /** @noEscape */ $maxSalesQtyLength ?>})?"
+                            inputmode="decimal"
+                            <?php else: ?>
+                            type="number"
+                            pattern="[0-9]{0,<?= /** @noEscape */ $maxSalesQtyLength ?>}"
+                            inputmode="numeric"
+                            <?php if ($minSalesQty): ?>min="<?= /** @noEscape */ $minSalesQty ?>"<?php endif; ?>
+                            <?php if ($maxSalesQty): ?>max="<?= /** @noEscape */ $maxSalesQty ?>"<?php endif; ?>
+                            <?php if ($step): ?>step="<?= /** @noEscape */ $step ?>"<?php endif; ?>
+                            <?php endif; ?>
+                            data-role="cart-item-qty"
+                        >
                     </label>
                 </div>
             </div>
