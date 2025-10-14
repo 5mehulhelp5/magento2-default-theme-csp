@@ -66,7 +66,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                 ?>
                 <a
                     href="<?= $escaper->escapeUrl($block->getPreviousPageUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                    class="pages-item-previous <?= $pagerItemClass ?>"
+                    class="pages-item-previous <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                     <?php if ($block->isFirstPage()): ?>
                         aria-disabled="true"
                         tabindex="-1"
@@ -82,7 +82,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                         <li class="item hidden sm:block md:hidden lg:block">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getFirstPageUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                                class="page first <?= $pagerItemClass ?>"
+                                class="page first <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                                 aria-label="<?= $escaper->escapeHtml(__('Page') . ' 1') ?>"
                             ><?= $escaper->escapeHtml($localeFormatter->formatNumber(1)) ?></a>
                         </li>
@@ -92,7 +92,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                         <li class="item hidden sm:block">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getPreviousJumpUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                                class="page previous jump <?= $pagerItemClass ?>"
+                                class="page previous jump <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__(
                                     'Skip to page %1',
                                     $localeFormatter->formatNumber($block->getPreviousJumpPage())
@@ -119,7 +119,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                         <li class="item<?= $displayClasses ?>">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getPageUrl($page)) . /* @noEscape */ $paginationUrlAnchor ?>"
-                                class="<?= $pagerItemClass ?>"
+                                class="<?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                                 <?php if ($block->isPageCurrent($page)): ?>
                                     aria-current="page"
                                     aria-label="<?= $escaper->escapeHtml(__('You\'re currently reading page')) ?>"
@@ -134,7 +134,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                         <li class="item hidden sm:block">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getNextJumpUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                                class="page next jump <?= $pagerItemClass ?>"
+                                class="page next jump <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                                 aria-label="<?= $escaper->escapeHtmlAttr(__(
                                     'Skip to page %1',
                                     $localeFormatter->formatNumber($block->getNextJumpPage())
@@ -147,7 +147,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
                         <li class="item hidden sm:block md:hidden lg:block">
                             <a
                                 href="<?= $escaper->escapeUrl($block->getLastPageUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                                class="page last <?= $pagerItemClass ?>"
+                                class="page last <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                                 aria-label="<?= $escaper->escapeHtml(__('Page') . ' ' . $localeFormatter->formatNumber($block->getLastPageNum())) ?>"
                             ><?= $escaper->escapeHtml($localeFormatter->formatNumber($block->getLastPageNum())) ?></a>
                         </li>
@@ -156,7 +156,7 @@ $pagerItemClass = "btn btn-secondary border-1 border-gray-300 rounded-3xl p-2 te
 
                 <a
                     href="<?= $escaper->escapeUrl($block->getNextPageUrl()) . /* @noEscape */ $paginationUrlAnchor ?>"
-                    class="pages-item-next <?= $pagerItemClass ?>"
+                    class="pages-item-next <?= $escaper->escapeHtmlAttr($pagerItemClass) ?>"
                     <?php if ($block->isLastPage()): ?>
                         aria-disabled="true"
                         tabindex="-1"
