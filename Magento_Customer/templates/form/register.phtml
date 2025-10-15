@@ -79,7 +79,8 @@ $isAutocompleteEnabled = $block->getConfig('customer/password/autocomplete_on_st
                                 <?php if ($block->getFormData()->getIsSubscribed()): ?>
                                     checked
                                 <?php endif; ?>
-                               class="checkbox">
+                               class="checkbox"
+                               role="switch">
                         <label for="is_subscribed" class="label">
                             <span>
                                 <?= $escaper->escapeHtml(__('Sign Up for Newsletter')) ?>
