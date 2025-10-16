@@ -15,13 +15,12 @@
     }
 
     :disabled {
-       cursor: not-allowed;
+        cursor: not-allowed;
     }
 
     :target {
         scroll-margin-block: var(--anchor-offset, 6ex);
     }
-
 
     @media (prefers-reduced-motion: no-preference) {
         :where(html):has(:target) {

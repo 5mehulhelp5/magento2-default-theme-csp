@@ -6,6 +6,8 @@
  * See https://hyva.io/license
  */
 
+declare(strict_types=1);
+
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\SvgIcons;
 use Magento\Framework\View\Element\Template;
@@ -19,15 +21,15 @@ use Magento\Framework\Escaper;
 $hyvaicons = $viewModels->require(SvgIcons::class);
 ?>
 <div
-    class="z-50 fixed inset-0 grid place-items-center bg-white/70 text-slate-800"
-    x-cloak
+    class="z-50 fixed inset-0 flex justify-center items-center bg-white/70 select-none"
     x-show="isLoading"
+    x-cloak
     x-transition.opacity.duration.200ms
 >
-    <div class="flex gap-10 items-center p-4">
-        <?= $hyvaicons->loaderHtml('', 57, 57, ['aria-hidden' => 'true']); ?>
-        <span class="text-xl select-none">
+    <div class="flex items-center">
+        <?= $hyvaicons->renderHtml('loader', 'animate-spin', 54, 54, ['aria-hidden' => 'true']); ?>
+        <div class="ml-10 text-xl">
             <?= $escaper->escapeHtml(__('Loading...')) ?>
-        </span>
+        </div>
     </div>
 </div>
