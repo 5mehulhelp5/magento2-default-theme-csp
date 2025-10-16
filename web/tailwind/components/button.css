@@ -27,9 +27,7 @@
     font-weight: 500;
     user-select: none;
     vertical-align: middle;
-    transition-property: color, background-color, border-color, outline-color,
-        text-decoration-color, fill, stroke, --tw-gradient-from,
-        --tw-gradient-via, --tw-gradient-to;
+    transition-property: color, background-color, border-color, outline-color;
     transition-timing-function: var(--default-transition-timing-function);
     transition-duration: var(--default-transition-duration);
 
