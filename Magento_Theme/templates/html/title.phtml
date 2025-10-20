@@ -32,7 +32,7 @@ if (trim((string)$block->getPageHeading())) {
 <?php if ($titleHtml): ?>
 <div class="<?= $escaper->escapeHtmlAttr($titleContainerClasses . $textSizeCssClass) ?>">
     <<?= /* @noEscape */ $headingTag ?>
-        class="text-gray-900 page-title title-font"
+        class="page-title"
         <?php if ($block->getId()): ?>id="<?= $escaper->escapeHtmlAttr($block->getId()) ?>"<?php endif; ?>
         <?php if ($isAriaHidden): ?>aria-hidden="true"<?php endif; ?>
     >
