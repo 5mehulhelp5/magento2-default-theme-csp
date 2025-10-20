@@ -15,10 +15,10 @@ use Magento\Theme\Block\Html\Title;
 /** @var Title $block */
 
 $headingTag = $block->getData('heading_tag') ?: 'h1';
-$cssClasses = $block->getCssClasses() ?? $block->getCssClass() ?? 'text-3xl font-bold';
+$cssClasses = $block->getCssClasses() ?? $block->getCssClass() ?? 'text-3xl font-bold mb-6';
 $wrapperCssClasses = $block->getWrapperCssClasses()
     ?? $block->getData('maybe_purged_tailwind_section_classes')
-    ?? 'container flex flex-col md:flex-row flex-wrap my-6 lg:mt-8';
+    ?? 'container flex flex-col md:flex-row flex-wrap';
 $baseAttribute = $block->getAddBaseAttribute();
 
 $titleHtml = trim((string)$block->getPageHeading()) ?: '';
