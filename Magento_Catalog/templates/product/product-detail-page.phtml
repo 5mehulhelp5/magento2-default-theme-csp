@@ -23,15 +23,9 @@ use Magento\Framework\Escaper;
     <?= $block->getChildHtml('product.info') ?>
 </section>
 
-<section>
-    <?= $block->getChildHtml('product_options_wrapper_bottom') ?>
-</section>
-
+<?= $block->getChildHtml('product_options_wrapper_bottom') ?>
 <?= $block->getChildHtml('product.info.details'); ?>
-
-<section>
-    <?= $block->getChildHtml('related') ?>
-    <?= $block->getChildHtml('upsell') ?>
-    <?= $block->getChildHtml('review_list') ?>
-    <?= $block->getChildHtml('review_form') ?>
-</section>
+<?= $block->getChildHtml('related') ?>
+<?= $block->getChildHtml('upsell') ?>
+<?= $block->getChildHtml('review_list') ?>
+<?= $block->getChildHtml('review_form') ?>
