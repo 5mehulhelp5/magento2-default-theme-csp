@@ -225,7 +225,7 @@ if (! $isOrderLevelGiftOptionsEnabled && ! $isOrderLevelGiftWrappingEnabled) {
 <div x-data="initGiftOptions" x-bind="eventListeners">
     <button
         type="button"
-        class="btn"
+        class="btn w-full"
         aria-label="<?= $escaper->escapeHtml(__('Add Gift Options for the Entire Order')) ?>"
         @click="openDialog"
     >
