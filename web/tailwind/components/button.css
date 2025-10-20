@@ -67,11 +67,11 @@
 @utility btn-secondary {
     --btn-stroke: var(--color-primary-lighter);
     --btn-bg: var(--color-on-primary);
-    --btn-color: currentcolor;
+    --btn-color: var(--color-primary-darker);
 
-    --btn-hover-stroke: var(--color-primary);
+    --btn-hover-stroke: var(--color-primary-lighter);
     --btn-hover-bg: var(--color-on-primary);
-    --btn-hover-color: var(--color-primary);
+    --btn-hover-color: var(--color-primary-lighter);
 
     --btn-active-stroke: #0000;
     --btn-active-bg: var(--color-primary-darker);
