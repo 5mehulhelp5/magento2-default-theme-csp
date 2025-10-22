@@ -37,8 +37,8 @@ $showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishl
             searchOpen: false,
             cart: {},
             isCartOpen: false,
-            getData(data) {
-                this.cart = data.cart ?? {};
+            getData() {
+                this.cart = this.$event.detail.data.cart ?? {};
             },
             summaryCount() {
                 return this.cart.summary_count || 0;
