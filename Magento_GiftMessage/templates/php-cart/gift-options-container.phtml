@@ -147,6 +147,33 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
                     document.querySelector('form[action*="checkout/cart/updatePost/"]').submit()
                 });
             },
+            onInputRecipient() {
+                this.formMessage.recipient = this.$event.target.value;
+            },
+            onInputSender() {
+                this.formMessage.sender = this.$event.target.value;
+            },
+            onInputMessage() {
+                this.formMessage.message = this.$event.target.value;
+            },
+            getIdPrefixRecipient() {
+                return ['recipient'];
+            },
+            getIdRecipient() {
+                return this.$id('recipient');
+            },
+            getIdPrefixSender() {
+                return ['sender'];
+            },
+            getIdSender() {
+                return this.$id('sender');
+            },
+            getIdPrefixMessage() {
+                return ['message'];
+            },
+            getIdMessage() {
+                return this.$id('message');
+            },
             openDialog(event) {
                 this.formBlockVisibility = true
             },
