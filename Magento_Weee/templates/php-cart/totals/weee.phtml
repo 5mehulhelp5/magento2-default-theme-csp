@@ -8,13 +8,9 @@
 ?>
 <div x-data="initFixedProductTaxTotalSegment">
 <template x-if="isFptSegment">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-gray-300">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="formatTotalLabel"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             x-text="formatFptTotal"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-html="formatTotalLabel"></div>
+        <div x-text="formatFptTotal" class="justify-self-end"></div>
     </div>
 </template>
 </div>
