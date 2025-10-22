@@ -210,12 +210,12 @@ mutation createProductReviewMutation(
                                 <?= $escaper->escapeHtml(__('Loading...')) ?>
                             </div>
                         </div>
-                        <p x-show="displaySuccessMessage"
-                           x-cloak
-                           class="text-green flex items-center">
-                            <span class="inline-block w-8 h-8 mr-3">
-                                <?= $lucideIcons->circleCheckHtml('', 24, 24, ['aria-hidden' => true]); ?>
-                            </span>
+                        <p
+                            x-show="displaySuccessMessage"
+                            x-cloak
+                            class="text-green flex gap-4 items-center"
+                        >
+                            <?= $lucideIcons->circleCheckHtml('', 28, 28, ['aria-hidden' => true]); ?>
                             <?= $escaper->escapeHtml(__('You submitted your review for moderation.')) ?>
                         </p>
                         <template x-if="displayErrorMessage">
