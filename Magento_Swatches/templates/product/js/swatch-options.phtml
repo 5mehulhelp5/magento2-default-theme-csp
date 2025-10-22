@@ -173,10 +173,10 @@ use Magento\Framework\View\Element\Template;
             swatchOptionClasses() {
                 const attributeId = this.getDataAttributeId(this.$el);
                 return {
-                    'border-container-lighter ring ring-primary/50': (this.selectedValues[attributeId] === this.item.id),
-                    'border-container-darker': (this.selectedValues[attributeId] !== this.item.id),
+                    'border-gray-100 ring ring-primary/50': (this.selectedValues[attributeId] === this.item.id),
+                    'border-gray-300': (this.selectedValues[attributeId] !== this.item.id),
                     'w-6 h-6': !this.isTextSwatch(),
-                    'border-container-lighter ring ring-primary/75': this.focusedLabel === this.item.id,
+                    'border-gray-100 ring ring-primary/75': this.focusedLabel === this.item.id,
                 }
             },
             outOfStockSwatchWrapperClasses() {

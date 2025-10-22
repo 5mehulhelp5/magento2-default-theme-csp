@@ -9,8 +9,8 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\HeroiconsSolid;
 use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove;
 use Magento\Framework\Escaper;
 
@@ -19,10 +19,10 @@ use Magento\Framework\Escaper;
 /** @var HyvaCsp $hyvaCsp */
 /** @var Escaper $escaper */
 
-/** @var HeroiconsSolid $heroicons */
-$heroicons = $viewModels->require(HeroiconsSolid::class);
-$item = $block->getItem();
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
 
+$item = $block->getItem();
 if ($item->getProductType() === 'configurable') {
     $productOptions = $item->getProduct()->getTypeInstance()->getOrderOptions($item->getProduct());
     $productName = $productOptions["simple_name"];
@@ -31,7 +31,8 @@ if ($item->getProductType() === 'configurable') {
 }
 ?>
 <button
-    class="flex action action-delete"
+    type="button"
+    class="btn p-2"
     data-delete-post-json="<?= $escaper->escapeHtmlAttr($block->getDeletePostJson()) ?>"
     data-cart-item-removed-payload="<?= $escaper->escapeHtml(json_encode([
         'product_sku' => $item->getSku(),
@@ -41,7 +42,6 @@ if ($item->getProductType() === 'configurable') {
     ])) ?>"
     @click.prevent="removeItem"
     aria-label="<?= $escaper->escapeHtmlAttr(__('Remove %1', $productName)) ?>"
-    type="button"
 >
-    <?= $heroicons->trashHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+    <?= $lucideIcons->trashHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
 </button>

@@ -8,13 +8,9 @@
 ?>
 <div x-data="initSubtotalSegment">
 <template x-if="isSubtotal">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="segment.title"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             x-text="hyva.formatSubtotal"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-text="segment.title"></div>
+        <div x-text="hyva.formatSubtotal" class="justify-self-end"></div>
     </div>
 </template>
 </div>

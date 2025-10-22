@@ -9,48 +9,27 @@
 <div x-data="initShippingTotalSegment">
 <!-- display shipping including and excluding tax -->
 <template x-if="isShippingSegmentAndDisplayBoth">
-    <div>
-        <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-            <div class="w-7/12 text-left md:w-auto"
-                 x-html="formatTotalLabelExclTax"
-            ></div>
-            <div class="w-5/12 text-right md:w-auto"
-                 :data-amount="formatShippingAmount"
-            ></div>
-        </div>
-
-        <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-            <div class="w-7/12 text-left md:w-auto"
-                 x-html="formatTotalLabelInclTax"
-            ></div>
-            <div class="w-5/12 text-right md:w-auto"
-                 x-text="formatShippingInclTax"
-            ></div>
-        </div>
+    <div :class="wrapperClass">
+        <div x-text="formatTotalLabelExclTax"></div>
+        <div :data-amount="formatShippingAmount" class="justify-self-end"></div>
+        <div x-text="formatTotalLabelInclTax"></div>
+        <div x-text="formatShippingInclTax" class="justify-self-end"></div>>
     </div>
 </template>
 
 <!-- display shipping excluding tax -->
 <template x-if="isShippingSegmentAndDisplayExcl">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="formatTotalLabel"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             x-text="formatShippingTotalValue"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-text="formatTotalLabel"></div>
+        <div x-text="formatShippingTotalValue" class="justify-self-end"></div>
     </div>
 </template>
 
 <!-- display shipping including tax -->
 <template x-if="isShippingSegmentAndDisplayIncl">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="formatTotalLabel"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             x-text="formatShippingInclTax"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-text="formatTotalLabel"></div>
+        <div x-text="formatShippingInclTax" class="justify-self-end"></div>
     </div>
 </template>
 </div>

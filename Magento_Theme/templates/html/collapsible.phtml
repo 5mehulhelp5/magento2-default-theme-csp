@@ -47,7 +47,7 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
             <?= $escaper->escapeHtml($blockTitle) ?>
         </span>
         <span
-            class="px-1 py-1 border rounded border-container md:hidden"
+            class="px-1 py-1 border rounded border-gray-300 md:hidden"
             x-ref="AccountNavigationMobileToggleIcon"
         >
             <?= $heroicons->chevronDownHtml(
@@ -62,7 +62,7 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
         <nav
             id="<?= $escaper->escapeHtmlAttr($blockId) ?>"
             aria-labelledby="<?= $escaper->escapeHtmlAttr($blockId) ?>-title"
-            class="hidden md:block border-t pt-3 my-2 border-container"
+            class="hidden md:block border-t pt-3 my-2 border-gray-300"
             :class="hiddenIfOpen"
         >
             <?= $block->getChildHtml() ?>
@@ -70,7 +70,7 @@ $isNav = $block->getIsNav() !== null ? $block->getIsNav() : false;
     <?php else: ?>
         <div
             id="<?= $escaper->escapeHtmlAttr($blockId) ?>"
-            class="hidden md:block border-t pt-3 my-2 border-container"
+            class="hidden md:block border-t pt-3 my-2 border-gray-300"
             :class="hiddenIfOpen"
         >
             <?= $block->getChildHtml() ?>

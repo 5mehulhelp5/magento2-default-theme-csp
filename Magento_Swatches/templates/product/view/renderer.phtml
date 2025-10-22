@@ -83,10 +83,9 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                 <?php $attributeId = $attribute->getAttributeId(); ?>
                 <?php $productAttribute = $attribute->getProductAttribute();  ?>
                 <?php if ($swatchRendererViewModel->isSwatchAttribute($productAttribute)): ?>
-                    <div class="swatch-attribute border-t last:border-b border-container min-h-14
+                    <div class="swatch-attribute border-t last:border-b border-gray-300 min-h-14
                             <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
-                         data-attribute-id="<?= (int) $attributeId ?>"
-                    >
+                         data-attribute-id="<?= (int) $attributeId ?>">
                         <div class="flex flex-col sm:flex-row items-center py-4 sm:py-1 w-full border-gray-300">
 
                             <label
@@ -140,12 +139,14 @@ $tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
                                     x-for="(item, index) in getAllAttributeOptions"
                                     :key="item.id"
                                 >
-                                    <option
-                                        :value="item.id"
-                                        x-html="item.label"
-                                        :disabled="notOptionIsActive"
-                                        :selected="isSelected">
-                                    </option>
+                                    <template x-if="optionIsEnabled">
+                                        <option
+                                            :value="item.id"
+                                            x-html="item.label"
+                                            :disabled="notOptionIsActive"
+                                            :selected="isSelected">
+                                        </option>
+                                    </template>
                                 </template>
                             </select>
                         </div>

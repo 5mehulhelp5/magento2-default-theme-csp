@@ -34,7 +34,7 @@ $order = $block->getOrder();
     </div>
     <?= $block->getInvoiceCommentsHtml($invoice) ?>
     <div class="order-items invoice">
-        <div class="hidden lg:grid grid-cols-5 text-sm text-secondary ">
+        <div class="hidden lg:grid grid-cols-5 text-sm">
             <div class="p-2 col-span-2"><?= $escaper->escapeHtml(__('Product Name')) ?></div>
             <div class="p-2"><?= $escaper->escapeHtml(__('Price')) ?></div>
             <div class="p-2"><?= $escaper->escapeHtml(__('Qty Invoiced')) ?></div>
@@ -50,13 +50,13 @@ $order = $block->getOrder();
             }
             ?>
             <div class="<?= ($parentItem) ?
-                'child-item ml-2 px-4 mb-2 border-l-4 border-container text-sm' :
+                'child-item ml-2 px-4 mb-2 border-l-4 border-gray-300 text-sm' :
                 'parent-item mb-2'
             ?>">
                 <?= $block->getItemHtml($item) ?>
             </div>
         <?php endforeach; ?>
-        <div class="flex justify-end border-t border-container">
+        <div class="flex justify-end border-t border-gray-300">
             <div class="lg:w-1/3">
                 <div class="grid grid-cols-2 text-right p-2 gap-2">
                     <?= $block->getInvoiceTotalsHtml($invoice) ?>

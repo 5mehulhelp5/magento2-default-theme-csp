@@ -51,6 +51,7 @@ if (!$shoppingAssistanceViewModel->isLoginAsCustomerEnabled()) {
      x-data="initAllowShippingAssistance"
 >
     <input type="checkbox"
+           role="switch"
            @change="onChange"
            name="assistance_allowed_checkbox"
            id="assistance_allowed_checkbox"

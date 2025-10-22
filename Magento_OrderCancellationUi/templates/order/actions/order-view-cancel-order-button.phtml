@@ -56,7 +56,7 @@ $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getI
 <button
     x-data="initCancelOrderButton"
     type="button"
-    class="btn btn-secondary text-secondary-darker"
+    class="btn btn-secondary"
     data-order-id="<?= (int) $order->getId() ?>"
     data-increment-id="<?= $escaper->escapeHtmlAttr($order->getRealOrderId()) ?>"
     data-reasons="<?= $escaper->escapeHtmlAttr(json_encode(array_values($reasons))) ?>"
