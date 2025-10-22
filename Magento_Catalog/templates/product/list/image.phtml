@@ -34,6 +34,7 @@ $hasLoadingAttribute = ($block->getCustomAttributes() ?: [])['loading'] ?? false
     <?php if (!$hasLoadingAttribute): ?>
         loading="lazy"
     <?php endif; ?>
+    x-data="initProductItemImage"
     @update-gallery-<?= (int)$block->getProductId() ?>.window="updateImage"
     <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
         <?= $escaper->escapeHtmlAttr($name) ?>="<?= $escaper->escapeHtmlAttr($value) ?>"

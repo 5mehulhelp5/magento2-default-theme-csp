@@ -96,6 +96,11 @@ Same as default theme
 - **Fixed invalid a11y label if option is radio or has one value in bundle product**  
   For more information, please refer to [merge request #1361](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1361)
 
+- **Expand Gallery Update Event for the Product List Items to allows easier adjustment for custom images**  
+  For more information, please refer to [issue #1225](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1225)
+
+  Many thanks to Maxim Ganses (PHPro) for the contribution!
+
 ### Removed
 
 - **Removed the scroll to review function summary short**  
