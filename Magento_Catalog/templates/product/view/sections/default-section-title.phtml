@@ -15,8 +15,10 @@ use Magento\Framework\View\Element\AbstractBlock;
 /** @var Escaper $escaper */
 
 ?>
-<div class="flex pt-6 pb-3 px-6 mb-6 md:flex-row border-b-2 border-gray-300">
-    <h2 class="text-gray-900 text-2xl title-font font-base text-center md:text-left w-full">
-        <?= $sectionBlock->getTitle() ? $escaper->escapeHtml($sectionBlock->getTitle()) : '&nbsp;' ?>
+
+<?php if ($title = $sectionBlock->getTitle()): ?>
+    <h2 class="mb-6 text-2xl text-center md:text-left">
+        <?= $escaper->escapeHtml($title) ?>
     </h2>
-</div>
+<?php endif; ?>
+

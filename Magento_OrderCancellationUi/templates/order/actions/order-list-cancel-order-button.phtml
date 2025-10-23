@@ -53,7 +53,7 @@ $reasons = $orderCancellationUiConfig->getCancellationReasons((int) $order->getI
     <?php $hyvaCsp->registerInlineScript(); ?>
     <button
         type="button"
-        class="inline-block text-sm text-secondary-darker"
+        class="inline-block text-sm"
         title="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Cancel order') . ' ' . ltrim($order->getRealOrderId(), '0')) ?>"
         x-data="initCancelOrderButton"

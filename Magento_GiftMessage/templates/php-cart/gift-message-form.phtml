@@ -16,20 +16,10 @@ use Magento\Framework\View\Element\Template;
 
 ?>
 <div class="gift-message">
-    <div class="gift-options-title my-4">
-        <span>
-             <?= $escaper->escapeHtml(__('Gift Message (optional)')) ?>
-        </span>
-    </div>
     <div class="gift-options-content">
-        <fieldset class="fieldset">
-            <div class="field field-to" x-id="getIdPrefixRecipient">
-                <label
-                    :for="getIdRecipient"
-                    class="label"
-                >
-                    <span><?= $escaper->escapeHtml(__('To:')) ?></span>
-                </label>
+        <fieldset class="space-y-4">
+            <div class="field" x-id="getIdPrefixRecipient">
+                <label :for="getIdRecipient"><?= $escaper->escapeHtml(__('To:')) ?></label>
                 <div class="control">
                     <input
                         :id="getIdRecipient"
@@ -37,16 +27,13 @@ use Magento\Framework\View\Element\Template;
                         type="text"
                         @input="onInputRecipient"
                         @keydown.enter.prevent="submitGiftOption"
-                        class="form-input w-full disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
+                        class="form-input w-full"
                     >
                 </div>
             </div>
 
-            <div class="field field-from" x-id="getIdPrefixSender">
-                <label
-                    :for="getIdSender"
-                    class="label"
-                >
+            <div class="field" x-id="getIdPrefixSender">
+                <label :for="getIdSender">
                     <span><?= $escaper->escapeHtml(__('From:')) ?></span>
                 </label>
                 <div class="control">
@@ -56,24 +43,24 @@ use Magento\Framework\View\Element\Template;
                         type="text"
                         @input="onInputSender"
                         @keydown.enter.prevent="submitGiftOption"
-                        class="form-input w-full disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
+                        class="form-input w-full"
                     >
                 </div>
             </div>
-            <div class="field text" x-id="getIdPrefixMessage">
-                <label :for="getIdMessage" class="label">
+
+            <div class="field required" x-id="getIdPrefixMessage">
+                <label :for="getIdMessage">
                     <span><?= $escaper->escapeHtml(__('Message')) ?></span>
                 </label>
                 <div class="control">
                     <textarea
                         :id="getIdMessage"
                         @input="onInputMessage"
-                        class="form-input w-full disabled:opacity-75 disabled:bg-gray-100 disabled:pointer-events-none"
+                        class="form-input w-full"
                         rows="5"
                         cols="10"
                         x-text="formMessage.message"
-                    >
-                    </textarea>
+                    ></textarea>
                 </div>
             </div>
         </fieldset>

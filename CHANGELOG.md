@@ -7,7 +7,106 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.18-beta...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.0-beta...main
+
+## [1.4.0-beta CPS] - 2025-10-23
+
+[1.4.0-beta CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.3.18-beta...1.4.0-beta
+
+Same as default theme
+
+## [1.4.0-beta] - 2025-10-23
+
+[1.4.0-beta]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.3.18-beta...1.4.0-beta
+
+### Added
+
+- **Add checkout.cart.totals.scripts container to cart**  
+  For more information, please refer to [issue #1209](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1209)
+
+- **Implement Design Tokens**  
+  For more information, please refer to [issue #1203](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1203)
+
+- **Add support for 'Swatches per Product' config setting**  
+  For more information, please refer to [issue #1211](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1211)
+
+  Many thanks to Andrei Pavlikov (Perspective Magento Team) for the contribution!
+
+- **Add AlpineJs based HTML Dialog to the Header Mobile Menu and Minicart**
+  For more information, please refer to [merge request #1358](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1358)
+
+- **Add view-transitions to the theme as a stable feature**
+  For more information, please refer to [merge request #1360](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1360)
+
+### Changed
+
+- **Simplify cart data handling and improve toggle logic**  
+  For more information, please refer to [merge request #1226](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1226)
+
+  Many thanks to Thomas Hauschild (e3n) for the contribution!
+
+- **Improve way to handle call to null, edge case for Hyva CMS**  
+  For more information, please refer to [merge request #1347](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1347)
+
+- **Replace deprecated AbstractProduct class in product item**  
+  For more information, please refer to [merge request #781](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/781)
+
+  Many thanks to Andrzej Wiaderny (Hatimeria) for the contribution!
+
+- **Recaptcha badge is hidden the wrong way**  
+  For more information, please refer to [issue #1211](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1211)
+
+- **Update browser-sync to v3.0.3**  
+  For more information, please refer to [merge request #1188](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1188)
+
+- **Fixed the toggle action for the minicart panel**  
+  For more information, please refer to [issue #918](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/918)
+
+- **Fixed Bad A11Y link in empty cart**  
+  For more information, please refer to [issue #911](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/911)
+
+- **Respect show out of stock setting for dropdown options**  
+  For more information, please refer to [issue #1224](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1224)
+
+  Many thanks to Simon Sprankel (Customgento) for the contribution!
+
+- **Replaced Custom Js in Product Slider with Hyvä Snap Slider**  
+  For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
+
+- **Replaced GliderJs in PageBuilder Sliders with Hyvä Snap Slider**  
+  For more information, please refer to [issue #1227](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1227)
+
+- **Fix and Cleanup Category image template**  
+  For more information, please refer to [merge request #1263](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1263)
+
+- **Improve header layout and customization**  
+  This reworks the header layout removing most of the CSS order logic for native browser order fixing many UX/A11Y issues and making the header easier to customize.
+
+  For more information, please refer to [issue #1010](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1010)
+
+- **Update TailwindCSS to v4**  
+  For more information, please refer to [issue #1167](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1167)
+
+- **Add support for the native HTML input date in the DOB Widget**  
+  For more information, please refer to [merge request #1152](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1152)
+
+- **Fixed missing fieldset in forgetpassword form**  
+  For more information, please refer to [issue #1225](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1225)
+
+- **Fixed invalid a11y label if option is radio or has one value in bundle product**  
+  For more information, please refer to [merge request #1361](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1361)
+
+- **Expand Gallery Update Event for the Product List Items to allows easier adjustment for custom images**  
+  For more information, please refer to [issue #1225](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1225)
+
+  Many thanks to Maxim Ganses (PHPro) for the contribution!
+
+### Removed
+
+- **Removed the scroll to review function summary short**  
+  For more information, please refer to [issue #814](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/814)
+
+  Many thanks to Ivan Tarkovych (Perspective Magento Team) for the contribution!
 
 ## [1.3.18-beta CPS] - 2025-10-23
 

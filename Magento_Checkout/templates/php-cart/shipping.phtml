@@ -9,8 +9,9 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
-use Hyva\Theme\ViewModel\Cart\TotalsOutput;
+use Hyva\Theme\ViewModel\LucideIcons;
 use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\ViewModel\Cart\TotalsOutput;
 use Magento\Checkout\Block\Cart\Shipping;
 use Magento\Framework\Escaper;
 
@@ -18,10 +19,17 @@ use Magento\Framework\Escaper;
 /** @var Shipping $block */
 /** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
+
+/** @var LucideIcons $lucideIcons */
+$lucideIcons = $viewModels->require(LucideIcons::class);
+
+$showIcon = $block->getShowIcon() ?? true;
+
 /** @var TotalsOutput $totalsOutput */
 $totalsOutput = $viewModels->require(TotalsOutput::class);
-
 ?>
+
 <script>
     function initShippingEstimation(){
         return {
@@ -58,9 +66,8 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     this.shippingMethod = `${selectedShippingMethod.carrier_code}_${selectedShippingMethod.method_code}`
                 }
 
-                this.showEstimateShipping = JSON.parse(
-                    hyva.getBrowserStorage().getItem('hyva.showEstimateShipping')
-                );
+                const browserStorageShowEstimateShipping = hyva.getBrowserStorage().getItem('hyva.showEstimateShipping');
+                this.showEstimateShipping = browserStorageShowEstimateShipping === 'true' ? true : false;
             },
             toggleEstimateShipping() {
                 this.showEstimateShipping = !this.showEstimateShipping;
@@ -394,50 +401,36 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
             }
         }
     }
-    window.addEventListener('alpine:init', () => Alpine.data('initShippingEstimation', initShippingEstimation), {once: true})
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initShippingEstimation', initShippingEstimation)
+    }, { once: true });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
-<div id="block-shipping"
-     class="flex flex-col pb-2 my-2 border-b-2 border-gray-300 estimate-shipping-form"
-     x-data="initShippingEstimation"
-     data-is-cart-virtual="<?= (int) $block->getQuote()->isVirtual() ?>"
-     @private-content-loaded.window="receiveCustomerData"
+
+<details
+    id="block-shipping"
+    class="estimate-shipping-form group"
+    x-data="initShippingEstimation"
+    data-is-cart-virtual="<?= (int) $block->getQuote()->isVirtual() ?>"
+    @private-content-loaded.window="receiveCustomerData"
+    :open="showEstimateShipping"
 >
-    <h3 class="title" id="block-shipping-title">
-        <button
-            @click="toggleEstimateShipping"
-            class="flex justify-between w-full font-semibold whitespace-nowrap cursor-pointer select-none"
-            id="shipping-estimate-toggle"
-            type="button"
-            :aria-expanded="showEstimateShipping"
-        >
+    <summary
+        @click.prevent="toggleEstimateShipping"
+        class="list-none flex justify-between items-center gap-2 py-2 font-semibold"
+    >
+        <span class="inline-flex items-center gap-2">
+            <?= $showIcon ? $lucideIcons->giftHtml('text-primary', 20, 20, ['aria-hidden' => 'true']) : ''; ?>
             <?= $block->getQuote()->isVirtual()
                 ? $escaper->escapeHtml(__('Estimate Tax'))
                 : $escaper->escapeHtml(__('Estimate Shipping and Tax'))
             ?>
-            <span :class="estimateShippingIconClasses" class="block transform rotate-180">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    width="24"
-                    height="24"
-                    aria-hidden="true"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </span>
-        </button>
-    </h3>
-    <div id="block-summary"
-         class="content my-4 card"
-         data-role="content"
-         aria-labelledby="block-shipping-heading"
-         x-cloak
-         x-show="showEstimateShipping"
-    >
-        <form method="post" id="shipping-zip-form" @submit.prevent="fetchTotals">
+        </span>
+        <?= $lucideIcons->chevronDownHtml('transform group-open:rotate-180', 20, 20, ['aria-hidden' => 'true']); ?>
+    </summary>
+    <div class="mb-4">
+        <form method="post" id="shipping-zip-form" @submit.prevent="fetchTotals()">
             <fieldset class="fieldset estimate" aria-labelledby="block-shipping-title">
                 <p class="field note">
                     <?= $block->getQuote()->isVirtual() ?
@@ -446,7 +439,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     ?>
                 </p>
 
-                <div class="field" name="shippingAddress.country_id"><!-- ?????? -->
+                <div class="field mt-2" name="shippingAddress.country_id">
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Country')) ?>
@@ -465,8 +458,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     </label>
                 </div>
 
-
-                <div class="field" name="shippingAddress.region_id"><!-- ??????? -->
+                <div class="field mt-2" name="shippingAddress.region_id">
 
                     <template x-if="hasAvailableRegions">
 
@@ -504,7 +496,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                     </template>
                 </div>
 
-                <div class="field" name="shippingAddress.postcode"><!-- ????? -->
+                <div class="field mt-2" name="shippingAddress.postcode">
 
                     <label class="label">
                         <?= $escaper->escapeHtml(__('Zip/Postal Code'))?>
@@ -520,23 +512,25 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
 
                 <template x-if="hasShippingRateCarriers">
                     <div
-                        class="pt-2 relative"
+                        class="relative"
                         role="radiogroup"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping Methods')) ?>"
                     >
                         <?= $block->getBlockHtml('block-loader') ?>
                         <template x-for="carrier in getEstimatedShippingRateCarriers" :key="carrier">
                             <div>
-                                <h4 class="font-semibold" x-text="carrier"></h4>
+                                <p><strong class="font-medium" x-text="carrier"></strong></p>
                                 <template x-for="(rate, index) in getRatesForCarrier" :key="index">
                                     <label class="flex items-center px-2 gap-2 cursor-pointer">
-                                        <input class="mr-2 cursor-pointer"
-                                               type="radio"
-                                               name="shippingEstimationSelection"
-                                               :id="shippingCarrierRadioId"
-                                               :value="shippingCarrierRadioValue"
-                                               :checked="isShippingMethodSelected"
-                                               @change="updateShippingMethod">
+                                        <input
+                                            type="radio"
+                                            name="shippingEstimationSelection"
+                                            class="mr-2 cursor-pointer"
+                                            :id="shippingCarrierRadioId"
+                                            :value="shippingCarrierRadioValue"
+                                            :checked="isShippingMethodSelected"
+                                            @change="updateShippingMethod"
+                                        >
                                         <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
                                         <div class="flex flex-col justify-end ml-auto">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
@@ -564,6 +558,6 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
             </fieldset>
         </form>
     </div>
-</div>
+</details>
 
 <?= $block->getChildHtml() ?>

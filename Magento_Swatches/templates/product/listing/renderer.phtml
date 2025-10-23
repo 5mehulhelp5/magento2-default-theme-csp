@@ -103,12 +103,10 @@ $swatchItemBlock->setData('product_id', $productId);
                                 // non-critical failure only console logged
                                 console.warn(data.errors);
                             } else {
-                                const image = data && data.medium;
-
-                                image && window.dispatchEvent(
+                                data && window.dispatchEvent(
                                     new CustomEvent(
-                                        "update-gallery-" + productId,
-                                        {detail: image}
+                                        "update-gallery-<?= (int)$productId ?>",
+                                        { detail: data }
                                     )
                                 );
                             }

@@ -10,49 +10,27 @@
 <!-- display subtotal including and excluding tax -->
 <div x-data="initSubtotalSegment">
 <template x-if="isSubtotalSegmentAndDisplayBoth">
-    <div>
-        <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-            <div class="w-7/12 text-left md:w-auto"
-                 x-html="formatTotalLabelExclTax"
-            ></div>
-            <div class="w-5/12 text-right md:w-auto"
-                 x-text="formatSubtotal"
-            ></div>
-        </div>
-
-        <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-            <div class="w-7/12 text-left md:w-auto"
-                 x-html="formatTotalLabelInclTax "
-            ></div>
-            <div class="w-5/12 text-right md:w-auto"
-                 x-text="formatSubtotalInclTax"
-            ></div>
-        </div>
+    <div :class="wrapperClass">
+        <div x-html="formatTotalLabelExclTax"></div>
+        <div x-text="formatSubtotal" class="justify-self-end"></div>
+        <div x-html="formatTotalLabelInclTax"></div>
+        <div x-text="formatSubtotalInclTax" class="justify-self-end"></div>
     </div>
 </template>
 
 <!-- display subtotal excluding tax -->
 <template x-if="isSubtotalSegmentAndDisplayExcl">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="formatTotalLabel"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             x-text="formatSubtotal"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-html="formatTotalLabel"></div>
+        <div x-text="formatSubtotal" class="justify-self-end"></div>
     </div>
 </template>
 
 <!-- display subtotal including tax -->
 <template x-if="isSubtotalSegmentAndDisplayIncl">
-    <div class="flex pb-2 my-2 border-b text-md lg:text-sm md:grid md:grid-cols-2 md:w-full border-container">
-        <div class="w-7/12 text-left md:w-auto"
-             x-html="formatTotalLabel"
-        ></div>
-        <div class="w-5/12 text-right md:w-auto"
-             :data-amount="totalsData.subtotal_incl_tax"
-             x-text="formatSubtotalInclTax"
-        ></div>
+    <div :class="wrapperClass">
+        <div x-html="formatTotalLabel"></div>
+        <div :data-amount="totalsData.subtotal_incl_tax" x-text="formatSubtotalInclTax" class="justify-self-end"></div>
     </div>
 </template>
 </div>
