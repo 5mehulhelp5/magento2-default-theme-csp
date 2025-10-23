@@ -33,7 +33,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             class="downloadable-products w-full sm:table-fixed lg:table-auto"
             aria-labelledby="downloadableProducts"
         >
-            <thead class="text-sm text-secondary">
+            <thead class="text-sm">
                 <tr>
                     <th class="p-2 text-start">
                         <?= $escaper->escapeHtml(__('Order #')) ?>
@@ -57,7 +57,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
             </thead>
             <tbody>
                 <?php foreach ($items as $item): ?>
-                    <tr class="align-top even:bg-container-darker">
+                    <tr class="align-top even:bg-gray-100">
                         <th
                             class="p-2 text-start font-normal"
                             aria-label="<?= $escaper->escapeHtmlAttr($item->getPurchased()->getOrderIncrementId()) ?>"
@@ -90,7 +90,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
                             <?php if ($item->getStatus() == Item::LINK_STATUS_AVAILABLE): ?>
                                 <a
                                     href="<?= $escaper->escapeUrl($block->getDownloadUrl($item)) ?>"
-                                    class="inline-block text-sm underline text-secondary-darker"
+                                    class="inline-block text-sm underline"
                                     id="download_<?= /* @noEscape */ $item->getPurchased()->getProductId() ?>"
                                     title="<?= $escaper->escapeHtmlAttr(__('Start Download')) ?>"
                                     aria-label="<?= $escaper->escapeHtmlAttr(__('Start Download')) ?>"
