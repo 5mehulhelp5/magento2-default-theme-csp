@@ -33,15 +33,19 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
     function initCartDrawer() {
         return {
             open: false,
-            closed() {
-                return !this.open
-            },
             isLoading: false,
             cart: {},
             maxItemsToDisplay: <?= (int) $maxItemsToDisplay ?>,
             itemsCount: 0,
             showSku: <?= $miniCartOptionShowSku ? 'true' : 'false' ?>,
             autocompleteNumber: 100,
+            init() {
+                if (document.prerendering) {
+                    document.addEventListener("prerenderingchange", () => {
+                        this.reloadData()
+                    }, { once: true });
+                }
+            },
             showDetails() {
                 return this.item.options && this.item.options.length || this.showSku;
             },
