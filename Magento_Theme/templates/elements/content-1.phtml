@@ -11,37 +11,10 @@ declare(strict_types=1);
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
-// phpcs:disable Generic.Files.LineLength
-
 /** @var Escaper $escaper */
 /** @var Template $block */
 
-$title = "This is the default Hyvä Theme.";
-$link = "https://hyva.io/";
+/**
+ * @deprecated Everything is now handled in the hero.phtml
+ */
 ?>
-<div class="flex flex-col items-center gap-10 mt-8 mb-12 md:flex-row md:px-10 xl:-mt-12">
-    <img
-        src="<?= $escaper->escapeHtmlAttr($block->getViewFileUrl('images/hyva-logo.svg')) ?>"
-        alt=""
-        width="300"
-        height="300"
-        loading="eager"
-        class="object-cover object-center shadow-lg rounded-md xl:w-[500px]"
-    >
-    <div class="grow text-center md:text-left xl:py-12">
-        <div class="prose max-w-prose">
-            <h2 class="mt-0 mb-4"><?= $escaper->escapeHtml($title) ?></h2>
-            <p>
-                We've rebuilt the standard Magento 2 frontend with a new technology stack. It combines the best parts of Magento frontend development with modern tools that developers love, like AlpineJS and TailwindCSS.
-            </p>
-            <p>
-                It's high-performant out of the box and reduces the development time of custom Magento frontends. It will make you and your customers happy.
-            </p>
-            <p class="mt-8 inline-flex flex-wrap gap-4 items-center">
-                <a href="<?= $escaper->escapeUrl($link) ?>" class="btn btn-primary">Buy it</a>
-                <span>or</span>
-                <a href="<?= $escaper->escapeUrl($link) ?>" class="btn btn-secondary">Visit Hyvä</a>
-            </p>
-        </div>
-    </div>
-</div>
