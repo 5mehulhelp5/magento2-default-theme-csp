@@ -105,6 +105,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
   Many thanks to Lars de Weert (Made by Mouses) for the contribution!
 
+- **Improve Add to Cart button A11Y**  
+  For more information, please refer to [issue #1237](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1237)
+
+  Many thanks to Lars de Weert (Made by Mouses) for the contribution!
+
 ### Removed
 
 - **Removed the scroll to review function summary short**  
