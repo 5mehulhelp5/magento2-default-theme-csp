@@ -43,14 +43,14 @@ $widgetImageHeight = $block->getImageHeight() ?: 360;
 $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-products.phtml';
 /* @noEscape */ echo $block->fetchView($block->getTemplateFile($jsTemplate));
 ?>
-<section
-    class="my-12 min-h-120"
+<div
+    class="flow-root"
     x-data="initRecentlyViewedProductsComponent"
     x-defer="intersect"
     :style="minHeight"
 >
     <template x-if="products && products.length">
-        <div class="relative">
+        <div class="relative my-12">
             <h2 class="text-2xl font-medium mb-6">
                 <?= $escaper->escapeHtml($title); ?>
             </h2>
@@ -138,4 +138,4 @@ $jsTemplate = 'Magento_Catalog::product/widget/viewed/js/recently-viewed-product
             </div>
         </div>
     </template>
-</section>
+</div>

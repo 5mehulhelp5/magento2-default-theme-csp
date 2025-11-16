@@ -105,7 +105,7 @@ products(filter: { sku: { in: $skus } }) {
                 this.getProducts();
             },
             minHeight() {
-                return this.loading ? { minHeight: '491px' } : {};
+                return this.loading ? { minBlockSize: '38rem' } : {};
             },
             getProducts() {
                 const recentlyViewedProductsArray = readRecentlyViewedFromStorage();
