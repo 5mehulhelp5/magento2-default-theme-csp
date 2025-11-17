@@ -11,9 +11,36 @@ Compatible with Magento 2.4.4-p9 and higher.
 This is a CSP compatible version of `hyva-themes/magento2-default-theme`.
  
 ## Installation
-Please refer to https://docs.hyva.io for instructions.  
 
-CSP specific information can be found in the docs at https://docs.hyva.io/hyva-themes/writing-code/csp/index.html
+You need a valid Hyvä packagist.com key.
+
+Get a free key by registering an account at [www.hyva.io](https://www.hyva.io) and creating one from your account dashboard.
+
+You will receive instruction like the following after creating your packagist.com key:
+
+```
+# this command adds your key to your projects auth.json file
+# replace yourLicenseAuthentificationKey with your own key
+composer config --auth http-basic.hyva-themes.repo.packagist.com token yourLicenseAuthentificationKey
+# replace yourProjectName with your project name
+composer config repositories.private-packagist composer https://hyva-themes.repo.packagist.com/yourProjectName/
+```
+
+Run those commands, and then, install the theme and its dependencies with composer:
+
+```sh
+composer require hyva-themes/magento2-default-theme
+```
+Next, run the Magento setup command:
+
+```sh
+bin/magento setup:upgrade
+```
+Navigate to the `Content > Design > Configuration` admin section and activate the hyva/default theme.
+
+Please see the [Getting Started](https://docs.hyva.io/hyva-themes/getting-started/index.html#getting-started) documentation for further information.
+
+CSP specific information can be found in the docs at https://docs.hyva.io/hyva-themes/writing-code/csp/index.html.
 
 ## License
 
@@ -29,10 +56,17 @@ You have the choice which of the two licenses to use.
 
 * **Copyright:** This product includes software developed by Magento, Inc. (https://github.com/magento/magento2) and distributed under the Academic Free License (AFL) v3.0.  
   The Source Code of the original Work is available at https://github.com/magento/magento2.  
+<<<<<<< HEAD
   Included libraries from Nick Piscitelli (https://github.com/NickPiscitelli/) are distributed under the MIT license.   
 * **License Texts:**
   The full text of the AFL 3.0 license can be found in `LICENSE_AFL.txt` and online at [http://opensource.org/licenses/afl-3.0.php](http://opensource.org/licenses/afl-3.0.php).  
   The full text of the MIT license can be found online at [https://opensource.org/license/MIT](https://opensource.org/license/MIT).  
+=======
+  Included libraries from Nick Piscitelli (https://github.com/NickPiscitelli/) are distributed under the MIT license.
+* **License Texts:**
+  The full text of the AFL 3.0 license can be found in `LICENSE_AFL.txt` and online at [http://opensource.org/licenses/afl-3.0.php](http://opensource.org/licenses/afl-3.0.php).  
+  The full text of the MIT license can be found online at [https://opensource.org/license/MIT](https://opensource.org/license/MIT).
+>>>>>>> non-csp/main
 
 ## Changelog
 Please see [The Changelog](CHANGELOG.md).
