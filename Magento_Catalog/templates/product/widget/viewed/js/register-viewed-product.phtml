@@ -22,13 +22,13 @@ use Magento\Framework\View\Element\Template;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
 /** @var RecentlyViewedProducts $recentlyViewed */
 /** @var ProductPage $productPage */
 /** @var Currency $viewModelCurrency */
 /** @var Image|null $productImage */
 /** @var StoreConfig $viewModelStoreConfig */
+/** @var HyvaCsp $hyvaCsp */
 
 $recentlyViewed       = $viewModels->require(RecentlyViewedProducts::class);
 $productPage          = $viewModels->require(ProductPage::class);
@@ -49,10 +49,8 @@ if (! $recentlyViewed->isRecentlyViewedProductsEnabled()) {
 ?>
 
 <script>
-    'use strict';
     (function () {
-
-        const useGraphQL = <?= /** @noEscape */ $recentlyViewed->isFetchRecentlyViewedEnabled() ? 'true' : 'false' ?>;
+        const useGraphQL = <?= $escaper->escapeJs($recentlyViewed->isFetchRecentlyViewedEnabled() ? 'true' : 'false') ?>;
 
         <?php /* This method returns the data structure to store in local storage if GraphQL is NOT queried. */ ?>
         <?php /* It is declared in global scope to allow overriding should additional attributes be required. */ ?>
