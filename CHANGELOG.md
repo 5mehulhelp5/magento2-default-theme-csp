@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.1...main
 
-## [1.4.1 CSP] - 2025-11-10
+## [1.4.1 CSP] - 2025-11-17
 
 [1.4.1 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.0...1.4.1
 
