@@ -1,7 +1,9 @@
 .price-box {
-    & .price {
-        font-size: var(--price-font-size, var(--text-base));
-        font-weight: var(--price-font-weight, bolder);
+    & .price-wrapper {
+        & > .price {
+            font-size: var(--price-font-size, var(--text-base));
+            font-weight: var(--price-font-weight, bolder);
+        }
     }
 
     & .old-price,
