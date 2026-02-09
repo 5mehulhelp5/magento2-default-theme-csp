@@ -42,7 +42,7 @@ $currentPageUrl = preg_replace('/[?#].*$/', '', $block->getUrl('', ['_current' =
                     ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
                 <?php elseif ($crumbInfo['last']): ?>
                     <a
-                        href="<?= $escaper->escapeUrl($block->getUrl('', ['_current' => true, '_use_rewrite' => true])) ?>"
+                        href="<?= $escaper->escapeUrl($currentPageUrl) ?>"
                         class="text-fg-secondary"
                         aria-current="page"
                     ><?= $escaper->escapeHtml($crumbInfo['label']) ?></a>
