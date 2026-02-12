@@ -78,7 +78,7 @@ $showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishl
             },
             searchShortcut(e) {
                 const modifier = this.isMac ? e.metaKey : e.ctrlKey;
-                if (modifier && e.key === 'k' || e.key === '/') {
+                if ((modifier && e.key === 'k') || e.key === '/') {
                     e.preventDefault();
                     this.toggleSearchOpen();
                 }
