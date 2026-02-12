@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\LucideIcons;
+use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Search\Helper\Data as SearchHelper;
@@ -19,6 +20,7 @@ use Magento\Search\ViewModel\ConfigProvider as SearchConfig;
 
 /** @var Escaper $escaper */
 /** @var Template $block */
+/** @var HyvaCsp $hyvaCsp */
 /** @var SearchHelper $helper */
 /** @var ViewModelRegistry $viewModels */
 
@@ -74,13 +76,12 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                     this.$refs.form.submit();
                 }
             },
-            focusElement(element) {
-                if (element && element.nodeName === "DIV") {
-                    element.focus();
-                    return true;
-                } else {
-                    return false;
-                }
+            focusSearch() {
+                this.$ref.searchInput.focus();
+            },
+            focusAfterOpen() {
+                this.$el.focus()
+                this.$el.select()
             },
             isMac: /Mac|iPod|iPhone|iPad/.test(navigator.platform),
             textShortcutModifier() {
@@ -88,15 +89,20 @@ $searchConfig = $viewModels->require(SearchConfig::class);
             },
         }
     }
+
+    window.addEventListener('alpine:init', () => {
+        Alpine.data('initMiniSearch', initMiniSearch)
+    }, { once: true })
 </script>
-<div class="container py-2 mx-auto text-black" x-data="initMiniSearch()">
+<?php $hyvaCsp->registerInlineScript() ?>
+<div class="container py-2 mx-auto text-black" x-data="initMiniSearch">
     <search title="<?= $escaper->escapeHtmlAttr(__('Store')) ?>" role="search">
         <form
             id="search_mini_form"
             class="form minisearch input-group"
             action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>"
             method="get"
-            @submit.prevent="search()"
+            @submit.prevent="search"
             x-ref="form"
         >
             <div class="input-group relative grow">
@@ -110,11 +116,11 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                     placeholder="<?= $escaper->escapeHtmlAttr(__('Search entire store here...')) ?>"
                     maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
                     class="form-input grow"
-                    @search-open.window.debounce.10="$el.focus(); $el.select()"
+                    @search-open.window.debounce.10="focusAfterOpen"
                     <?php if ($searchConfig->isSuggestionsAllowed()): ?>
                         @focus.once="suggest"
                         @input.debounce.300="suggest"
-                        @keydown.arrow-down.prevent="focusElement($root.querySelector('[tabindex]'))"
+                        @keydown.arrow-down.prevent="focusSearch"
                     <?php endif ?>
                 >
                 <label class="sr-only" for="search">
@@ -137,7 +143,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
         </form>
     </search>
     <?php if ($searchConfig->isSuggestionsAllowed()): ?>
-        <template x-if="suggestions.length > 0">
+        <template x-if="suggestions.length">
             <nav
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
                 class="flex flex-col mt-1 text-grey-800 gap-1"
@@ -146,10 +152,8 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                     <button
                         type="button"
                         class="flex justify-between p-2 bg-white even:bg-gray-50 border border-gray-300 hover:bg-gray-100"
-                        @click="search(suggestion.title)"
-                        @keydown.enter="search(suggestion.title)"
-                        @keydown.arrow-up.prevent="focusElement($event.target.previousElementSibling) || $refs.searchInput.focus()"
-                        @keydown.arrow-down.prevent="focusElement($event.target.nextElementSibling)"
+                        @click="searchSuggestion"
+                        @keydown.enter="searchSuggestion"
                     >
                         <span x-text="suggestion.title"></span>
                         <span x-text="suggestion.num_results"></span>
