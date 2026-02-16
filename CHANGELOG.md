@@ -41,6 +41,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
     Many thanks to Oleksii Rozhnenko (Perspective) for the contribution!
 
+-   **Move standalone php statement into php block**
+    For more information, please refer to [merge request #1453](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1453).
+
+    Many thanks to Finn Reinhardt (Basecom) for the contribution!
+
 ### Removed
 
 -   Nothing Removed
