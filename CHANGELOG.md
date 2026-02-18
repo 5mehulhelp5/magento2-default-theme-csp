@@ -49,6 +49,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 -   **Fix invalid aria-label in authentication-popup**  
     For more information, please refer to [issue #1281](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1281).
 
+-   **Prevent stale content in minicart with Bfcache**  
+    For more information, please refer to [merge request #1456](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1456).
+
+    Many thanks to Finn Reinhardt (Basecom) for the contribution!
+
 ### Removed
 
 -   Nothing Removed
