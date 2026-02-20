@@ -10,20 +10,20 @@ include:
     file: 'static/phpcs.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/integration.yml'
+    file: 'test/integration-csp.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/theme-playwright.yml'
+    file: 'test/theme-playwright-csp.yml'
     ref: main
 
 test:integration:
-  extends: .test:integration
+  extends: .test:integration_csp
   parallel:
     matrix:
       - MAGEVERSION: ['2.4.7-p7']
 
 test:playwright:
-  extends: .test:theme_playwright
+  extends: .test:theme_playwright_csp
   parallel:
     matrix:
       - MAGEVERSION: ['2.4.7-p7']
