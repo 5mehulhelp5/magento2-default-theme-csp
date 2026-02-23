@@ -20,10 +20,10 @@ test:integration:
   extends: .test:integration_csp
   parallel:
     matrix:
-      - MAGEVERSION: ['2.4.7-p7']
+      - MAGEVERSION: ['2.4.8-p3']
 
 test:playwright:
   extends: .test:theme_playwright_csp
   parallel:
     matrix:
-      - MAGEVERSION: ['2.4.7-p7']
+      - MAGEVERSION: ['2.4.8-p3']
