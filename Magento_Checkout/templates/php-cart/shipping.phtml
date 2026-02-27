@@ -534,7 +534,7 @@ $totalsOutput = $viewModels->require(TotalsOutput::class);
                                         <div class="flex flex-col justify-end ml-auto">
                                             <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
                                                 <span
-                                                    x-text="`shippingCarrierRateIncl`"
+                                                    x-text="shippingCarrierRateIncl"
                                                     class="price-including-tax text-right"
                                                     data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
                                                 ></span>
