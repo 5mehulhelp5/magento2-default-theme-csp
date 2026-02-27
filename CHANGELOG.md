@@ -8,34 +8,47 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.3...main
 
+### Added
+
+-   Nothing added
+
+### Changed
+
+-   **Fix ShippingCarrierRateIncl being render on the cart page as text**  
+    For more information, please refer to [issue #33](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/issues/33).
+
+### Removed
+
+-   Nothing removed
+
 ## [1.4.3 CSP] - 2026-01-09
 
 [1.4.3 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.2...1.4.3
 
 ### Added
 
-- Nothing added
+-   Nothing added
 
 ### Changed
 
-- **Fix display of taxes on the cart page**
-  Many thanks to Pavlo Besedovskyi (Findcanary) for the contribution!
+-   **Fix display of taxes on the cart page**  
+    Many thanks to Pavlo Besedovskyi (Findcanary) for the contribution!
 
-- **Fix remove wishlist button closing tag**
+-   **Fix remove wishlist button closing tag**
 
-- **Fix PayPal Buttons / PayLater initialization on intersect**
-  Fixed an issue where PayPal (PayLater or Express) buttons were not initialized when the cart data wasn't yet available.
+-   **Fix PayPal Buttons / PayLater initialization on intersect**  
+    Fixed an issue where PayPal (PayLater or Express) buttons were not initialized when the cart data wasn't yet available.
 
-  Many thanks to Christoph Hendreich (In Session) for the contribution!
+    Many thanks to Christoph Hendreich (In Session) for the contribution!
 
-- **Fix undefined productId variable in product list item swatches**
-  The script used `productId` instead of `this.productId` in one place.
+-   **Fix undefined productId variable in product list item swatches**  
+    The script used `productId` instead of `this.productId` in one place.
 
-- **Improve README.md**
+-   **Improve README.md**
 
 ### Removed
 
-- Nothing removed
+-   Nothing removed
 
 ## [1.4.2 CSP] - 2025-12-10
 
