@@ -23,10 +23,8 @@ $lucideIcons = $viewModels->require(LucideIcons::class);
     <button
         type="button"
         class="btn p-2"
-        x-data="moveToWishlist"
+        @click='moveToWishlist'
         data-post-form="<?= $escaper->escapeHtmlAttr($block->getMoveFromCartParams()) ?>"
-        @click.prevent='click'
-        title="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
         aria-label="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
     >
         <?= $lucideIcons->heartHtml('', 20, 20, ['aria-hidden' => 'true']) ?>
