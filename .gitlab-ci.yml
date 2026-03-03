@@ -12,10 +12,10 @@ include:
     file: 'static/phpcs.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/integration.yml'
+    file: 'test/integration-csp.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/theme-playwright.yml'
+    file: 'test/theme-playwright-csp.yml'
     ref: main
 
 # Override static jobs from includes to skip when RUN_ONLY is set
@@ -32,7 +32,7 @@ static:phpcs:
     - when: on_success
 
 test:integration:
-  extends: .test:integration
+  extends: .test:integration_csp
   needs:
     - job: static:lint
       optional: true
@@ -47,7 +47,7 @@ test:integration:
       - MAGEVERSION: ['2.4.8-p3']
 
 test:playwright:
-  extends: .test:theme_playwright
+  extends: .test:theme_playwright_csp
   needs:
     - job: static:lint
       optional: true
