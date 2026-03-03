@@ -54,10 +54,11 @@ $galleryOptionVideoLoop = $storeConfig->getStoreConfig('catalog/product_video/vi
 $productName = $block->getProduct()->getName();
 ?>
 
-<div
+<section
     id="gallery"
     x-data="initGallery"
     x-bind="eventListeners"
+    aria-label="<?= $escaper->escapeHtmlAttr(__('Gallery')) ?>"
 >
     <div
         :class="galleryClasses"
@@ -150,8 +151,9 @@ $productName = $block->getProduct()->getName();
         </div>
 
         <div @resize.window.debounce="onResize">
-            <div
+            <nav
                 id="thumbs"
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Gallery Thumbnails')) ?>"
                 class="flex items-center gap-4"
                 :class="thumbsWrapperClasses"
                 style="min-height: 100px;"
@@ -177,6 +179,7 @@ $productName = $block->getProduct()->getName();
                                 @click.prevent="onClickThumbnail"
                                 class="relative block border border-gray-300 hover:border-primary focus:border-primary"
                                 :class="thumbnailClasses"
+                                tabindex="-1"
                             >
                                 <span class="sr-only">
                                     <?= $escaper->escapeHtml('View larger image') ?>
@@ -208,7 +211,7 @@ $productName = $block->getProduct()->getName();
                     :class="nextButtonClasses"
                     @click="scrollNext"
                 ><?= $heroicons->chevronRightHtml('', 24, 24, ['aria-hidden' => true]) ?></button>
-            </div>
+            </nav>
         </div>
         <div class="absolute top-0 right-0 pt-4 pr-4">
             <button @click="closeFullScreen"
@@ -217,12 +220,13 @@ $productName = $block->getProduct()->getName();
                         transition ease-in-out duration-150"
                     :class="closeFullScreenButtonClasses"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('Close fullscreen')) ?>"
+                    x-ref="galleryFullscreenCloseBtn"
             >
                 <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
             </button>
         </div>
     </div>
-</div>
+</section>
 <script>
     function initGallery () {
         let touchXDown, touchYDown;
@@ -490,12 +494,10 @@ $productName = $block->getProduct()->getName();
                 ['@reset-gallery.window'](event) {
                     this.resetGallery();
                 },
-                ['@keyup.arrow-right.window']() {
-                    if (!this.fullscreen) return;
+                ['@keyup.arrow-right']() {
                     this.nextItem();
                 },
-                ['@keyup.arrow-left.window']() {
-                    if (!this.fullscreen) return;
+                ['@keyup.arrow-left']() {
                     this.previousItem();
                 },
             },
@@ -503,9 +505,13 @@ $productName = $block->getProduct()->getName();
                 document.body.style.overflow = use ? "hidden" : "";
             },
             openFullscreen() {
+                const setFocusTo = this.$refs.galleryFullscreenCloseBtn;
                 this.fullscreen = true;
-
                 hyva.trapFocus(this.$root);
+                this.$nextTick(() => {
+                    this.calcPageSize();
+                    setFocusTo && setFocusTo.focus()
+                });
             },
             closeFullScreen() {
                 const setFocusTo = this.$refs.galleryFullscreenBtn;

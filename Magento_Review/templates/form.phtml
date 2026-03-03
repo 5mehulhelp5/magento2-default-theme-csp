@@ -66,6 +66,8 @@ mutation createProductReviewMutation(
 }
 ';
 
+$starIconSize = $block->getData('rating_icon_size') ?: 24;
+
 ?>
 <div class="mx-auto py-6 items-center" id="review-form" tabindex="-1">
     <div class="card w-full px-6 py-3">
@@ -126,7 +128,7 @@ mutation createProductReviewMutation(
                                                                 class="rating-<?= (int)$iterator ?> m-0 text-current"
                                                                 for="<?= $escaper->escapeHtmlAttr($rating->getRatingCode() . '_' . $option->getValue()) ?>"
                                                             >
-                                                                <?= $lucideIcons->starHtml('', 24, 24, [
+                                                                <?= $lucideIcons->starHtml('', $starIconSize, $starIconSize, [
                                                                     'aria-hidden' => 'true',
                                                                     ':class' => 'ratingClass'
                                                                 ]); ?>

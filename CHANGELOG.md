@@ -458,7 +458,7 @@ Same as default theme
 -   **Cleanup forward slash from self closing HTML tags**  
     For more information, please refer to [issue #993](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/993)
 
--   **Cleanup Redundant box-sizing styles in Pagebuilder output**  
+-   **Cleanup Redundant box-sizing styles in PageBuilder output**  
     For more information, please refer to [issue #1221](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1221)
 
 -   **Remove requirement for reset-theme**  
@@ -547,10 +547,10 @@ _This release updates the Theme Module dependencies. No functional changes are i
 -   **Fix missing `rel="noopener"` to external links for security**  
     For more information, please refer to [issue #1222](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1222)
 
--   **Pagebuilder Row now only applies the container styles, if the layout is set to full width**  
+-   **PageBuilder Row now only applies the container styles, if the layout is set to full width**  
     For more information, please refer to [issue #1219](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1219)
 
--   **Fix Pagebuilder applying border width to all angles instead of one**  
+-   **Fix PageBuilder applying border width to all angles instead of one**  
     For more information, please refer to [issue #1218](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1218)
 
 -   **Fix Currency switcher**  
@@ -883,7 +883,7 @@ Same as the 1.3.5 default-theme release.
     For more information, please refer to [merge request #1174](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1174).
 
 -   **Improve styling consistency to making customization easier**  
-    This includes a collection of smaller changes to make sure the styling used trough Hyvä is consistent.
+    This includes a collection of smaller changes to make sure the styling used through Hyvä is consistent.
 
     For more information, please refer to [merge request #1184](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1184).
 
@@ -4421,7 +4421,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
 
 -   **Use SSR rendering for product sliders instead of GraphQL**
 
-    The product sliders no longer use GraphQL. The graphql product slider template still is present for backward
+    The product sliders no longer use GraphQL. The GraphQL product slider template still is present for backward
     compatibility, but it is no longer used.  
     The items use the product listing template, so add-to-cart and swatches are now supported, too.
 
@@ -4909,7 +4909,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
 -   **The Checkout button in cart is no longer disabled on error**
 
     The state of the cart can change by changing quantities in the cart.
-    Clicking "Proceed to Checkout" performs a serverside validation of the cart and will return back at the cart in case the cart is still invalid.
+    Clicking "Proceed to Checkout" performs a server-side validation of the cart and will return back at the cart in case the cart is still invalid.
 
     An example is "Minimum order amount". If the minimum is not met, it will show a warning. If you would increase the quantity of an item so that the minimum is met, the message disappears. Validation takes place again when you continue to checkout.
 
@@ -5085,7 +5085,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
   
     Thanks to Guus Portegies (Cees en Co) for reporting
 
--   **The checkout url in de minicart/cart-drawer changed**
+-   **The checkout url in the minicart/cart-drawer changed**
 
     `checkout/index` was changed to `checkout`, which normally renders the same page/url. But, some 3rd party extensions (such as Mageplaza_OneStepCheckout) replace the `checkout` url to alter the path to a checkout page.
   
@@ -5109,9 +5109,9 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
 
     See `Magento_Sales/layout/sales_order_print.xml`
 
--   **Aria labelledby has been removed from PLP swatch-items**
+-   **aria-labelledby has been removed from PLP swatch-items**
 
-    `aria-labelledby="radiogroup-label"` was causing LightHouse best practice warnings and thus has been removed.
+    `aria-labelledby="radiogroup-label"` was causing Lighthouse best practice warnings and thus has been removed.
 
     See `Magento_Swatches/templates/product/listing/renderer.phtml`
   
@@ -5495,7 +5495,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
   
     Thanks to Victor Chiriac (Mage Check) for contributing.
 
--   **Alpine Component JS for Configruable options moved to child block**
+-   **Alpine Component JS for Configurable options moved to child block**
   
     In order to make `initConfigurableOptions()` reusable and extendable, it was moved into `Magento_ConfigurableProduct::product/view/options/js/configurable-options.phtml`
 
@@ -5521,7 +5521,7 @@ If you're upgrading from <1.1.8 please check the documentation page on upgrading
   
     The footer newsletter form is now styled more in line with the rest of the layout.
 
--   **PDP reviews now take current storeview in account**
+-   **PDP reviews now take current store view in account**
   
     The `store` header was previously missing from GraphQL calls.
   
