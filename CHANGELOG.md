@@ -8,6 +8,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.4...main
 
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **Fix missing imageHelper for the gallery preload**  
+    For more information, please refer to [issue #1297](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1297).
+
+### Removed
+
+-   Nothing Removed
+
 ## [1.4.4] - 2026-03-03
 
 [1.4.4]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.3...1.4.4
