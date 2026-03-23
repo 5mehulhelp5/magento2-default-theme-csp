@@ -50,7 +50,7 @@ test:integration:
     - when: on_success
   parallel:
     matrix:
-      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4-sample-data']
+      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4']
 
 test:playwright:
   extends: .test:theme_playwright_csp_box
