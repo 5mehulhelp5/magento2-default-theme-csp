@@ -12,10 +12,10 @@ include:
     file: 'static/phpcs.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/integration-csp.yml'
+    file: 'test/integration-csp-box.yml'
     ref: main
   - project: 'hyva-themes/base-ci'
-    file: 'test/theme-playwright-csp.yml'
+    file: 'test/theme-playwright-csp-box.yml'
     ref: main
 
 # Override static jobs from includes to skip when RUN_ONLY is set
@@ -32,7 +32,7 @@ static:phpcs:
     - when: on_success
 
 test:integration:
-  extends: .test:integration_csp
+  extends: .test:integration_csp_box
   needs:
     - job: static:lint
       optional: true
@@ -44,10 +44,10 @@ test:integration:
     - when: on_success
   parallel:
     matrix:
-      - MAGEVERSION: ['2.4.8-p3']
+      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4']
 
 test:playwright:
-  extends: .test:theme_playwright_csp
+  extends: .test:theme_playwright_csp_box
   needs:
     - job: static:lint
       optional: true
@@ -59,4 +59,4 @@ test:playwright:
     - when: on_success
   parallel:
     matrix:
-      - MAGEVERSION: ['2.4.8-p3']
+      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4']
