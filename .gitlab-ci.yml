@@ -4,6 +4,11 @@ workflow:
       when: never
     - when: always
 
+stages:
+  - .pre
+  - build
+  - test
+
 # Defaults
 variables:
   SRC_DIR: '.'
@@ -13,16 +18,16 @@ variables:
 include:
   - project: 'hyva-themes/base-ci'
     file: 'lint/php.yml'
-    ref: main
+    ref: magento-ci-images
   - project: 'hyva-themes/base-ci'
     file: 'static/phpcs.yml'
-    ref: main
+    ref: magento-ci-images
   - project: 'hyva-themes/base-ci'
-    file: 'test/integration-csp-box.yml'
-    ref: main
+    file: 'test/integration.yml'
+    ref: magento-ci-images
   - project: 'hyva-themes/base-ci'
-    file: 'test/theme-playwright-csp-box.yml'
-    ref: main
+    file: 'test/playwright.yml'
+    ref: magento-ci-images
 
 # Override static jobs from includes to skip when RUN_ONLY is set
 static:lint:
@@ -37,9 +42,26 @@ static:phpcs:
       when: never
     - when: on_success
 
+build:
+  extends: .build:hyva
+  variables:
+    HYVA_THEME_PACKAGE: 'magento2-default-theme-csp'
+    HYVA_THEME_CODE: 'Hyva/default-csp'
+  rules:
+    - if: $RUN_ONLY != ''
+      when: never
+    - when: on_success
+  parallel:
+    matrix:
+      - CI_IMAGE_TAG: ['2.4.8-p4']
+
 test:integration:
-  extends: .test:integration_csp_box
+  extends: .test:integration
   needs:
+    - job: build
+      parallel:
+        matrix:
+          - CI_IMAGE_TAG: ['2.4.8-p4']
     - job: static:lint
       optional: true
     - job: static:phpcs
@@ -50,11 +72,15 @@ test:integration:
     - when: on_success
   parallel:
     matrix:
-      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4']
+      - CI_IMAGE_TAG: ['2.4.8-p4']
 
 test:playwright:
-  extends: .test:theme_playwright_csp_box
+  extends: .test:playwright
   needs:
+    - job: build
+      parallel:
+        matrix:
+          - CI_IMAGE_TAG: ['2.4.8-p4']
     - job: static:lint
       optional: true
     - job: static:phpcs
@@ -65,4 +91,4 @@ test:playwright:
     - when: on_success
   parallel:
     matrix:
-      - BOX_IMAGE_TAG: ['php84-fpm-magento2.4.8-p4-sample-data']
+      - CI_IMAGE_TAG: ['2.4.8-p4']
