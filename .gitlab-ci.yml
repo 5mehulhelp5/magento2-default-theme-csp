@@ -18,16 +18,16 @@ variables:
 include:
   - project: 'hyva-themes/base-ci'
     file: 'lint/php.yml'
-    ref: magento-ci-images
+    ref: main
   - project: 'hyva-themes/base-ci'
     file: 'static/phpcs.yml'
-    ref: magento-ci-images
+    ref: main
   - project: 'hyva-themes/base-ci'
     file: 'test/integration.yml'
-    ref: magento-ci-images
+    ref: main
   - project: 'hyva-themes/base-ci'
     file: 'test/playwright.yml'
-    ref: magento-ci-images
+    ref: main
 
 # Override static jobs from includes to skip when RUN_ONLY is set
 static:lint:
@@ -54,6 +54,7 @@ build:
   parallel:
     matrix:
       - CI_IMAGE_TAG: ['2.4.8-p4']
+        HYVA_THEME_REF: ['main']
 
 test:integration:
   extends: .test:integration
@@ -62,6 +63,7 @@ test:integration:
       parallel:
         matrix:
           - CI_IMAGE_TAG: ['2.4.8-p4']
+            HYVA_THEME_REF: ['main']
     - job: static:lint
       optional: true
     - job: static:phpcs
@@ -73,6 +75,7 @@ test:integration:
   parallel:
     matrix:
       - CI_IMAGE_TAG: ['2.4.8-p4']
+        HYVA_THEME_REF: ['main']
 
 test:playwright:
   extends: .test:playwright
@@ -81,6 +84,7 @@ test:playwright:
       parallel:
         matrix:
           - CI_IMAGE_TAG: ['2.4.8-p4']
+            HYVA_THEME_REF: ['main']
     - job: static:lint
       optional: true
     - job: static:phpcs
@@ -92,3 +96,5 @@ test:playwright:
   parallel:
     matrix:
       - CI_IMAGE_TAG: ['2.4.8-p4']
+        HYVA_THEME_REF: 'main'
+        HYVA_PLAYWRIGHT_REF: 'main'
