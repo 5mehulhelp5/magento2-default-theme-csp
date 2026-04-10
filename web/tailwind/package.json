@@ -15,7 +15,8 @@
     "watch": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --watch",
     "browser-sync": "npx browser-sync start --config ./browser-sync.config.cjs",
     "prebuild": "npm run generate",
-    "build": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify"
+    "build": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify",
+    "build-prod": "npm run build && echo \"\\033[0;31m'build-prod' is deprecated, please use 'build' instead!\\033[0m\""
   },
   "engine-strict": true,
   "engines": {
