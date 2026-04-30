@@ -168,7 +168,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-black/50 te
             <?php foreach ($images as $i => $img): ?>
                 <?php $caption = ($img->getData('video_title') ?? $img->getData('label')) ?? $productName; ?>
                 <div
-                    id="gallery-slide-<?= $i ?>"
+                    id="gallery-slide-<?= $escaper->escapeHtmlAttr($i) ?>"
                     x-show="showInitialImages"
                     class="relative shrink-0 w-full snap-start"
                 >
@@ -255,7 +255,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-black/50 te
             <div data-pager class="<?= $escaper->escapeHtmlAttr($pagerCssClasses) ?>">
                 <?php foreach ($images as $i => $img): ?>
                     <a
-                        href="#gallery-slide-<?= $i ?>"
+                        href="#gallery-slide-<?= $escaper->escapeHtmlAttr($i) ?>"
                         class="<?= $escaper->escapeHtmlAttr($pagerMarkerCssClasses) ?>"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Slide %1', $i + 1)) ?>"
                         <?php if ($i === 0): ?>
