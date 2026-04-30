@@ -1,4 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\Media;
@@ -18,6 +25,9 @@ use Magento\Framework\Escaper;
 /** @var Media $media */
 $media = $viewModels->require(Media::class);
 
+/** @var Placeholder $placeholder */
+$placeholder = $viewModels->require(Placeholder::class);
+
 /** @var StoreConfig $storeConfig */
 $storeConfig = $viewModels->require(StoreConfig::class);
 
@@ -33,21 +43,15 @@ if (!empty($images) && empty($mainImage)) {
     $mainImage = reset($images);
 }
 
+$usePlaceholder = false;
 if ($mainImage) {
     $images = array_merge(
         [$mainImage],
         array_values(array_filter($images, fn($img) => $img !== $mainImage))
     );
 } elseif (empty($images)) {
-    // TODO handle this in a viewmodal
-    /** @var Image $helper */
-    $helper = $block->getData('imageHelper') ?? $viewModels->require(Image::class);
-    $placeholder = $helper->getDefaultPlaceholderUrl('image');
-    $images = [new DataObject([
-        'medium_image_url' => $placeholder,
-        'small_image_url'  => $placeholder,
-        'large_image_url'  => $placeholder,
-    ])];
+    $usePlaceholder = true;
+    $images = $placeholder->getPlaceholderImages();
 }
 $images = array_values($images);
 $imageCount = count($images);
@@ -59,13 +63,13 @@ $mediumHeight = (int) $block->getImageAttribute('product_page_image_medium', 'he
 
 // Config
 $videoLoop = $storeConfig->getStoreConfig('catalog/product_video/video_auto_restart') ?? false;
-$appendOnReceive = empty($placeholder) && $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append';
+$appendOnReceive = !$usePlaceholder && $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append';
 $useLoop = $block->getVar('gallery/loop', 'Magento_Catalog') ?? true;
 $showCaption = $block->getVar('gallery/caption', 'Magento_Catalog') ?? false;
 $pagerStyle = $block->getVar('gallery/pager', 'Magento_Catalog') ?: 'thumbs';
 $pagerDir = $block->getVar('gallery/pagerdir', 'Magento_Catalog') ?: 'vertical';
 $navStyle = $block->getVar('gallery/nav', 'Magento_Catalog') ?: 'end';
-$maxThumbs = (int)$block->getVar('gallery/maxthumbs', 'Magento_Catalog') ?: (round($mediumWidth / $smallWidth) / 2);
+$maxThumbs = (int) $block->getVar('gallery/maxthumbs', 'Magento_Catalog') ?: (round($mediumWidth / $smallWidth) / 2);
 
 // CSS
 $cssClasses = implode(' ', array_filter([
