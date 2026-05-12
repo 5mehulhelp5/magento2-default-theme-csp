@@ -6,7 +6,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.5...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.6...main
+
+## [1.4.6 CSP] - 2026-05-12
+
+[1.4.6 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.5...1.4.6
+
+Same as default theme
+
+## [1.4.6] - 2026-05-12
+
+[1.4.6]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.5...1.4.6
+
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   Nothing Changed
+
+### Removed
+
+-   Nothing Removed
 
 ## [1.4.5 CSP] - 2026-03-16
 
