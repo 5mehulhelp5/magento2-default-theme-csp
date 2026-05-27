@@ -159,7 +159,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-black/50 te
             id="gallery-main"
             data-track
             class="<?= $escaper->escapeHtmlAttr($trackCssClasses) ?>"
-            tabindex="-1"
+            tabindex="0"
         >
             <?php foreach ($images as $i => $img): ?>
                 <?php $caption = ($img->getData('video_title') ?? $img->getData('label')) ?? $productName; ?>
@@ -176,6 +176,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-black/50 te
                         data-video-src="<?= $escaper->escapeUrl($img->getData('video_url')) ?>"
                         data-caption="<?= $escaper->escapeHtmlAttr($caption) ?>"
                         @click="openLightbox"
+                        tabindex="-1"
                     >
                         <img
                             src="<?= $escaper->escapeUrl($img->getData('medium_image_url')) ?>"
