@@ -60,7 +60,7 @@ $mediumHeight = (int) $block->getImageAttribute('product_page_image_medium', 'he
 $videoLoop = $storeConfig->getStoreConfig('catalog/product_video/video_auto_restart') ?? false;
 $appendOnReceive = !$usePlaceholder && $block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct') === 'append';
 $useLoop = $block->getVar('gallery/loop', 'Magento_Catalog') ?? true;
-$showCaption = $block->getVar('gallery/caption', 'Magento_Catalog') ?? false;
+$showCaption = $block->getVar('gallery/caption', 'Magento_Catalog') ?? true;
 $pagerStyle = $block->getVar('gallery/pager', 'Magento_Catalog') ?: 'thumbs';
 $pagerDir = $block->getVar('gallery/pagerdir', 'Magento_Catalog') ?: 'vertical';
 $navStyle = $block->getVar('gallery/nav', 'Magento_Catalog') ?: 'end';
