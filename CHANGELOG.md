@@ -8,6 +8,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 [Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.6...main
 
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **Updated Tailwind CSS from v4.1 to v4.3**  
+
+    Highlights across both releases include first-party scrollbar styling, new zoom and tab-size utilities, four new neutral color palettes, extended logical property utilities including logical inset utilities, font features, and stacked/compound `@variant` support in custom CSS. For the full list of changes see the [Tailwind CSS v4.3 release post](https://tailwindcss.com/blog/tailwindcss-v4-3).
+
+    Make sure to update you child theme with this version since we are using these new classes in the phtml to reduce the CSS size for any none logical properties.
+
+### Removed
+
+-   Nothing Removed
+
 ## [1.4.6] - 2026-05-12
 
 [1.4.6]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.5...1.4.6
