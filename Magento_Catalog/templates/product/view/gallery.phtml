@@ -124,7 +124,6 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
     x-data="initGallery"
     x-snap-slider
     x-bind="eventListeners"
-    x-defer="intersect"
     aria-label="<?= $escaper->escapeHtmlAttr(__('Gallery')) ?>"
     <?php if ($useLoop): ?>
         data-loop
