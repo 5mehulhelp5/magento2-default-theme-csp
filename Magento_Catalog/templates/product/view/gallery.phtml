@@ -82,7 +82,7 @@ $btnIconSize = 28;
 $trackCssClasses = implode(' ', array_filter([
     'flex overflow-x-auto overflow-y-clip overscroll-contain snap-both snap-mandatory',
     'aspect-(--gallery-ratio) bg-white text-fg',
-    'motion-safe:scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+    'motion-safe:scroll-smooth scrollbar-none',
     $pagerDir === 'vertical' ? 'lg:flex-col lg:overflow-x-clip lg:overflow-y-auto' : ''
 ]));
 
@@ -108,13 +108,13 @@ $navArrowCssClasses = $navVertical ? 'lg:rotate-90' : 'rtl:rotate-180';
 $navCssClasses = implode(' ', array_filter([
     'z-10 absolute flex gap-2',
     $navVertical ? 'lg:flex-col lg:justify-between' : '',
-    $navStyle === 'end' ? 'bottom-2 right-2 rtl:right-auto rtl:left-2' : '',
-    $navStyle === 'start' ? 'bottom-2 left-2 rtl:left-auto rtl:right-2' : '',
+    $navStyle === 'end' ? 'bottom-2 end-2' : '',
+    $navStyle === 'start' ? 'bottom-2 start-2' : '',
     $navStyle === 'center' ? 'top-1/2 -translate-y-1/2 inset-x-2 justify-between pointer-events-none' : '',
 ]));
 
 $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60 text-fg max-w-2/3 text-pretty'
-    . ($navStyle === 'start' ? ' right-2 rtl:right-auto rtl:left-2' : ' left-2 rtl:left-auto rtl:right-2');
+    . ($navStyle === 'start' ? ' end-2' : ' start-2');
 ?>
 
 <section
@@ -382,7 +382,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             allowfullscreen
         ></iframe>
         <?php if ($navStyle !== 'none'): ?>
-            <div class="z-10 absolute flex gap-2 bottom-2 right-2 rtl:right-auto rtl:left-2
+            <div class="z-10 absolute flex gap-2 bottom-2 end-2
                 xl:bottom-auto xl:top-1/2 xl:-translate-y-1/2 xl:inset-x-0 xl:justify-between pointer-events-none">
                 <button
                     type="button"
