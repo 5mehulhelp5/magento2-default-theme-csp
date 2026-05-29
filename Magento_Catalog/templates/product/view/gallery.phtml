@@ -136,7 +136,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
     ><?= $escaper->escapeHtml(__('Press to skip carousel')) ?></a>
 
     <div class="relative">
-        <?php $block->getChildHtml('gallery.additional') ?>
+        <?= $block->getChildHtml('gallery.additional') ?>
 
         <?php if ($navStyle !== 'none'): ?>
             <div class="<?= $escaper->escapeHtmlAttr($navCssClasses) ?>">
