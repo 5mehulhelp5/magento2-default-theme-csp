@@ -171,9 +171,7 @@
                            template="Magento_Catalog::product/slider/product-slider.phtml">
                         <arguments>
                             <argument name="type" xsi:type="string">upsell</argument>
-                            <argument name="title" xsi:type="string"
-                                      translate="true">We found other products you might like!
-                            </argument>
+                            <argument name="title" xsi:type="string" translate="true">We found other products you might like!</argument>
                             <argument name="heading_tag" xsi:type="string">h2</argument>
                         </arguments>
                     </block>
