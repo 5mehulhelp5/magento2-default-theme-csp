@@ -10,9 +10,8 @@ declare(strict_types=1);
 use Hyva\Theme\Model\ViewModelRegistry;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
+use Magento\Swatches\Model\Swatch;
 use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableViewModel;
-
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /** @var Template $block */
 /** @var Escaper $escaper */
@@ -23,78 +22,64 @@ $configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
 
 $productId = $block->getProductId();
 $attributeId = $block->getAttributeId();
+$option = $block->getOption();
 
-if (!$productId || !$attributeId) {
+if (!$productId || !$attributeId || !$option) {
     return '';
 }
+
+$optionId = $option['value_index'];
+$optionLabel = $option['store_label'];
+$id = "attribute-option" . $productId . "-" . $optionId;
+$swatchData = $block->getSwatchData();
+$swatchType = (int) ($swatchData['type'] ?? Swatch::SWATCH_TYPE_TEXTUAL);
+$isVisual = in_array($swatchType, [Swatch::SWATCH_TYPE_VISUAL_COLOR, Swatch::SWATCH_TYPE_VISUAL_IMAGE], true);
+$toolTipData = [
+    'preview' => $swatchData['thumb'] ?? $swatchData['value'],
+    'label' => $optionLabel,
+    'type' => $swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR ? 'color' : ($swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE ? 'image' : 'text'),
+];
 ?>
-
-<div x-id="['attribute-option-<?= (int) $productId ?>-'+item.id]">
-    <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && optionIsActive(<?= (int) $attributeId ?>, item.id)">
-        <label
-            :for="$id('attribute-option-<?= (int) $productId ?>-'+item.id)"
-            class="swatch-option relative shadow-sm cursor-pointer select-none bg-white product-option-value-label"
-            :class="{
-                'border-gray-100 ring ring-primary/50':
-                    (selectedValues[<?= (int)$attributeId ?>] === item.id),
-                'border-gray-300':
-                    (selectedValues[<?= (int)$attributeId ?>] !== item.id),
-                'w-6 h-6' : !isTextSwatch(<?= (int) $attributeId ?>, item.id),
-                'border-gray-100 ring ring-primary/75' : focusedLabel === item.id
-            }"
-            :style="getSwatchBackgroundStyle('<?= (int) $attributeId ?>',item.id)"
-            <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
-                @mouseenter.self="activeTooltipItem = {
-                    attribute: '<?= (int) $attributeId ?>',
-                    item: item.id,
-                    index
-                }; tooltipPositionElement = $event.target;"
-                @mouseleave.self="activeTooltipItem = false"
-            <?php endif; ?>
+<label
+    for="<?= $escaper->escapeHtmlAttr($id) ?>"
+    class="form-swatch my-0"
+    data-swatch-type="<?= $escaper->escapeHtmlAttr($isVisual ? 'visual' : 'text') ?>"
+    data-attribute-id="<?= (int) $attributeId ?>"
+    data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+    <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+        @mouseenter.self="showTooltip"
+        @mouseleave.self="hideTooltip"
+        data-tooltip="<?= $escaper->escapeHtmlAttr(json_encode($toolTipData)) ?>"
+    <?php endif; ?>
+>
+    <?php if ($swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR): ?>
+        <span
+            class="block size-full"
+            style="background-color: <?= $escaper->escapeHtmlAttr($swatchData['value']) ?>"
+        ></span>
+    <?php elseif ($swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE): ?>
+        <img
+            src="<?= $escaper->escapeUrl($swatchData['value']) ?>"
+            alt="<?= $escaper->escapeHtmlAttr($optionLabel) ?>"
+            width="20"
+            height="20"
+            class="size-full object-cover"
+            loading="lazy"
         >
-            <input
-                :id="$id('attribute-option-<?= (int) $productId ?>-'+item.id)"
-                :value="item.id"
-                name="super_attribute[<?= (int) $attributeId ?>]"
-                type="radio"
-                class="inline-block absolute p-0 border-0 focus:border-0 focus:ring-0 product-option-value-input"
-                style="z-index:-1"
-                x-on:focus="focusLabel(item.id)"
-                x-on:blur="blurLabel()"
-                x-on:change="changeOption(<?= (int) $attributeId ?>, $event.target.value)"
-                x-on:click="clearOptionIfActive(<?= (int) $attributeId ?>, item.id)"
-                x-model="selectedValues[<?= (int) $attributeId ?>]"
-                :required="getAllowedAttributeOptions(<?= (int) $attributeId ?>).filter(
-                    attributeOption => selectedValues[attributeOption]
-                ).length === 0"
-                :aria-label="getSwatchText(<?= $escaper->escapeHtmlAttr($attributeId) ?>, item.id)"
-                aria-describedby="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
-            >
-            <template x-if="isTextSwatch(<?= (int) $attributeId ?>, item.id)">
-                <div
-                    x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
-                    class="pointer-events-none select-none whitespace-nowrap"
-                    aria-hidden="true"
-                ></div>
-            </template>
-        </label>
-    </template>
-
-    <template x-if="optionIsEnabled(<?= (int) $attributeId ?>, item.id) && !optionIsActive(<?= (int) $attributeId ?>, item.id)">
-        <div
-            class="relative border-2 shadow-sm opacity-50 cursor-pointer select-none border-gray-300 swatch-option bg-white"
-            :class="{
-                                                        'w-6 h-6' : !isTextSwatch(<?= (int) $attributeId ?>, item.id),
-                                                    }"
-            :style="getSwatchBackgroundStyle('<?= (int) $attributeId ?>',item.id)"
-        >
-            <div x-html="getSwatchText(<?= (int) $attributeId ?>, item.id)"
-                 class="whitespace-nowrap"
-                 :class="{ 'sr-only' : !isTextSwatch(<?= (int) $attributeId ?>, item.id) }"
-            ></div>
-            <svg class="absolute inset-0 w-full h-full text-gray-500 bg-white/25">
-                <line x1="0" y1="100%" x2="100%" y2="0" class="stroke-current stroke-1"></line>
-            </svg>
-        </div>
-    </template>
-</div>
+    <?php endif; ?>
+    <span
+        <?php if ($isVisual): ?>
+            class="sr-only"
+        <?php endif; ?>
+    ><?= $escaper->escapeHtml($optionLabel) ?></span>
+    <input
+        id="<?= $escaper->escapeHtmlAttr($id) ?>"
+        type="radio"
+        name="super_attribute[<?= $escaper->escapeHtml($attributeId) ?>]"
+        value="<?= $escaper->escapeHtml($optionId) ?>"
+        @change="reflectOption"
+        data-attribute-id="<?= $escaper->escapeHtmlAttr($attributeId) ?>"
+        required
+        class="sr-only"
+    >
+</label>

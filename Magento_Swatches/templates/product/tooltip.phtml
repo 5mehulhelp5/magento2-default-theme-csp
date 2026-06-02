@@ -22,11 +22,10 @@ use Magento\Framework\View\Element\Template;
     >
         <div class="absolute top-0 left-0 z-10 min-w-20 p-2 -mt-6 text-sm leading-tight text-black
                 transform -translate-x-1/2 -translate-y-full bg-white rounded-lg shadow-lg text-center"
-                :class="{'-translate-x-5' : isFirstItemCol()}"
         >
-        <template x-if="isVisualSwatch(activeTooltipItem.attribute, activeTooltipItem.item)">
+        <template x-if="isCurrentTooltipVisual()">
             <div class="inline-block border shadow-sm border-gray-300"
-                    :style="getTooltipImageStyle(activeTooltipItem.attribute, activeTooltipItem.item)"
+                    :style="getTooltipImageStyle()"
             ></div>
         </template>
             <span class="mx-2 text-lg font-semibold whitespace-nowrap subtitle"

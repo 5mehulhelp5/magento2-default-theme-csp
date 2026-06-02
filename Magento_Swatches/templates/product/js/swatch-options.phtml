@@ -5,6 +5,8 @@
  * See COPYING.txt for license details.
  */
 
+declare(strict_types=1);
+
 use Hyva\Theme\ViewModel\HyvaCsp;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
@@ -106,27 +108,20 @@ use Magento\Framework\View\Element\Template;
             activeTooltipItem: false,
             tooltipPositionElement: false,
             isTooltipVisible() {
-                return this.activeTooltipItem &&
-                    this.getSwatchConfig(
-                        this.activeTooltipItem.attribute,
-                        this.activeTooltipItem.item
-                    );
+                return !!this.activeTooltipItem;
             },
-            isFirstItemCol() {
-                return this.activeTooltipItem.index === 0;
+            isCurrentTooltipVisual() {
+                return this.activeTooltipItem && ['color', 'image'].includes(this.activeTooltipItem.type);
             },
-            getTooltipImageStyle(attributeId, optionId) {
-                const config = this.getSwatchConfig(attributeId, optionId);
-                const type = this.getSwatchType(attributeId, optionId);
-
-                if (type === "color") {
-                    return 'background-color:' + config.value + '; width: 110px; height: 90px;';
-                } else if (type === "image") {
-                    return "background: #ffffff url('" + config.thumb +
-                        "') center center no-repeat; width: 110px; height: 90px;";
-                } else {
-                    return 'display:none';
+            getTooltipImageStyle() {
+                const item = this.activeTooltipItem;
+                if (!item) return 'display:none';
+                if (item.type === 'color') {
+                    return 'background-color:' + item.preview + '; width: 110px; height: 90px;';
+                } else if (item.type === 'image') {
+                    return "background: #ffffff url('" + item.preview + "') center center no-repeat; width: 110px; height: 90px;";
                 }
+                return 'display:none';
             },
             getTooltipPosition() {
                 return this.tooltipPositionElement ?
@@ -140,7 +135,14 @@ use Magento\Framework\View\Element\Template;
                     }px;` : ''
             },
             getTooltipLabel() {
-                return this.getSwatchConfig(this.activeTooltipItem.attribute, this.activeTooltipItem.item).label
+                return this.activeTooltipItem ? this.activeTooltipItem.label : '';
+            },
+            showTooltip(event) {
+                this.activeTooltipItem = JSON.parse(event.currentTarget.dataset.tooltip);
+                this.tooltipPositionElement = event.currentTarget;
+            },
+            hideTooltip() {
+                this.activeTooltipItem = false;
             },
             focusedLabel: false,
             focusLabel(optionId) {
