@@ -40,7 +40,7 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
 ?>
 <?php if ($product->isSaleable() && count($attributes)): ?>
     <script>
-        function initConfigurableSwatchOptions() {
+        function initConfigurableSwatchProductOptions() {
             return Object.assign(
                 initConfigurableOptions('<?= (int) $productId ?>', <?= /* @noEscape */ $jsonConfig ?>),
                 initSwatchOptions(<?= /* @noEscape */ $jsonSwatchConfig ?>),
@@ -51,11 +51,15 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
                 }
             );
         }
+
+        window.addEventListener('alpine:init', () => {
+            Alpine.data('initConfigurableSwatchProductOptions', initConfigurableSwatchProductOptions)
+        }, { once: true });
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 
     <div
-        x-data="initConfigurableSwatchOptions()"
+        x-data="initConfigurableSwatchProductOptions"
         class="mb-2 relative"
     >
         <h2 class="mb-4 text-xl font-medium text-gray-900 title-font">
@@ -63,12 +67,12 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
         </h2>
         <?php foreach ($attributes as $attribute): ?>
             <?php
-                $attributeId = $attribute->getAttributeId();
-                $productAttribute = $attribute->getProductAttribute();
+            $attributeId = $attribute->getAttributeId();
+            $productAttribute = $attribute->getProductAttribute();
 
-                $isSwatch = $swatchRendererViewModel->isSwatchAttribute($productAttribute);
-                $productOptions = $attribute->getOptions();
-                $attributeSwatchConfig = $swatchConfig[$attributeId] ?? [];
+            $isSwatch = $swatchRendererViewModel->isSwatchAttribute($productAttribute);
+            $productOptions = $attribute->getOptions();
+            $attributeSwatchConfig = $swatchConfig[$attributeId] ?? [];
             ?>
             <?php if ($isSwatch): ?>
                 <fieldset class="mt-4">

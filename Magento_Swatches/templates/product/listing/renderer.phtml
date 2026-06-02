@@ -42,7 +42,7 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
 ?>
 <?php if ($product->isSaleable() && count($attributes)): ?>
     <script>
-        function initConfigurableSwatchOptions() {
+        function initConfigurableSwatchOptions_<?= (int) $productId ?>() {
             return Object.assign(
                 initConfigurableOptions('<?= (int) $productId ?>', <?= /* @noEscape */ $jsonConfig ?>),
                 initSwatchOptions(<?= /* @noEscape */ $jsonSwatchConfig ?>),
@@ -75,25 +75,29 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
                 }
             );
         }
+
+        window.addEventListener('alpine:init', () => {
+            Alpine.data('initConfigurableSwatchOptions_<?= (int) $productId ?>', initConfigurableSwatchOptions_<?= (int) $productId ?>)
+        }, { once: true });
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
 
     <div
-        x-data="initConfigurableSwatchOptions()"
+        x-data="initConfigurableSwatchOptions_<?= (int) $productId ?>"
         x-defer="intersect"
         class="mb-2 relative"
     >
         <?php foreach ($attributes as $attribute): ?>
             <?php
-                $attributeId = $attribute->getAttributeId();
-                $productAttribute = $attribute->getProductAttribute();
+            $attributeId = $attribute->getAttributeId();
+            $productAttribute = $attribute->getProductAttribute();
 
-                if (!$productAttribute->getUsedInProductListing() || !$swatchRendererViewModel->isSwatchAttribute($productAttribute)) {
-                    continue;
-                }
+            if (!$productAttribute->getUsedInProductListing() || !$swatchRendererViewModel->isSwatchAttribute($productAttribute)) {
+                continue;
+            }
 
-                $productOptions = $attribute->getOptions();
-                $attributeSwatchConfig = $swatchConfig[$attributeId] ?? [];
+            $productOptions = $attribute->getOptions();
+            $attributeSwatchConfig = $swatchConfig[$attributeId] ?? [];
             ?>
             <fieldset class="mt-4">
                 <legend class="mb-1 text-base font-medium"><?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?></legend>
