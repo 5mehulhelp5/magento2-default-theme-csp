@@ -38,5 +38,11 @@
             outline: var(--outline-size, 2px) solid var(--form-active-color);
             outline-offset: var(--outline-offset, 2px);
         }
+
+        &:has(:disabled) {
+            border-color: color-mix(in srgb, var(--form-stroke), #0000);
+            border-style: dashed;
+            cursor: not-allowed;
+        }
     }
 }
