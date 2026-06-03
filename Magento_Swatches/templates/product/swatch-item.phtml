@@ -44,12 +44,9 @@ $toolTipData = [
     for="<?= $escaper->escapeHtmlAttr($id) ?>"
     class="form-swatch my-0"
     data-swatch-type="<?= $escaper->escapeHtmlAttr($isVisual ? 'visual' : 'text') ?>"
-    data-attribute-id="<?= (int) $attributeId ?>"
-    data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
     <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
         @mouseenter.self="showTooltip"
         @mouseleave.self="hideTooltip"
-        data-tooltip="<?= $escaper->escapeHtmlAttr(json_encode($toolTipData)) ?>"
     <?php endif; ?>
 >
     <?php if ($swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR): ?>
@@ -79,6 +76,11 @@ $toolTipData = [
         value="<?= $escaper->escapeHtml($optionId) ?>"
         @change="reflectOption"
         data-attribute-id="<?= $escaper->escapeHtmlAttr($attributeId) ?>"
+        data-option-label="<?= $escaper->escapeHtmlAttr($optionLabel) ?>"
+        <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+            data-tooltip="<?= $escaper->escapeHtmlAttr(json_encode($toolTipData)) ?>"
+        <?php endif; ?>
+        :disabled="optionIsDisabled"
         required
         class="sr-only"
     >
