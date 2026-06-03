@@ -144,7 +144,8 @@ use Magento\Framework\View\Element\Template;
                 return !this.optionIsActive(this.$el.dataset.attributeId, this.$el.value);
             },
             showTooltip(event) {
-                this.activeTooltipItem = JSON.parse(event.currentTarget.dataset.tooltip);
+                const input = event.currentTarget.querySelector('input');
+                this.activeTooltipItem = JSON.parse(input.dataset.tooltip);
                 this.tooltipPositionElement = event.currentTarget;
             },
             hideTooltip() {
