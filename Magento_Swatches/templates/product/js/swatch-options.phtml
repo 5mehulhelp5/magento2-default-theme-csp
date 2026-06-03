@@ -113,6 +113,9 @@ use Magento\Framework\View\Element\Template;
             isCurrentTooltipVisual() {
                 return this.activeTooltipItem && ['color', 'image'].includes(this.activeTooltipItem.type);
             },
+            isFirstItemCol() {
+                return this.activeTooltipItem.index === 0;
+            },
             getTooltipImageStyle() {
                 const item = this.activeTooltipItem;
                 if (!item) return 'display:none';
