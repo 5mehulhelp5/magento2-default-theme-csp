@@ -22,7 +22,7 @@
         }
 
         &[data-swatch-type="visual"] {
-            --swatch-radius: 50%;
+            --swatch-radius: 5rem;
             --swatch-px: 3px;
         }
 
