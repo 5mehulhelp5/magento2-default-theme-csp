@@ -191,7 +191,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                     >
                         <img
                             src="<?= $escaper->escapeUrl($img->getData('medium_image_url')) ?>"
-                            alt="<?= $escaper->escapeHtmlAttr($showCaption ? '' : $caption ?? $productName) ?>"
+                            alt="<?= $escaper->escapeHtmlAttr($showCaption && $caption ? '' : $caption ?? $productName) ?>"
                             width="<?= $escaper->escapeHtmlAttr($mediumWidth) ?>"
                             height="<?= $escaper->escapeHtmlAttr($mediumHeight) ?>"
                             loading="<?= $escaper->escapeHtmlAttr($i === 0 ? 'eager' : 'lazy') ?>"
