@@ -118,24 +118,38 @@ use Magento\Framework\View\Element\Template;
             },
             getTooltipImageStyle() {
                 const item = this.activeTooltipItem;
-                if (!item) return 'display:none';
-                if (item.type === 'color') {
-                    return 'background-color:' + item.preview + '; width: 110px; height: 90px;';
-                } else if (item.type === 'image') {
-                    return "background: #ffffff url('" + item.preview + "') center center no-repeat; width: 110px; height: 90px;";
-                }
-                return 'display:none';
+                if (item?.type === 'color') return {
+                    backgroundColor: item.preview,
+                    width: `${item.width ?? 90}px`,
+                    height: `${item.height ?? 90}px`
+                };
+                if (item?.type === 'image') return {
+                    backgroundImage: `url(${item.preview})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    width: `${item.width ?? 90}px`,
+                    height: `${item.height ?? 90}px`
+                };
+                return null;
             },
             getTooltipPosition() {
-                return this.tooltipPositionElement ?
-                    `top: ${this.tooltipPositionElement.offsetTop}px;` +
-                    `left: ${
-                        this.tooltipPositionElement.offsetLeft - (
-                            this.tooltipPositionElement.closest('.snap') &&
-                            this.tooltipPositionElement.closest('.snap').scrollLeft ||
-                            0
-                        )
-                    }px;` : ''
+                if (!this.tooltipPositionElement) return null;
+                const el = this.tooltipPositionElement;
+                const elRect = el.getBoundingClientRect();
+                const overflowEl = el.closest('.snap-track') || el.closest('[class*="overflow-x"]');
+                let left = elRect.left + elRect.width / 2;
+
+                if (overflowEl) {
+                    const overflowRect = overflowEl.getBoundingClientRect();
+                    left = Math.max(overflowRect.left, Math.min(overflowRect.right, left));
+                }
+
+                return {
+                    bottom: `${window.innerHeight - elRect.top}px`,
+                    left: `${left}px`,
+                    translate: '-50% 0'
+                };
             },
             getTooltipLabel() {
                 return this.activeTooltipItem ? this.activeTooltipItem.label : '';

@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\SwatchRenderer;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 use Magento\Swatches\Model\Swatch;
@@ -20,6 +21,9 @@ use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableView
 /** @var ConfigurableViewModel $configurableViewModel */
 $configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
 
+/** @var SwatchRenderer $swatchRendererViewModel */
+$swatchRendererViewModel = $viewModels->require(SwatchRenderer::class);
+
 $productId = $block->getProductId();
 $attributeId = $block->getAttributeId();
 $option = $block->getOption();
@@ -31,44 +35,56 @@ if (!$productId || !$attributeId || !$option) {
 $optionId = $option['value_index'];
 $optionLabel = $option['store_label'];
 $id = "attribute-option" . $productId . "-" . $optionId;
+
 $swatchData = $block->getSwatchData();
 $swatchType = (int) ($swatchData['type'] ?? Swatch::SWATCH_TYPE_TEXTUAL);
 $isVisual = in_array($swatchType, [Swatch::SWATCH_TYPE_VISUAL_COLOR, Swatch::SWATCH_TYPE_VISUAL_IMAGE], true);
+
+$swatchImgWidth = $swatchRendererViewModel->getSwatchDimension('swatch_image', 'width', 30);
+$swatchImgHeight = $swatchRendererViewModel->getSwatchDimension('swatch_image', 'height', 30);
+$swatchImgThumbWidth = $swatchRendererViewModel->getSwatchDimension('swatch_thumb', 'width', 90);
+$swatchImgThumbHeight = $swatchRendererViewModel->getSwatchDimension('swatch_thumb', 'height', 90);
+
 $toolTipData = [
     'preview' => $swatchData['thumb'] ?? $swatchData['value'],
     'label' => $optionLabel,
-    'type' => $swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR ? 'color' : ($swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE ? 'image' : 'text'),
+    'type' => $swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR
+        ? 'color'
+        : ($swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE ? 'image' : 'text'),
+    'width' => $swatchImgThumbWidth,
+    'height' => $swatchImgThumbHeight,
 ];
 ?>
 <label
     for="<?= $escaper->escapeHtmlAttr($id) ?>"
-    class="form-swatch my-0"
+    class="swatch-option my-0"
     data-swatch-type="<?= $escaper->escapeHtmlAttr($isVisual ? 'visual' : 'text') ?>"
-    <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+    <?php if ($isVisual && $configurableViewModel->getShowSwatchTooltip()): ?>
         @mouseenter.self="showTooltip"
         @mouseleave.self="hideTooltip"
     <?php endif; ?>
 >
     <?php if ($swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR): ?>
         <span
-            class="block size-full"
-            style="background-color: <?= $escaper->escapeHtmlAttr($swatchData['value']) ?>"
+            class="block"
+            style="<?= $escaper->escapeHtmlAttr(implode(';', [
+                'width:' . $swatchImgWidth . 'px',
+                'height:' . $swatchImgHeight . 'px',
+                'background-color:' . $swatchData['value'],
+            ])); ?>"
         ></span>
+        <span class="sr-only"><?= $escaper->escapeHtml($optionLabel) ?></span>
     <?php elseif ($swatchType === Swatch::SWATCH_TYPE_VISUAL_IMAGE): ?>
         <img
             src="<?= $escaper->escapeUrl($swatchData['value']) ?>"
             alt="<?= $escaper->escapeHtmlAttr($optionLabel) ?>"
-            width="20"
-            height="20"
-            class="size-full object-cover"
+            width="<?= $escaper->escapeHtmlAttr($swatchImgWidth) ?>"
+            height="<?= $escaper->escapeHtmlAttr($swatchImgHeight) ?>"
             loading="lazy"
         >
+    <?php else: ?>
+        <span><?= $escaper->escapeHtml($optionLabel) ?></span>
     <?php endif; ?>
-    <span
-        <?php if ($isVisual): ?>
-            class="sr-only"
-        <?php endif; ?>
-    ><?= $escaper->escapeHtml($optionLabel) ?></span>
     <input
         id="<?= $escaper->escapeHtmlAttr($id) ?>"
         type="radio"
@@ -77,7 +93,7 @@ $toolTipData = [
         @change="reflectOption"
         data-attribute-id="<?= $escaper->escapeHtmlAttr($attributeId) ?>"
         data-option-label="<?= $escaper->escapeHtmlAttr($optionLabel) ?>"
-        <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+        <?php if ($isVisual && $configurableViewModel->getShowSwatchTooltip()): ?>
             data-tooltip="<?= $escaper->escapeHtmlAttr(json_encode($toolTipData)) ?>"
         <?php endif; ?>
         :disabled="optionIsDisabled"
