@@ -429,7 +429,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                 this.maxImageCount = this.initImages.length - this.maxDisplay;
                 this.initOverflowSrc = this.initImages[this.maxDisplay]?.img || '';
                 this.overflowSrc = this.initOverflowSrc;
-                this.$watch('newImages', this.updateActiveItem());
+                this.$watch('newImages', () => this.updateActiveItem());
             },
             updateGallery(images = []) {
                 const existing = new Set(this.initImages.map(i => i.img));
