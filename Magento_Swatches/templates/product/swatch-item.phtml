@@ -36,7 +36,7 @@ $optionId = $option['value_index'];
 $optionLabel = $option['store_label'];
 $id = "attribute-option" . $productId . "-" . $optionId;
 
-$swatchData = $block->getSwatchData();
+$swatchData = $block->getSwatchData() ?? [];
 $swatchType = (int) ($swatchData['type'] ?? Swatch::SWATCH_TYPE_TEXTUAL);
 $isVisual = in_array($swatchType, [Swatch::SWATCH_TYPE_VISUAL_COLOR, Swatch::SWATCH_TYPE_VISUAL_IMAGE], true);
 
@@ -46,7 +46,7 @@ $swatchImgThumbWidth = $swatchRendererViewModel->getSwatchDimension('swatch_thum
 $swatchImgThumbHeight = $swatchRendererViewModel->getSwatchDimension('swatch_thumb', 'height', 90);
 
 $toolTipData = [
-    'preview' => $swatchData['thumb'] ?? $swatchData['value'],
+    'preview' => $swatchData['thumb'] ?? $swatchData['value'] ?? null,
     'label' => $optionLabel,
     'type' => $swatchType === Swatch::SWATCH_TYPE_VISUAL_COLOR
         ? 'color'
