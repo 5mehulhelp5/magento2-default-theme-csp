@@ -47,7 +47,6 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
             const configEl = this.$root.querySelector('script[type="application/json"]');
             const configurableOptionsComponent = initConfigurableOptions(productId, JSON.parse(configEl.textContent));
             const swatchOptionsComponent = initSwatchOptions();
-
             return Object.assign(
                 configurableOptionsComponent,
                 swatchOptionsComponent,
@@ -71,6 +70,18 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
                                 link.href = url.toString();
                             } catch (e) {}
                         });
+                    },
+                    changeOption(attributeId, value) {
+                        this.baseChangeOption(attributeId, value);
+                        window.dispatchEvent(new CustomEvent('listing-configurable-selection-changed', {
+                            detail: {
+                                productId: this.productId,
+                                optionId: attributeId,
+                                value,
+                                selectedValues: this.selectedValues,
+                                productIndex: this.productIndex,
+                            }
+                        }));
                     },
                     updateGallery() {
                         if (!this.productIndex) return;

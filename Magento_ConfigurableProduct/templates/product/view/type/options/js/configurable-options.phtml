@@ -244,7 +244,7 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 this.selectedOptions[attributeId] = label;
                 this.changeOption(attributeId, event.target.value);
             },
-            changeOption(attributeId, value) {
+            baseChangeOption(attributeId, value) {
                 if (value === '') {
                     this.selectedValues = this.removeAttrFromSelection(this.selectedValues, attributeId)
                 } else if (value && this.getAllowedAttributeOptions(attributeId).find(option => option.id === value)) {
@@ -255,6 +255,9 @@ $currentProduct = $viewModels->require(CurrentProduct::class);
                 this.findAllowedAttributeOptions();
                 this.updatePrices();
                 this.updateGallery();
+            },
+            changeOption(attributeId, value) {
+                this.baseChangeOption(attributeId, value);
 
                 const candidates = this.findProductIdsForPartialSelection(this.selectedValues);
 
