@@ -11,11 +11,9 @@
   "scripts": {
     "start": "npm run watch",
     "generate": "npx hyva-sources && npx hyva-tokens",
-    "prewatch": "npm run generate",
-    "watch": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --watch",
+    "watch": "npm run generate && npx tailwindcss -i tailwind-source.css -o ../css/styles.css --watch",
     "browser-sync": "npx browser-sync start --config ./browser-sync.config.cjs",
-    "prebuild": "npm run generate",
-    "build": "npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify"
+    "build": "npm run generate && npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify"
   },
   "engine-strict": true,
   "engines": {

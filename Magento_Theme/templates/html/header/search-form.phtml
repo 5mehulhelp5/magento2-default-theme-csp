@@ -146,7 +146,7 @@ $searchConfig = $viewModels->require(SearchConfig::class);
         <template x-if="suggestions.length">
             <nav
                 aria-label="<?= $escaper->escapeHtmlAttr(__('Search Suggestions')) ?>"
-                class="flex flex-col mt-1 text-grey-800 gap-1"
+                class="flex flex-col mt-1 text-gray-800 gap-1"
             >
                 <template x-for="suggestion in suggestions">
                     <button

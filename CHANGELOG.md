@@ -6,7 +6,46 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.6...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.7...main
+
+## [1.4.7] - 2026-05-28
+
+[1.4.7]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.6...1.4.7
+
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **Replace hardcoded colors on skip-to-product-list link in layered navigation**  
+    The skip link in `Magento_LayeredNavigation/templates/layer/view.phtml` now uses `btn btn-primary` instead of hardcoded `bg-blue-600 text-white` classes, making it respect the active theme's button styles.
+
+    Many thanks to Finn Reinhardt (Basecom) for the contribution!
+
+-   **Refactor card-interactive hover and focus-within styles**  
+    The `.card-interactive` component in `web/tailwind/components/card.css` now uses `@media (hover: hover)` and native CSS nesting for its interactive states, replacing the previous `@variant` and `@utility card-interactive-active` approach.
+
+    Many thanks to Koen Brouwers (Webdesign Tilburg) for the contribution!
+
+-   **Fix invalid Tailwind color classes in breadcrumbs and search suggestions**  
+    Replaced non-existent `text-grey` and `text-grey-800` classes with the correct `text-gray-400` and `text-gray-800` in breadcrumb and search form templates.
+
+-   **Remove hardcoded text color from breadcrumb templates**  
+    Removed the `text-gray-400` class from `Magento_Theme/templates/html/breadcrumbs.phtml` and `Magento_Catalog/templates/product/view/breadcrumbs.phtml`, leaving breadcrumb color to be defined by the theme.
+
+-   **Only load jarallax-video script when video background elements are present**  
+    The `jarallax-video` script in `Magento_PageBuilder/templates/widgets/parallax.phtml` is now only loaded when the page contains at least one video background element, avoiding an unnecessary network request.  
+    For more information, please refer to [issue #1306](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1306).
+
+    Many thanks to Michał Gałężewski (Macopedia) for the contribution!
+
+-   **Remove unused `$count` variable from custom option templates**  
+    Cleaned up an unused `$count` variable and its increment from `checkable.phtml` and `multiple.phtml` in the product custom options composite fieldset.
+
+### Removed
+
+-   Nothing Removed
 
 ### Added
 
