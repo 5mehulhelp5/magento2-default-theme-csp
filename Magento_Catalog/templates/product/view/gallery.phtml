@@ -82,8 +82,7 @@ $btnIconSize = 28;
 $trackCssClasses = implode(' ', array_filter([
     'flex overflow-x-auto overflow-y-clip overscroll-contain snap-both snap-mandatory',
     'aspect-(--gallery-ratio) bg-white text-fg',
-    'motion-safe:scroll-smooth scrollbar-none',
-    $pagerDir === 'vertical' ? 'lg:flex-col lg:overflow-x-clip lg:overflow-y-auto' : ''
+    'motion-safe:scroll-smooth scrollbar-none'
 ]));
 
 $pagerWrapperCssClasses = implode(' ', array_filter([
@@ -104,10 +103,8 @@ $pagerMarkerCssClasses = 'snap-marker stack overflow-hidden inset-ring-primary '
         : 'lg:size-auto lg:rounded-md lg:p-px lg:data-[overflow]:hidden lg:aria-current:bg-transparent lg:aria-current:inset-ring');
 
 $navVertical = $pagerDir === 'vertical' && $navStyle !== 'center';
-$navArrowCssClasses = $navVertical ? 'lg:rotate-90' : 'rtl:rotate-180';
 $navCssClasses = implode(' ', array_filter([
     'z-10 absolute flex gap-2',
-    $navVertical ? 'lg:flex-col lg:justify-between' : '',
     $navStyle === 'end' ? 'bottom-2 end-2' : '',
     $navStyle === 'start' ? 'bottom-2 start-2' : '',
     $navStyle === 'center' ? 'top-1/2 -translate-y-1/2 inset-x-2 justify-between pointer-events-none' : '',
@@ -148,7 +145,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                     hidden
                     x-show="showArrows"
                 >
-                    <?= $lucideIcons->chevronLeftHtml($navArrowCssClasses, $btnIconSize, $btnIconSize, ['aria-hidden' => 'true']); ?>
+                    <?= $lucideIcons->chevronLeftHtml('rtl:rotate-180', $btnIconSize, $btnIconSize, ['aria-hidden' => 'true']); ?>
                 </button>
 
                 <button
@@ -159,7 +156,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                     hidden
                     x-show="showArrows"
                 >
-                    <?= $lucideIcons->chevronRightHtml($navArrowCssClasses, $btnIconSize, $btnIconSize, ['aria-hidden' => 'true']); ?>
+                    <?= $lucideIcons->chevronRightHtml('rtl:rotate-180', $btnIconSize, $btnIconSize, ['aria-hidden' => 'true']); ?>
                 </button>
             </div>
         <?php endif; ?>
