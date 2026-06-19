@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <!--
 /**
  * Hyvä Themes - https://hyva.io
@@ -6,7 +6,10 @@
  * See COPYING.txt for license details.
  */
 -->
-<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
+<view
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd"
+>
     <media>
         <images module="Magento_Catalog">
             <image id="bundled_product_customization_page" type="thumbnail">
@@ -73,7 +76,7 @@
                 <width>140</width>
                 <height>140</height>
             </image>
-            <image id="product_page_image_large" type="image"/>
+            <image id="product_page_image_large" type="image" />
             <image id="product_page_image_medium" type="image">
                 <width>700</width>
                 <height>700</height>
@@ -82,7 +85,7 @@
                 <width>80</width>
                 <height>80</height>
             </image>
-            <image id="product_swatch_image_large" type="image"/>
+            <image id="product_swatch_image_large" type="image" />
             <image id="product_swatch_image_medium" type="image">
                 <width>360</width>
                 <height>360</height>
@@ -186,6 +189,15 @@
             <image id="wishlist_thumbnail" type="small_image">
                 <width>240</width>
                 <height>300</height>
+            </image>
+            <!-- Width and height define the bounding box. Images scale to fit while preserving the original aspect ratio. -->
+            <image id="swatch_image" type="swatch_image">
+                <width>30</width>
+                <height>30</height>
+            </image>
+            <image id="swatch_thumb" type="swatch_thumb">
+                <width>90</width>
+                <height>90</height>
             </image>
         </images>
     </media>

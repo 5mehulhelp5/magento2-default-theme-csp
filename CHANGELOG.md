@@ -16,6 +16,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+-   **PHP-rendered configurable product swatches**
+
+    Swatches complete the PHP rendering story started by the gallery. Color, image, and text options now arrive in the initial HTML — no rendering loop, no pop-in, no layout shift. Combined with the gallery change, HTML document size is approximately 10% smaller and CLS on the product detail page is eliminated entirely.
+
+    -   Layered navigation filter selections are preserved when navigating to the product detail page.
+    -   Cart item editing is more stable when restoring previously selected options.
+    -   Swatch tooltips no longer clip inside sliders. Positioning uses viewport coordinates so they always render above the swatch regardless of scroll context.
+    -   Fixes a double-render bug where `x-defer="intersect"` combined with stacked Alpine template tags caused swatch options to appear twice.
+    -   Swatch appearance is driven by the `.swatch-option` CSS component, making visual customisation a stylesheet change rather than a template override.
+    -   The layered navigation renderer is aligned with the product renderers: same rendering approach, tooltip shape, and image dimensions from `view.xml`.
+    -   Fixes an accessibility inconsistency where swatches acted as toggles rather than a standard radio group.
+
+    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-0.html).
+
 -   **Improved product gallery**  
 
     The gallery is now PHP-rendered and only hydrated by Alpine.js, meaning images are present in the initial HTML which improves Performance and LCP.
