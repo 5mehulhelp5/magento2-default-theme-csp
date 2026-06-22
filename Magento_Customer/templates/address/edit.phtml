@@ -281,8 +281,13 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
             <button type="submit"
                     class="action save btn btn-primary"
                     data-action="save-address"
+                    :disabled="isSubmitting"
+                    :class="{ 'opacity-50 cursor-not-allowed': isSubmitting }"
                     title="<?= $escaper->escapeHtmlAttr(__('Save Address')) ?>">
-                <span><?= $escaper->escapeHtml(__('Save Address')) ?></span>
+                <span x-text="isSubmitting
+                    ? '<?= $escaper->escapeHtml(__('Saving...')) ?>'
+                    : '<?= $escaper->escapeHtml(__('Save Address')) ?>'">
+                </span>
             </button>
         </div>
         <div class="secondary">
