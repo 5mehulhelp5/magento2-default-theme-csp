@@ -280,12 +280,14 @@ $showOptionalRegions = $block->getConfig('general/region/display_all');
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">
-            <button type="submit"
-                    class="action save btn btn-primary"
-                    data-action="save-address"
-                    :disabled="isSubmitting"
-                    title="<?= $escaper->escapeHtmlAttr(__('Save Address')) ?>">
-                <span x-text="updateSubmitBtnText></span>
+            <button
+                type="submit"
+                class="action save btn btn-primary"
+                data-action="save-address"
+                x-text="updateSubmitBtnText"
+                :disabled="isSubmitting"
+            >
+                <?= $escaper->escapeHtml(__('Save Address')) ?>
             </button>
         </div>
         <div class="secondary">
