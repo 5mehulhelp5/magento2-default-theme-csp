@@ -76,8 +76,11 @@ $searchConfig = $viewModels->require(SearchConfig::class);
                     this.$refs.form.submit();
                 }
             },
+            searchSuggestion() {
+                this.search(this.suggestion.title)
+            },
             focusSearch() {
-                this.$ref.searchInput.focus();
+                this.$refs.searchInput.focus();
             },
             focusAfterOpen() {
                 this.$el.focus()

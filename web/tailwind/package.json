@@ -13,7 +13,8 @@
     "generate": "npx hyva-sources && npx hyva-tokens",
     "watch": "npm run generate && npx tailwindcss -i tailwind-source.css -o ../css/styles.css --watch",
     "browser-sync": "npx browser-sync start --config ./browser-sync.config.cjs",
-    "build": "npm run generate && npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify"
+    "build": "npm run generate && npx tailwindcss -i tailwind-source.css -o ../css/styles.css --minify",
+    "build-prod": "npm run build"
   },
   "engine-strict": true,
   "engines": {
