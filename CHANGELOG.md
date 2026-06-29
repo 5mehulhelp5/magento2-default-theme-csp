@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [1.5.0] - 2026-06-30
 
+[1.5.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.7...1.5.0
+
 ### Added
 
 -   Nothing Added
@@ -35,7 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 -   **Improved product gallery**  
 
-    The gallery is now PHP-rendered and only hydrated by Alpine.js, meaning images are present in the initial HTML which improves Performance and LCP.
+    The gallery is now PHP-rendered and only hydrated by Alpine.js, meaning images are present in the initial HTML which improves performance and LCP.
 
     -   Built-in lightbox with keyboard navigation and loop support with disabled button states at boundaries
     -   Now configurable via `view.xml` with options for loop, caption, pager style, pager direction, navigation position, and maximum thumbnail count
@@ -51,7 +53,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
     Highlights across both releases include first-party scrollbar styling, new zoom and tab-size utilities, four new neutral color palettes, extended logical property utilities including logical inset utilities, font features, and stacked/compound `@variant` support in custom CSS. For the full list of changes see the [Tailwind CSS v4.3 release post](https://tailwindcss.com/blog/tailwindcss-v4-3).
 
-    Make sure to update you child theme with this version since we are using these new classes in the phtml to reduce the CSS size for any none logical properties.
+    Make sure to update your child theme with this version since we are using these new classes in the phtml to reduce the CSS size for any non-logical properties.
 
 ### Removed
 
