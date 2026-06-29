@@ -6,7 +6,105 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.6...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.7...main
+
+## [1.4.7 CSP] - 2026-06-30
+
+[1.4.7 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.6...1.4.7
+
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **Fixed price difference not visible in the select element of a customisable option**  
+    For more information, please refer to [issue #34](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/work_items/34).
+
+-   **Fixed CSP with the Swatches feature causing "Cannot read properties of null/undefined"**  
+    For more information, please refer to [issue #35](https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/work_items/35).
+
+### Removed
+
+-   Nothing Removed
+
+## [1.4.7] - 2026-06-30
+
+[1.4.7]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.6...1.4.7
+
+### Added
+
+-   **Added check if the options have a input type file else render the default form enctype**  
+    For more information, please refer to [merge request #1493](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1493).
+
+-   **Add minimal age to npm dependencies to prevent zero day attacks**  
+    For more information, please refer to [issue #1319](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1319).
+
+-   **Add build-prod back into package.json as a wrapper for build.**  
+    For more information, please refer to [issue #1309](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1309).
+
+### Changed
+
+-   **Replace hardcoded colors on skip-to-product-list link in layered navigation**  
+    For more information, please refer to [merge request #1470](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1470).
+
+    Many thanks to Finn Reinhardt (Basecom) for the contribution!
+
+-   **Refactor card-interactive hover and focus-within styles**  
+    For more information, please refer to [issue #1301](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1301).
+
+    Many thanks to Koen Brouwers (Webdesign Tilburg) for the contribution!
+
+-   **Only load jarallax-video script when video background elements are present**  
+    For more information, please refer to [issue #1306](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1306).
+
+    Many thanks to Michał Gałężewski (Macopedia) for the contribution!
+
+-   **Fixed PLP Add-to-wishlist does not apply selected product options**  
+    For more information, please refer to [issue #1177](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1177).
+
+-   **Fixed Header cart button aria-expanded issue**  
+    For more information, please refer to [issue #1304](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1304).
+
+-   **Fixed Account buttons can be clicked multiple times after submitting causing multiple entries**  
+    For more information, please refer to [issue #1323](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1323).
+
+-   **Fixed reCAPTCHA v2 challenge popup not visible when authentication popup is open**  
+    For more information, please refer to [issue #1321](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1321).
+
+-   **Improve Contact form template structure and accessibility**  
+    For more information, please refer to [merge request #1491](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1491).
+
+-   **Fixed missing translation for 'See all %1' to base i18n**  
+    For more information, please refer to [issue #1314](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1314).
+
+-   **Fixed Tailwind color class**  
+    For more information, please refer to [merge request #1483](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1483).
+
+-   **Fixed missing searchSuggestion function in search**  
+    For more information, please refer to [issue #1312](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1312).
+
+-   **Fixed missing data-item_id for virtual item renderer**  
+    For more information, please refer to [issue #1194](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1194).
+
+    Many thanks to Vita Samohina (Perspective) for the contribution!
+
+-   **Disables the submit buttons after a failed ReCaptcha validation**  
+    For more information, please refer to [issue #1082](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1082).
+
+    Many thanks to Viacheslav Chervinko (Perspective) for the contribution!
+
+-   **Company is displaying even if disabled in Address Book's grid**  
+    For more information, please refer to [issue #1253](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1253).
+
+    Many thanks to Oleksii Rozhnenko (Perspective) for the contribution!
+
+### Removed
+
+-   **Remove unused $count variable**  
+    For more information, please refer to [merge request #1473](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1473).
+
+    Many thanks to Thomas Hauschild (e3n) for the contribution!
 
 ## [1.4.6 CSP] - 2026-05-12
 
@@ -424,7 +522,7 @@ Same as default theme
     For more information, please refer to [merge request #1361](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1361)
 
 -   **Expand Gallery Update Event for the Product List Items to allows easier adjustment for custom images**  
-    For more information, please refer to [issue #1225](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1225)
+    For more information, please refer to [issue #1171](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1171)
 
     Many thanks to Maxim Ganses (PHPro) for the contribution!
 

@@ -145,8 +145,7 @@ $showWishlist = $block->getShowWishlist() !== null ? (bool) $block->getShowWishl
                 :aria-label="cartAriaLabel"
                 <?php if ($showMiniCart): ?>
                     @click="toggleCart"
-                    :aria-expanded="isCartOpen"
-                    aria-haspopup="dialog"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Toggle minicart')) ?>"
                 <?php else: ?>
                     href="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/index')) ?>"
                     aria-label="<?= $escaper->escapeHtmlAttr(__('View cart')) ?>"
