@@ -5,19 +5,19 @@
  * See COPYING.txt for license details.
  */
 
-use Hyva\Theme\Model\ViewModelRegistry;
+declare(strict_types=1);
+
 use Hyva\Theme\ViewModel\HyvaCsp;
+use Hyva\Theme\Model\ViewModelRegistry;
 use Hyva\Theme\ViewModel\SwatchRenderer;
 use Magento\Framework\Escaper;
 use Magento\Swatches\Block\Product\Renderer\Configurable;
 use Magento\Swatches\ViewModel\Product\Renderer\Configurable as ConfigurableViewModel;
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /** @var Configurable $block */
 /** @var Escaper $escaper */
-/** @var HyvaCsp $hyvaCsp */
 /** @var ViewModelRegistry $viewModels */
+/** @var HyvaCsp $hyvaCsp */
 
 /** @var ConfigurableViewModel $configurableViewModel */
 $configurableViewModel = $viewModels->require(ConfigurableViewModel::class);
@@ -34,126 +34,98 @@ $layout = $block->getLayout();
 $swatchItemBlock = $layout->getBlock('product.swatch.item');
 $swatchItemBlock->setData('product_id', $productId);
 
-$tooltipBlockHtml = $block->getBlockHtml('product.swatch.tooltip');
+$jsonConfig = $block->getJsonConfig();
+$jsonSwatchConfig = $block->getJsonSwatchConfig();
+$swatchConfig = json_decode($jsonSwatchConfig, true);
 ?>
 <?php if ($product->isSaleable() && count($attributes)): ?>
     <script>
-        function initViewConfigurableSwatchOptions() {
-            const dataset = this.$el.dataset,
-                productId = dataset.productId,
-                optionConfig = JSON.parse(dataset.config),
-                swatchOptions = JSON.parse(dataset.swatchOptions);
+        function initConfigurableSwatchProductOptions() {
+            const { productId } = this.$root.dataset;
+            const configEl = this.$root.querySelector('script[type="application/json"]');
+            if (!configEl) {
+                throw new Error(`initConfigurableSwatchProductOptions:
+                    missing inline JSON config in component root,
+                    outdated renderer.phtml override?`);
+            }
 
-            const configurableOptionsComponent = initConfigurableOptions(
-                productId,
-                optionConfig
-            );
-            const swatchOptionsComponent = initSwatchOptions(
-                swatchOptions
-            );
-            const configurableOptionsComponentInit = configurableOptionsComponent.init;
+            const configurableOptionsComponent = initConfigurableOptions(productId, JSON.parse(configEl.textContent));
+            const swatchOptionsComponent = initSwatchOptions();
 
             return Object.assign(
                 configurableOptionsComponent,
-                swatchOptionsComponent,
-                {
-                    init() {
-                        configurableOptionsComponentInit.call(this);
-                    }
-                }
+                swatchOptionsComponent
             );
         }
-        window.addEventListener('alpine:init', () => Alpine.data('initViewConfigurableSwatchOptions', initViewConfigurableSwatchOptions), {once: true})
+
+        window.addEventListener('alpine:init', () => {
+            Alpine.data('initConfigurableSwatchProductOptions', initConfigurableSwatchProductOptions)
+        }, { once: true });
     </script>
     <?php $hyvaCsp->registerInlineScript() ?>
-    <div x-data="initViewConfigurableSwatchOptions"
-         data-product-id="<?= (int) $productId ?>"
-         data-config="<?= $escaper->escapeHtmlAttr($block->getJsonConfig()) ?>"
-         data-swatch-options="<?= $escaper->escapeHtmlAttr($block->getJsonSwatchConfig()) ?>"
-         @private-content-loaded.window="onGetCartData"
-         class="relative mb-6"
-         data-product-id="<?= (int) $productId ?>"
+
+    <div
+        x-data="initConfigurableSwatchProductOptions"
+        data-product-id="<?= (int) $productId ?>"
+        class="mb-2 relative"
     >
-        <h2 class="mb-4 text-xl font-medium text-gray-900 title-font">
-            <?= $escaper->escapeHtml(__('Product Options:')) ?>
-        </h2>
-        <div>
-            <?php foreach ($attributes as $attribute): ?>
-                <?php $attributeId = $attribute->getAttributeId(); ?>
-                <?php $productAttribute = $attribute->getProductAttribute();  ?>
-                <?php if ($swatchRendererViewModel->isSwatchAttribute($productAttribute)): ?>
-                    <div class="swatch-attribute border-t last:border-b border-gray-300 min-h-14
-                            <?= $escaper->escapeHtmlAttr($productAttribute->getAttributeCode()) ?>"
-                         data-attribute-id="<?= (int) $attributeId ?>">
-                        <div class="flex flex-col sm:flex-row items-center py-4 sm:py-1 w-full border-gray-300">
+        <script type="application/json"><?= /* @noEscape */ str_replace('</script>', '<\/script>', $jsonConfig) ?></script>
 
-                            <label
-                                class="w-full sm:w-1/2 text-left text-gray-700 label product-option-label"
-                                id="attribute-label-<?= $escaper->escapeHtmlAttr($productId . '-' . $attributeId) ?>"
-                                aria-hidden="true"
-                            >
-                                <span><?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?></span>
-                                <span
-                                    class="text-gray-900 ml-2 font-bold"
-                                    x-text="getSwatchText"
-                                ></span>
-                            </label>
-                            <div class="w-full sm:ml-2 sm:w-1/2 text-left text-gray-900 product-option-values">
-                                <div
-                                    class="flex items-center -mx-1 space-x-4 swatch-attribute-options"
-                                    role="radiogroup"
-                                    aria-label="<?= $escaper->escapeHtmlAttr($productAttribute->getStoreLabel()) ?>"
-                                >
-                                    <template
-                                        x-for="(item, index) in getAllAttributeOptions"
-                                        :key="item.id"
-                                    >
-                                        <?= /* @noEscape */ $swatchItemBlock->setData('attribute_id', $attributeId)->toHtml(); ?>
-                                    </template>
-                                </div>
-                            </div>
-                        </div>
+        <?php foreach ($attributes as $attribute): ?>
+            <?php
+            $attributeId = $attribute->getAttributeId();
+            $productAttribute = $attribute->getProductAttribute();
+            $productOptions = $attribute->getOptions();
+            $attributeSwatchConfig = $swatchConfig[$attributeId] ?? [];
+            ?>
+            <?php if ($swatchRendererViewModel->isSwatchAttribute($productAttribute)): ?>
+                <fieldset class="mt-0 mb-4">
+                    <legend class="mb-1 text-base font-normal">
+                        <?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>:
+                        <span class="font-medium" x-text="selectedOptions[<?= (int) $attributeId ?>]"></span>
+                    </legend>
+                    <div class="flex flex-wrap gap-2">
+                        <?php foreach ($productOptions ?? [] as $option): ?>
+                            <?= /* @noEscape */ $swatchItemBlock
+                                ->setData('option', $option)
+                                ->setData('swatch_data', $attributeSwatchConfig[$option['value_index']] ?? null)
+                                ->setData('attribute_id', $attributeId)
+                                ->toHtml(); ?>
+                        <?php endforeach; ?>
                     </div>
-                <?php else: ?>
-                    <div class="flex flex-col sm:flex-row items-center py-2 w-full border-t border-gray-300 last:border-b"
-                         data-attribute-id="<?= (int) $attributeId ?>"
+                </fieldset>
+            <?php else: ?>
+                <div role="group" class="mb-4">
+                    <label
+                        class="mb-1 text-base font-medium"
+                        for="attribute<?= $escaper->escapeHtmlAttr($attributeId) ?>"
                     >
-                        <label class="w-full sm:w-1/2 text-left text-gray-700 label"
-                               for="attribute<?= $escaper->escapeHtmlAttr($attributeId) ?>"
-                        >
-                            <span>
-                                <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
-                            </span>
-                        </label>
-                        <div class="w-full sm:ml-2 sm:w-1/2 text-left text-gray-900">
-                            <select name="super_attribute[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>]"
-                                    id="attribute<?= $escaper->escapeHtmlAttr($attributeId) ?>"
-                                    class="form-select super-attribute-select max-w-full"
-                                    @change="onChangeOption"
-                                    required>
-                                <option value="">
-                                    <?= $escaper->escapeHtml(__('Choose an Option...')) ?>
-                                </option>
-                                <template
-                                    x-for="(item, index) in getAllAttributeOptions"
-                                    :key="item.id"
-                                >
-                                    <template x-if="optionIsEnabled">
-                                        <option
-                                            :value="item.id"
-                                            x-html="item.label"
-                                            :disabled="notOptionIsActive"
-                                            :selected="isSelected">
-                                        </option>
-                                    </template>
-                                </template>
-                            </select>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
-        <?= /* @noEscape */ $tooltipBlockHtml ?>
+                        <?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>
+                    </label>
+                    <select
+                        id="attribute<?= $escaper->escapeHtmlAttr($attributeId) ?>"
+                        name="super_attribute[<?= $escaper->escapeHtmlAttr($attributeId) ?>]"
+                        class="form-select w-full"
+                        required
+                        data-attribute-id="<?= $escaper->escapeHtmlAttr($attributeId) ?>"
+                        @change="reflectOption"
+                    >
+                        <option value=""><?= $escaper->escapeHtml(__('Choose an Option...')) ?></option>
+                        <?php foreach ($productOptions ?? [] as $option): ?>
+                            <option
+                                value="<?= $escaper->escapeHtmlAttr($option['value_index']) ?>"
+                                data-attribute-id="<?= $escaper->escapeHtmlAttr($attributeId) ?>"
+                                data-option-label="<?= $escaper->escapeHtmlAttr($option['store_label']) ?>"
+                                :disabled="optionIsDisabled"
+                                x-text="getOptionLabel"
+                            ><?= $escaper->escapeHtml($option['store_label']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php if ($configurableViewModel->getShowSwatchTooltip()): ?>
+            <?= /* @noEscape */ $block->getBlockHtml('product.swatch.tooltip') ?>
+        <?php endif; ?>
     </div>
-
-<?php endif;?>
+<?php endif; ?>

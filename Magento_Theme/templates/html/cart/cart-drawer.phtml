@@ -318,7 +318,7 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
                     <div class="grow space-y-4">
                         <div class="flex gap-2 justify-between items-center">
                             <p class="text-lg">
-                                <span x-html="item.qty"></span> x <strong x-html="item.product_name"></strong>
+                                <span x-text="item.qty"></span> x <strong x-text="item.product_name"></strong>
                             </p>
                             <span class="price-box" x-html="item.product_price"></span>
                         </div>
@@ -329,7 +329,7 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
                                         <dt class="table-cell font-normal min-w-16 pe-2 pb-2">
                                             <?= $escaper->escapeHtml(__('Sku')) ?>
                                         </dt>
-                                        <dd class="table-cell font-bold pb-2" x-html="item.product_sku"></dd>
+                                        <dd class="table-cell font-bold pb-2" x-text="item.product_sku"></dd>
                                     </div>
                                 </template>
                                 <template x-for="option in item.options">
@@ -338,7 +338,7 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
                                             class="table-cell font-normal min-w-16 pe-2 pb-2"
                                             x-text="option.label"
                                         ></dt>
-                                        <dd class="table-cell font-bold pb-2" x-html="option.value"></dd>
+                                        <dd class="table-cell font-bold pb-2" x-text="option.value"></dd>
                                     </div>
                                 </template>
                             </dl>

@@ -276,7 +276,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
                 <div class="old-price">
                     <span id="product-price-<?= (int)$product->getId() ?>"
                           class="price-wrapper">
-                        <span class="price" data-old-price="<?= (float) $regularPrice ?>" x-html="formatOldPriceWithOptions">
+                        <span class="price" data-old-price="<?= (float) $regularPrice ?>" x-text="formatOldPriceWithOptions">
                             <?= /** @noEscape */ $productViewModel->format($regularPrice, false) ?>
                         </span>
                     </span>
@@ -285,7 +285,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
                 <div class="old-price-excl-tax">
                     <span>
                         <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
-                        <span class="price" data-old-price-excl="<?= (float)$regularPriceExclTax ?>" x-html="formatOldPriceExclWithOptions">
+                        <span class="price" data-old-price-excl="<?= (float)$regularPriceExclTax ?>" x-text="formatOldPriceExclWithOptions">
                             <?= /** @noEscape */ $productViewModel->format($regularPriceExclTax, false) ?>
                         </span>
                     </span>
@@ -301,7 +301,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
                 </span>
                 <span id="product-price-<?= (int)$product->getId() ?>"
                       class="price-wrapper">
-                    <span class="price" x-html="getFormattedFinalPrice">
+                    <span class="price" x-text="getFormattedFinalPrice">
                         <?= /** @noEscape */ $productViewModel->format($finalPrice, false) ?>
                     </span>
                 </span>
@@ -320,7 +320,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
                 <div class="final-price-excl-tax">
                     <span>
                         <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
-                        <span class="price" x-html="getFormattedBasePrice">
+                        <span class="price" x-text="getFormattedBasePrice">
                             <?= /** @noEscape */ $productViewModel->format($finalPriceExclTax, false) ?>
                         </span>
                     </span>
@@ -332,7 +332,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
         <div class="old-price flex mr-2">
             <span id="product-price-<?= (int)$product->getId() ?>"
                   class="price-wrapper">
-                <span class="price" x-html="formatOldPriceInclWithSelection"></span>
+                <span class="price" x-text="formatOldPriceInclWithSelection"></span>
             </span>
         </div>
     </template>
@@ -345,7 +345,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
             <?php endif; ?>
             <span id="product-price-<?= (int)$product->getId() ?>"
                   class="price-wrapper">
-                <span class="price" x-html="getFormattedFinalPrice"></span>
+                <span class="price" x-text="getFormattedFinalPrice"></span>
             </span>
         </div>
     </template>
@@ -354,7 +354,7 @@ if ($msrpPrice = iterator_to_array($product->getPriceInfo()->getPrices())[MsrpPr
         <div class="price-excl-tax">
             <span><?= $escaper->escapeHtml(__('Excl. Tax')) ?>:</span>
             <span>
-                <span class="price" x-html="getFormattedBasePrice"></span>
+                <span class="price" x-text="getFormattedBasePrice"></span>
             </span>
         </div>
     </template>

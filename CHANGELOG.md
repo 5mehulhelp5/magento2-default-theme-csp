@@ -6,7 +6,64 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.7...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.0...main
+
+## [1.5.0 CSP] - 2026-06-30
+
+[1.5.0 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.7...1.5.0
+
+Same as default theme
+
+## [1.5.0] - 2026-06-30
+
+[1.5.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.7...1.5.0
+
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **PHP-rendered configurable product swatches**  
+
+    Swatches complete the PHP rendering story started by the gallery. Color, image, and text options now arrive in the initial HTML, no rendering loop, no pop-in, no layout shift.
+    Combined with the gallery change, HTML document size is approximately 10% smaller and CLS on the product detail page is eliminated entirely.
+
+    -   Layered navigation filter selections are preserved when navigating to the product detail page.
+    -   Cart item editing is more stable when restoring previously selected options.
+    -   Swatch tooltips no longer clip inside sliders. Positioning uses viewport coordinates so they always render above the swatch regardless of scroll context.
+    -   Fixes a double-render bug where `x-defer="intersect"` combined with stacked Alpine template tags caused swatch options to appear twice.
+    -   Swatch appearance is driven by the `.swatch-option` CSS component, making visual customisation a stylesheet change rather than a template override.
+    -   The layered navigation renderer is aligned with the product renderers: same rendering approach, tooltip shape, and image dimensions from `view.xml`.
+    -   Fixes an accessibility inconsistency where swatches acted as toggles rather than a standard radio group.
+
+    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-0.html).
+
+    For more information, please refer to [merge request #1492](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1492).
+
+-   **Improved product gallery**  
+
+    The gallery is now PHP-rendered and only hydrated by Alpine.js, meaning images are present in the initial HTML which improves performance and LCP.
+
+    -   Built-in lightbox with keyboard navigation and loop support with disabled button states at boundaries
+    -   Now configurable via `view.xml` with options for loop, caption, pager style, pager direction, navigation position, and maximum thumbnail count
+    -   Thumbnails are displayed vertically by default on large screens, with an option to switch to horizontal layout
+    -   Custom elements can be added inside the gallery using the new gallery.additional container block, great for extensions such as labels
+
+    For more information, please refer to [merge request #1484](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1484).
+
+-   **Cleanup use x-text for string values**  
+    For more information, please refer to [merge request #1499](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1499).
+
+-   **Updated Tailwind CSS from v4.1 to v4.3**
+
+    Highlights across both releases include first-party scrollbar styling, new zoom and tab-size utilities, four new neutral color palettes, extended logical property utilities including logical inset utilities, font features, and stacked/compound `@variant` support in custom CSS. For the full list of changes see the [Tailwind CSS v4.3 release post](https://tailwindcss.com/blog/tailwindcss-v4-3).
+
+    Make sure to update your child theme with this version since we are using these new classes in the phtml to reduce the CSS size for any non-logical properties.
+
+### Removed
+
+-   Nothing Removed
 
 ## [1.4.7 CSP] - 2026-06-30
 
