@@ -68,12 +68,15 @@ $options = $block->decorateArray($block->getOptions());
                 },
                 <?php endif; ?>
                 getSelectOptionLabel() {
-                    const optionId = this.$el.closest('[data-option-id]').dataset.optionId;
+                    const optionId = this.$el.dataset.hasOwnProperty('selectOptionId')
+                        ? this.$el.dataset.selectOptionId
+                        : this.$el.closest('[data-option-id]').dataset.optionId;
+
                     let label = `${this.$el.dataset.selectOptionTitle} ${this.getFormattedOptionPrice(optionId) || ''}`;
                     <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
                     const valueBasePrice = this.$el.dataset.valueBasePrice;
                     if (valueBasePrice > 0) {
-                        label += ` (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${this.getFormattedOptionBasePrice(optionId) || ''}`;
+                        label += ` (<?= $escaper->escapeJs(__('Excl. Tax')) ?>: ${this.getFormattedOptionBasePrice(optionId) || ''})`;
                     }
                     <?php endif; ?>
 

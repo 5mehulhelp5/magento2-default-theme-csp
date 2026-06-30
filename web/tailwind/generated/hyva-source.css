@@ -7,8 +7,7 @@
  */
 
 @source "../../../../magento2-theme-module/src";
-@source "../../../../../mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility";
 
-@import "../../../../../mollie/magento2-hyva-compatibility/src/Mollie_HyvaCompatibility/view/frontend/tailwind/tailwind-source.css";
 
+@import "../../../../../mollie/magento2-hyva-compatibility/src/view/frontend/tailwind/module.css";
 

@@ -162,11 +162,13 @@ use Magento\Framework\View\Element\Template;
                 this.focusedLabel = false;
             },
             getSwatchOptionHtmlId() {
-                const productId = this.$el.closest('[data-product-id]').dataset.productId;
+                const productElement = this.$el.closest('[data-product-id]');
+                const productId = productElement ? productElement.dataset.productId : this.productId;
                 return this.$id(`attribute-option-${productId}-${this.item.id}`)
             },
             getSwatchOptionHtmlIdGroup() {
-                const productId = this.$el.closest('[data-product-id]').dataset.productId;
+                const productElement = this.$el.closest('[data-product-id]');
+                const productId = productElement ? productElement.dataset.productId : this.productId;
                 return [`attribute-option-${productId}-${this.item.id}`];
             },
             swatchOptionClasses() {
