@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
     -   The layered navigation renderer is aligned with the product renderers: same rendering approach, tooltip shape, and image dimensions from `view.xml`.
     -   Fixes an accessibility inconsistency where swatches acted as toggles rather than a standard radio group.
 
-    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-0.html).
+    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-1.html).
 
     For more information, please refer to [merge request #1492](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1492).
 
