@@ -6,17 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.0...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.1...main
 
-## [1.5.0 CSP] - 2026-06-30
+## [1.5.1 CSP] - 2026-06-30
 
-[1.5.0 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.7...1.5.0
+[1.5.1 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.8...1.5.1
 
 Same as default theme
 
-## [1.5.0] - 2026-06-30
+## [1.5.1] - 2026-07-01
 
-[1.5.0]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.7...1.5.0
+[1.5.1]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.8...1.5.1
 
 ### Added
 
@@ -64,6 +64,38 @@ Same as default theme
 ### Removed
 
 -   Nothing Removed
+
+## [1.4.8 CSP] - 2026-07-01
+
+[1.4.8 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.7...1.4.8
+
+### Added
+
+-   Nothing added
+
+### Changed
+
+-   Nothing changed
+
+### Removed
+
+-   Nothing removed
+
+## [1.4.8] - 2026-07-01
+
+[1.4.8]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.7...1.4.8
+
+### Added
+
+-   Nothing added
+
+### Changed
+
+-   Nothing changed
+
+### Removed
+
+-   Nothing removed
 
 ## [1.4.7 CSP] - 2026-06-30
 
