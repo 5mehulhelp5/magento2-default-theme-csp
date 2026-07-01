@@ -102,7 +102,7 @@ if ($option): ?>
                 <?php endif; ?>
                 data-select-option-title="<?= $escaper->escapeHtmlAttr($value->getTitle()) ?>"
                 data-value-base-price="<?= $productPriceViewModel->displayPriceInclAndExclTax() ? $escaper->escapeHtmlAttr($valueBasePrice) : '' ?>"
-                x-html="getSelectOptionLabel"
+                x-text="getSelectOptionLabel"
             >
                 <?= $escaper->escapeHtml($value->getTitle()) ?>
                 <?= /* @noEscape */ $block->formatPrice($value) ?>

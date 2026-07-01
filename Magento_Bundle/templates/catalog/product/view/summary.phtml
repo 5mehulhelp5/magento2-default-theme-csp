@@ -51,9 +51,9 @@ $product = $block->getProduct();
                     <ul role="list" class="bundle items">
                         <template x-for="option in selectedOptions">
                             <li class="mb-2" x-show="option.products.length">
-                                <span class="text-base font-semibold" x-html="option.label"></span>
+                                <span class="text-base font-semibold" x-text="option.label"></span>
                                 <template x-for="product in option.products">
-                                    <div><span x-html="product.qty"></span> x <span x-html="product.name"></span></div>
+                                    <div><span x-text="product.qty"></span> x <span x-text="product.name"></span></div>
                                 </template>
                             </li>
                         </template>

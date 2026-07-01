@@ -34,7 +34,7 @@ $heroicons = $viewModels->require(HeroiconsOutline::class);
         <template x-if="isTaxSummaryVisible">
             <details class="group">
                 <summary class="block cursor-pointer [&::-webkit-details-marker]:hidden" :class="wrapperClass">
-                    <span x-html="formatTotalLabel"></span>
+                    <span x-text="formatTotalLabel"></span>
                     <span class="inline-flex items-center gap-x-1 justify-self-end">
                         <span x-text="formatTaxTotal"></span>
                         <?= $heroicons->chevronDownHtml('transform group-open:rotate-180', 18, 18, ['aria-hidden' => 'true']); ?>
