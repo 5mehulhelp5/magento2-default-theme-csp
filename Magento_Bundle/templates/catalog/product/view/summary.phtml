@@ -62,7 +62,7 @@ $product = $block->getProduct();
             <?= $block->getChildHtml("product.info.bundle.price") ?>
 
             <?php if ($product->isSaleable()): ?>
-                <div class="flex mb-4 sm:mt-0 lg:justify-start">
+                <div class="flex gap-2">
                     <?= $block->getChildHtml("product.info.quantity") ?>
                     <?= $block->getChildHtml("product.info.addtocart") ?>
                 </div>
