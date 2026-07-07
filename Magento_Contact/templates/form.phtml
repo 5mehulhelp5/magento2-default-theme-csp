@@ -71,7 +71,7 @@ $recaptcha = $block->getData('viewModelRecaptcha');
                 <div class="field telephone">
                     <label for="telephone"><?= $escaper->escapeHtml(__('Phone Number')) ?></label>
                     <input
-                        type="text"
+                        type="tel"
                         id="telephone"
                         name="telephone"
                         value="<?= $escaper->escapeHtmlAttr($contactHelper->getPostValue('telephone')) ?>"
