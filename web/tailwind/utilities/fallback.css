@@ -55,16 +55,3 @@
     inset: 0;
     background-color: var(--backdrop, hsl(0 0 0 / 20%));
 }
-
-/**
- * Renamed color tokens: `fg`/`fg-secondary` -> `ink`/`ink-muted`.
- * Keeps existing .phtml templates working while they're migrated to the new naming.
- */
-
-@utility text-fg {
-    color: var(--color-ink);
-}
-
-@utility text-fg-secondary {
-    color: var(--color-ink-muted);
-}
