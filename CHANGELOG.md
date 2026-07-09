@@ -20,6 +20,9 @@ This release contains the same changes as [1.4.9].
 
 ### Changed
 
+-   **Updated `@hyva-themes/hyva-modules` npm package to v1.4**  
+    For more information, please refer to [merge request #1516](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1516).
+
 -   **Renamed the `fg` design token to `ink` for clearer naming**  
     For more information, please refer to [merge request #1511](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1511).
 
