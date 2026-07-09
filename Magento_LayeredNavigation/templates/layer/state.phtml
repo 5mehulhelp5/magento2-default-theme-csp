@@ -40,13 +40,13 @@ if (empty($filters)) {
         </span>
     </summary>
     <div class="py-4 px-5 border-t border-gray-300">
-        <ul role="list">
+        <ul role="list" class="items">
             <?php foreach ($filters as $filter): ?>
                 <?php
                     $filterName = $filter->getName();
                     $filterLabel = $block->stripTags($filter->getLabel());
                 ?>
-                <li class="flex justify-between items-center gap-2 mb-3 pb-3 border-b border-gray-200 last:border-transparent last:mb-0">
+                <li class="item flex justify-between items-center gap-2 mb-3 pb-3 border-b border-gray-200 last:border-transparent last:mb-0">
                     <span>
                         <span class="filter-label block"><?= $escaper->escapeHtml(__($filterName)) ?></span>
                         <span class="filter-value text-sm block">
