@@ -50,6 +50,7 @@ if ($mainImage) {
 }
 $images = array_values($images);
 $imageCount = count($images);
+$isConfigurable = $block->getProduct()->getTypeId() === 'configurable';
 
 $smallWidth = (int) $block->getImageAttribute('product_page_image_small', 'width', 60);
 $smallHeight = (int) $block->getImageAttribute('product_page_image_small', 'height', 60);
@@ -124,6 +125,9 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
     aria-label="<?= $escaper->escapeHtmlAttr(__('Gallery')) ?>"
     <?php if ($useLoop): ?>
         data-loop
+    <?php endif; ?>
+    <?php if ($isConfigurable): ?>
+        data-force-pager
     <?php endif; ?>
     style="<?= $escaper->escapeHtmlAttr($cssVars) ?>"
 >
@@ -258,7 +262,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
         <div
             class="<?= $escaper->escapeHtmlAttr($pagerWrapperCssClasses) ?>"
             x-show="showPager"
-            <?php if ($imageCount <= 1 && $pagerDir === 'vertical'): ?>style="display:none"<?php endif; ?>
+            <?php if ($imageCount <= 1 && $pagerDir === 'vertical' && !$isConfigurable): ?>style="display:none"<?php endif; ?>
         >
             <div data-pager class="<?= $escaper->escapeHtmlAttr($pagerCssClasses) ?>">
                 <?php foreach ($images as $i => $img): ?>
@@ -413,6 +417,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             newImages: [],
             sliderItems: {},
             useLoop: <?= $escaper->escapeJs($useLoop ? 'true' : 'false') ?>,
+            isConfigurable: <?= $escaper->escapeJs($isConfigurable ? 'true' : 'false') ?>,
             replaceOnReceive: <?= $escaper->escapeJs($replaceOnReceive ? 'true' : 'false') ?>,
             showInitImages: true,
             showArrows: true,
@@ -472,7 +477,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             },
             showPager() {
                 const count = (this.showInitImages ? this.initImages.length : 0) + this.newImages.length;
-                return count > 1;
+                return count > 1 || this.isConfigurable;
             },
             hasOverflow() {
                 return this.maxImageCount > 0;
