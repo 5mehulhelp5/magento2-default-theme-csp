@@ -60,6 +60,7 @@ use Magento\Framework\View\Element\Template;
                 return this.activeTooltipItem ? this.activeTooltipItem.label : '';
             },
             showTooltip(event) {
+                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
                 const input = event.currentTarget.querySelector('input');
                 this.activeTooltipItem = JSON.parse(input.dataset.tooltip);
                 this.tooltipPositionElement = event.currentTarget;

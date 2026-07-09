@@ -54,7 +54,12 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
 
             return Object.assign(
                 configurableOptionsComponent,
-                swatchOptionsComponent
+                swatchOptionsComponent,
+                {
+                    getSelectedOption() {
+                        return this.selectedOptions[this.$el.dataset.attributeId];
+                    }
+                }
             );
         }
 
@@ -82,7 +87,11 @@ $swatchConfig = json_decode($jsonSwatchConfig, true);
                 <fieldset class="mt-0 mb-4">
                     <legend class="mb-1 text-base font-normal">
                         <?= $escaper->escapeHtml($productAttribute->getStoreLabel()) ?>:
-                        <span class="font-medium" x-text="selectedOptions[<?= (int) $attributeId ?>]"></span>
+                        <span
+                            class="font-medium"
+                            data-attribute-id="<?= (int) $attributeId ?>"
+                            x-text="getSelectedOption"
+                        ></span>
                     </legend>
                     <div class="flex flex-wrap gap-2">
                         <?php foreach ($productOptions ?? [] as $option): ?>
