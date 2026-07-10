@@ -20,6 +20,12 @@ This release contains the same changes as [1.4.9].
 
 ### Changed
 
+-   **Fixed PDP media fullscreen showing left-right arrows with a single image as well**  
+    For more information, please refer to [issue #1340](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/work_items/1340) and [merge request #1519](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1519).
+
+-   **Fixed option render in Minicart**  
+    For more information, please refer to [issue #1339](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/work_items/1339) and [merge request #1517](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1517).
+
 -   **Updated `@hyva-themes/hyva-modules` npm package to v1.4**  
     For more information, please refer to [merge request #1516](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1516).
 
