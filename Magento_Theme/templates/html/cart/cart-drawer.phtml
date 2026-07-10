@@ -338,7 +338,7 @@ $miniCartOptionShowSku = $block->getShowSku() !== null ? (bool) $block->getShowS
                                             class="table-cell font-normal min-w-16 pe-2 pb-2"
                                             x-text="option.label"
                                         ></dt>
-                                        <dd class="table-cell font-bold pb-2" x-text="option.value"></dd>
+                                        <dd class="table-cell font-bold pb-2" x-html="option.value"></dd>
                                     </div>
                                 </template>
                             </dl>
