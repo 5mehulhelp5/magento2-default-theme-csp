@@ -53,6 +53,7 @@ use Magento\Framework\Escaper;
                 return this.activeTooltipItem ? this.activeTooltipItem.label : '';
             },
             showTooltip() {
+                if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
                 this.activeTooltipItem = JSON.parse(this.$event.currentTarget.dataset.tooltip);
                 this.tooltipPositionElement = this.$event.currentTarget;
             },

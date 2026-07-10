@@ -6,7 +6,62 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.1...main
+[Unreleased]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.2...main
+
+## [1.5.2 CSP] - 2026-07-10
+
+[1.5.2 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.5.1...1.5.2
+
+Same as default theme
+
+## [1.5.2] - 2026-07-10
+
+[1.5.2]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.5.1...1.5.2
+
+This release contains the same changes as [1.4.10].
+
+### Added
+
+-   Nothing Added
+
+### Changed
+
+-   **Fixed missing `this` in new password page**  
+    For more information, please refer to [merge request #1520](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1520).
+
+-   **Fixed PDP media fullscreen showing left-right arrows with a single image as well**  
+    For more information, please refer to [issue #1340](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/work_items/1340) and [merge request #1519](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1519).
+
+-   **Fixed option render in Minicart**  
+    For more information, please refer to [issue #1339](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/work_items/1339) and [merge request #1517](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1517).
+
+-   **Updated `@hyva-themes/hyva-modules` npm package to v1.4**  
+    For more information, please refer to [merge request #1516](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1516).
+
+-   **Added the `ink` design token as a clearer-named replacement for `fg`, keeping `fg` as a fallback until it is removed in a future npm package update**  
+    For more information, please refer to [merge request #1511](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1511).
+
+-   **Improved pager visibility for configurable products in the product gallery**  
+    For more information, please refer to [merge request #1515](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1515).
+
+-   **Fixed next click on the last pagination page redirecting to the first page**  
+    For more information, please refer to [issue #1335](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1335) and [merge request #1513](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1513).
+
+-   **Fixed the entire tab section on PLP filters not being clickable**  
+    For more information, please refer to [issue #1329](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1329) and [merge request #1512](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1512).
+
+-   **Fixed swatch tooltip appearing on touch devices, plus alignment and gap issues**  
+    For more information, please refer to [merge request #1506](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1506).
+
+-   **Fixed render of selected option to be CSP safe**  
+    For more information, please refer to [issue #1327](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1327) and [merge request #1503](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1503).
+
+-   **Fixed gallery scroll direction**  
+    For more information, please refer to [issue #1326](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/issues/1326) and [merge request #1504](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1504).
+
+### Removed
+
+-   Nothing Removed
 
 ## [1.5.1 CSP] - 2026-06-30
 
@@ -37,7 +92,7 @@ Same as default theme
     -   The layered navigation renderer is aligned with the product renderers: same rendering approach, tooltip shape, and image dimensions from `view.xml`.
     -   Fixes an accessibility inconsistency where swatches acted as toggles rather than a standard radio group.
 
-    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-0.html).
+    If you have child theme overrides for any swatch templates, refer to the [upgrade guide](https://docs.hyva.io/hyva-themes/upgrading/upgrading-to-1-5-1.html).
 
     For more information, please refer to [merge request #1492](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1492).
 
@@ -64,6 +119,31 @@ Same as default theme
 ### Removed
 
 -   Nothing Removed
+
+## [1.4.10 CSP] - 2026-07-10
+
+[1.4.10 CSP]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme-csp/-/compare/1.4.8...1.4.10
+
+Same as default theme
+
+## [1.4.10] - 2026-07-10
+
+[1.4.10]: https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/compare/1.4.8...1.4.10
+
+### Added
+
+-   Nothing added
+
+### Changed
+
+-   **Fixed `browser-sync.config.cjs` stripping `window.BASE_URL` down to `/`**  
+    The `rewriteRules` regex removed the proxy origin everywhere in the response body, including inside the inline `var BASE_URL = '...'` assignment, leaving `window.BASE_URL` as just `/` and breaking JS that relies on it for absolute request URLs. The rewrite now skips that occurrence.
+
+    For more information, please refer to [merge request #1508](https://gitlab.hyva.io/hyva-themes/magento2-default-theme/-/merge_requests/1508).
+
+### Removed
+
+-   Nothing removed
 
 ## [1.4.8 CSP] - 2026-07-01
 

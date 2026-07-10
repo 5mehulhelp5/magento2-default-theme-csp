@@ -50,6 +50,7 @@ if ($mainImage) {
 }
 $images = array_values($images);
 $imageCount = count($images);
+$isConfigurable = $block->getProduct()->getTypeId() === 'configurable';
 
 $smallWidth = (int) $block->getImageAttribute('product_page_image_small', 'width', 60);
 $smallHeight = (int) $block->getImageAttribute('product_page_image_small', 'height', 60);
@@ -80,7 +81,7 @@ $btnCssClasses = 'btn btn-secondary border-transparent p-1 rounded-full shadow-s
 $btnIconSize = 28;
 
 $trackCssClasses = implode(' ', array_filter([
-    'flex overflow-x-auto overflow-y-clip overscroll-contain snap-both snap-mandatory',
+    'flex overflow-x-auto overflow-y-clip overscroll-x-contain snap-x snap-mandatory',
     'aspect-(--gallery-ratio) bg-white text-fg',
     'motion-safe:scroll-smooth scrollbar-none'
 ]));
@@ -124,6 +125,9 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
     aria-label="<?= $escaper->escapeHtmlAttr(__('Gallery')) ?>"
     <?php if ($useLoop): ?>
         data-loop
+    <?php endif; ?>
+    <?php if ($isConfigurable): ?>
+        data-force-pager
     <?php endif; ?>
     style="<?= $escaper->escapeHtmlAttr($cssVars) ?>"
 >
@@ -258,7 +262,7 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
         <div
             class="<?= $escaper->escapeHtmlAttr($pagerWrapperCssClasses) ?>"
             x-show="showPager"
-            <?php if ($imageCount <= 1 && $pagerDir === 'vertical'): ?>style="display:none"<?php endif; ?>
+            <?php if ($imageCount <= 1 && $pagerDir === 'vertical' && !$isConfigurable): ?>style="display:none"<?php endif; ?>
         >
             <div data-pager class="<?= $escaper->escapeHtmlAttr($pagerCssClasses) ?>">
                 <?php foreach ($images as $i => $img): ?>
@@ -413,9 +417,9 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             newImages: [],
             sliderItems: {},
             useLoop: <?= $escaper->escapeJs($useLoop ? 'true' : 'false') ?>,
+            isConfigurable: <?= $escaper->escapeJs($isConfigurable ? 'true' : 'false') ?>,
             replaceOnReceive: <?= $escaper->escapeJs($replaceOnReceive ? 'true' : 'false') ?>,
             showInitImages: true,
-            showArrows: true,
             maxDisplay: <?= $escaper->escapeJs($maxThumbs) ?>,
             maxImageCount: 0,
             initOverflowSrc: '',
@@ -434,7 +438,6 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                 this.sliderItems = {};
                 if (this.replaceOnReceive) {
                     this.showInitImages = !this.newImages.length;
-                    this.showArrows = this.showInitImages || this.newImages.length > 1;
                 }
                 const visibleInitCount = this.showInitImages ? this.initImages.length : 0;
                 this.maxImageCount = visibleInitCount + this.newImages.length - this.maxDisplay;
@@ -470,9 +473,14 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             isVideoSlide() {
                 return this.image?.type !== 'image';
             },
+            visibleImageCount() {
+                return (this.showInitImages ? this.initImages.length : 0) + this.newImages.length;
+            },
             showPager() {
-                const count = (this.showInitImages ? this.initImages.length : 0) + this.newImages.length;
-                return count > 1;
+                return this.visibleImageCount() > 1 || this.isConfigurable;
+            },
+            showArrows() {
+                return this.visibleImageCount() > 1;
             },
             hasOverflow() {
                 return this.maxImageCount > 0;
