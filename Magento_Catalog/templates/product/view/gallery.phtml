@@ -420,7 +420,6 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             isConfigurable: <?= $escaper->escapeJs($isConfigurable ? 'true' : 'false') ?>,
             replaceOnReceive: <?= $escaper->escapeJs($replaceOnReceive ? 'true' : 'false') ?>,
             showInitImages: true,
-            showArrows: true,
             maxDisplay: <?= $escaper->escapeJs($maxThumbs) ?>,
             maxImageCount: 0,
             initOverflowSrc: '',
@@ -439,7 +438,6 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
                 this.sliderItems = {};
                 if (this.replaceOnReceive) {
                     this.showInitImages = !this.newImages.length;
-                    this.showArrows = this.showInitImages || this.newImages.length > 1;
                 }
                 const visibleInitCount = this.showInitImages ? this.initImages.length : 0;
                 this.maxImageCount = visibleInitCount + this.newImages.length - this.maxDisplay;
@@ -475,9 +473,14 @@ $captionCssClasses = 'absolute bottom-2 text-sm py-1 px-2 rounded bg-gray-200/60
             isVideoSlide() {
                 return this.image?.type !== 'image';
             },
+            visibleImageCount() {
+                return (this.showInitImages ? this.initImages.length : 0) + this.newImages.length;
+            },
             showPager() {
-                const count = (this.showInitImages ? this.initImages.length : 0) + this.newImages.length;
-                return count > 1 || this.isConfigurable;
+                return this.visibleImageCount() > 1 || this.isConfigurable;
+            },
+            showArrows() {
+                return this.visibleImageCount() > 1;
             },
             hasOverflow() {
                 return this.maxImageCount > 0;
